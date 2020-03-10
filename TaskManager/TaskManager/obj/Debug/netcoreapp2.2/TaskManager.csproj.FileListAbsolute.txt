@@ -14,3 +14,4 @@ E:\FPT\Term_7-Spring_2020\PRM391\TaskManager\TaskManager\TaskManager\obj\Debug\n
 E:\FPT\Term_7-Spring_2020\PRM391\TaskManager\TaskManager\TaskManager\obj\Debug\netcoreapp2.2\TaskManager.RazorTargetAssemblyInfo.cache
 E:\FPT\Term_7-Spring_2020\PRM391\TaskManager\TaskManager\TaskManager\obj\Debug\netcoreapp2.2\TaskManager.dll
 E:\FPT\Term_7-Spring_2020\PRM391\TaskManager\TaskManager\TaskManager\obj\Debug\netcoreapp2.2\TaskManager.pdb
+E:\FPT\Term_7-Spring_2020\PRM391\TaskManager\TaskManager\TaskManager\bin\Debug\netcoreapp2.2\NLog.config
