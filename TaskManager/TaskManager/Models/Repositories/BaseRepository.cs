@@ -1,14 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using System.Linq;
 
 namespace TaskManager.Models.Repositories
 {
     public interface IBaseRepository<T, K> where T : class
     {
         T GetById(K key);
+        IQueryable<T> GetAll();
         EntityEntry<T> Create(T entity);
         EntityEntry<T> Update(T entity);
         EntityEntry<T> Delete(T entity);
+        EntityEntry<T> Delete(K key);
     
     }
     public class BaseRepository<T, K> : IBaseRepository<T, K> where T : class
@@ -42,8 +45,15 @@ namespace TaskManager.Models.Repositories
             return _dbSet.Find(key);
         }
 
+        public EntityEntry<T> Delete(K key)
+        {
+            var result = GetById(key);
+            return result != null ? _dbSet.Remove(result) : null;
+        }
 
-      
-
+        public IQueryable<T> GetAll()
+        {
+            return _context.Set<T>();
+        }
     }
 }

@@ -17,7 +17,7 @@ create table Task(
    ReviewedTime datetime, 
    StartTime datetime not null,
    EndTime datetime,
-   StatusId int,
+   StatusId int not null,
    CreatedTime datetime not null,
    Creator nvarchar(50) not null,
    HandlerId int,
@@ -33,7 +33,7 @@ create table [User](
 	UserId int primary key Identity(1,1),
 	Username nvarchar(256) not null,
 	PasswordHash nvarchar(max) not null,
-	RoleId int, 
+	RoleId int not null, 
 	Fullname nvarchar(max) not null,
 	Email nvarchar(256) not null,
 	GroupId int)

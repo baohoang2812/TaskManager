@@ -85,11 +85,16 @@ namespace TaskManager.Models
                 entity.HasOne(d => d.Status)
                     .WithMany(p => p.Task)
                     .HasForeignKey(d => d.StatusId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Task_Status");
             });
 
             modelBuilder.Entity<User>(entity =>
             {
+                entity.HasIndex(e => e.Username)
+                    .HasName("UQ_User")
+                    .IsUnique();
+
                 entity.Property(e => e.Email)
                     .IsRequired()
                     .HasMaxLength(256);

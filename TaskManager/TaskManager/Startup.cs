@@ -63,6 +63,10 @@ namespace TaskManager
             {
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                app.UseHsts();
+            }
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
             // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), 
@@ -72,6 +76,8 @@ namespace TaskManager
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Task Manager API V1");
                 c.RoutePrefix = string.Empty;
             });
+            app.UseStaticFiles();
+
             app.UseMvc();
         }
 
@@ -80,7 +86,11 @@ namespace TaskManager
             services.AddScoped<UserService>()
                 .AddScoped<IUnitOfWork, UnitOfWork>()
                 .AddScoped<DbContext, TaskManagerContext>()
-                .AddScoped<IUserRepository, UserRepository>();
+                .AddScoped<IUserRepository, UserRepository>()
+                .AddScoped<ITaskRepository, TaskRepository>()
+                .AddScoped<IGroupRepository, GroupRepository>()
+                .AddScoped<TaskService>()
+                .AddScoped<GroupService>();
         }
     }
 }

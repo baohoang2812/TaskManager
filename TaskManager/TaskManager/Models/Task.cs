@@ -20,7 +20,7 @@ namespace TaskManager.Models
         public DateTime? ReviewedTime { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime? EndTime { get; set; }
-        public int? StatusId { get; set; }
+        public int StatusId { get; set; }
         public DateTime CreatedTime { get; set; }
         public string Creator { get; set; }
         public int? HandlerId { get; set; }

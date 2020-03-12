@@ -1,11 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using NLog;
+using System;
+using System.Collections.Generic;
+using System.IO;
 using TaskManager.Models;
+using TaskManager.Models.Request;
+using TaskManager.Services;
+using TaskManager.ViewModels;
 
 namespace TaskManager.Controllers
 {
@@ -13,59 +17,106 @@ namespace TaskManager.Controllers
     [ApiController]
     public class TasksController : BaseController
     {
-        private readonly TaskManagerContext _context;
-
-        public TasksController(TaskManagerContext context)
+        private Logger _logger = LogManager.GetCurrentClassLogger();
+        public static IHostingEnvironment _hostingEnvironment;
+        public TasksController(IUnitOfWork unitOfWork, IMapper mapper, IHostingEnvironment hostingEnvironment): base(unitOfWork, mapper)
         {
-            _context = context;
+            _hostingEnvironment = hostingEnvironment;
         }
 
         // GET: api/Tasks
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Models.Task>>> GetTask()
+        [HttpPost]
+        [Route("all")]
+        public IActionResult GetTask([FromBody] GetTasksRequest request)
         {
-            return await _context.Task.ToListAsync();
+            try
+            {
+                var userService = GetService<UserService>();
+                var user = userService.GetUserById(request.userId);
+                if(user == null)
+                {
+                    return Unauthorized(new ApiResult
+                    {
+                        Message = ResultMessage.Unauthorized,
+                    });
+                }
+                var taskService = GetService<TaskService>();
+                var taskList =taskService.GetAllTask(request, user);
+                var result = MapToList<TaskViewModel>(taskList);
+                return Ok(new ApiResult
+                {
+                    Data = result,
+                    Message = ResultMessage.Success
+                });
+            }catch(Exception e)
+            {
+                _logger.Error(e, e.Message);
+                return Error(new ApiResult
+                {
+                    Message = ResultMessage.Error
+                });
+            }
         }
 
         // GET: api/Tasks/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Models.Task>> GetTask(int id)
+        public IActionResult GetTask(int id)
         {
-            var task = await _context.Task.FindAsync(id);
-
-            if (task == null)
+            try
             {
-                return NotFound();
+                var service = GetService<TaskService>();
+                var task = service.GetById(id);
+                if (task == null)
+                {
+                    return NotFound(new ApiResult
+                    {
+                        Message = ResultMessage.NotFound
+                    });
+                }
+                var result = MapTo<TaskViewModel>(task);
+                return Ok(new ApiResult
+                {
+                    Message = ResultMessage.Success,
+                    Data = result
+                });
+            }catch(Exception e)
+            {
+                _logger.Error(e, e.Message);
+                return Error(new ApiResult
+                {
+                    Message = ResultMessage.Error
+                });
             }
 
-            return task;
         }
 
         // PUT: api/Tasks/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTask(int id, Models.Task task)
+        public IActionResult EditTask(int id, TaskEditViewModel model)
         {
-            if (id != task.TaskId)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(task).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                var service = GetService<TaskService>();
+                var task = service.EditTask(id, model);
+                var result = MapTo<TaskViewModel>(task);
+                if(task == null)
+                {
+                    return NotFound(new ApiResult
+                    {
+                        Message = ResultMessage.NotFound,
+                    });
+                }
+                _unitOfWork.SaveChanges();
+                return NoContent();
+
             }
-            catch (DbUpdateConcurrencyException)
+            catch (Exception e) 
             {
-                if (!TaskExists(id))
+                _logger.Error(e, e.Message);
+                Error(new ApiResult
                 {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                    Message = ResultMessage.Error,
+                });
             }
 
             return NoContent();
@@ -73,33 +124,96 @@ namespace TaskManager.Controllers
 
         // POST: api/Tasks
         [HttpPost]
-        public async Task<ActionResult<Models.Task>> PostTask(Models.Task task)
+        public IActionResult CreateTask(TaskCreateViewModel model)
         {
-            _context.Task.Add(task);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetTask", new { id = task.TaskId }, task);
+            try
+            {
+                var service = GetService<TaskService>();
+                var task = service.CreateTask(model);
+                var result = MapTo<TaskViewModel>(task);
+                _unitOfWork.SaveChanges();
+                return Created($"/api/Tasks?id={task.TaskId}", new ApiResult
+                {
+                    Data = result,
+                    Message = ResultMessage.Success
+                });
+            }catch(Exception e)
+            {
+                _logger.Error(e, e.Message);
+                return Error(new ApiResult
+                {
+                    Message = ResultMessage.Error
+                });
+            }
         }
 
         // DELETE: api/Tasks/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Models.Task>> DeleteTask(int id)
+        public IActionResult DeleteTask(int id)
         {
-            var task = await _context.Task.FindAsync(id);
-            if (task == null)
+            try
             {
-                return NotFound();
+                var service = GetService<TaskService>();
+                var task = service.DeleteTask(id);
+                _unitOfWork.SaveChanges();
+                if (task == null)
+                {
+                    return NotFound(new ApiResult
+                    {
+                        Message = ResultMessage.NotFound
+                    });
+                }
+                return NoContent();
             }
+            catch(Exception e)
+            {
+                _logger.Error(e, e.Message);
+                return Error(new ApiResult
+                {
+                    Message = ResultMessage.Error
+                });
+            }
+            
 
-            _context.Task.Remove(task);
-            await _context.SaveChangesAsync();
-
-            return task;
         }
 
-        private bool TaskExists(int id)
+        // POST: api/Tasks
+        [HttpPost]
+        [Route("upload")]
+        public IActionResult UploadConfirmationImage(IFormFile file)
         {
-            return _context.Task.Any(e => e.TaskId == id);
+            try
+            {
+                if (file.Length > 0)
+                {
+                    if (!Directory.Exists(_hostingEnvironment.WebRootPath + "\\Upload\\"))
+                    {
+                        Directory.CreateDirectory(_hostingEnvironment.WebRootPath + "\\Upload\\");
+                    }
+                    using (FileStream fileStream = System.IO.File.Create(_hostingEnvironment.WebRootPath + "\\Upload\\" + file.FileName))
+                    {
+                        file.CopyTo(fileStream);
+                        fileStream.Flush();
+                        return CreatedAtAction("UploadConfirmationImage", new ApiResult
+                        {
+                            Message = "\\Upload\\"+file.FileName
+                        });
+                    }
+                }
+                return BadRequest(new ApiResult
+                {
+                    Message = ResultMessage.NotSupported
+                });
+            }
+            catch (Exception e)
+            {
+                _logger.Error(e, e.Message);
+                return Error(new ApiResult
+                {
+                    Message = ResultMessage.Error
+                });
+            }
         }
+
     }
 }

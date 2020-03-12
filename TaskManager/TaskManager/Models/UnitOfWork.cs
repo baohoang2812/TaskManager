@@ -2,6 +2,8 @@
 using System;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore.Storage;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace TaskManager.Models
 {
@@ -9,6 +11,7 @@ namespace TaskManager.Models
     {
         T GetService<T>();
         int SaveChanges();
+        Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken));
         IDbContextTransaction BeginTransaction();
     }
     public class UnitOfWork: IUnitOfWork
@@ -26,6 +29,11 @@ namespace TaskManager.Models
             return _context.Database.BeginTransaction();
         }
 
+        public void CommitTransaction()
+        {
+            _context.Database.CommitTransaction();
+        }
+
         public T GetService<T>()
         {
             return _serviceProvider.GetService<T>();
@@ -34,6 +42,11 @@ namespace TaskManager.Models
         public int SaveChanges()
         {
             return _context.SaveChanges();
+        }
+
+        public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await _context.SaveChangesAsync(cancellationToken);
         }
     }
 }
