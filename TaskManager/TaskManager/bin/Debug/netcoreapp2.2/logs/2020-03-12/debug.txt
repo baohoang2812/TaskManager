@@ -760,3 +760,48 @@ TaskManager.ViewModels.GroupCreateViewModel -> TaskManager.Models.Group
 2020-03-12 18:15:30.4455|INFO|Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker|Executed action TaskManager.Controllers.TasksController.UploadConfirmationImage (TaskManager) in 5122.174ms
 2020-03-12 18:15:30.4455|INFO|Microsoft.AspNetCore.Routing.EndpointMiddleware|Executed endpoint 'TaskManager.Controllers.TasksController.UploadConfirmationImage (TaskManager)'
 2020-03-12 18:15:30.4455|INFO|Microsoft.AspNetCore.Hosting.Internal.WebHost|Request finished in 5238.0607ms 201 application/json; charset=utf-8
+2020-03-12 23:30:30.7165|INFO|Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager|User profile is available. Using 'C:\Users\Eden\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2020-03-12 23:30:31.4897|INFO|Microsoft.AspNetCore.Hosting.Internal.WebHost|Request starting HTTP/1.1 GET http://localhost:37645/index.html  
+2020-03-12 23:30:31.7019|INFO|Microsoft.AspNetCore.Hosting.Internal.WebHost|Request finished in 212.1746ms 200 text/html
+2020-03-12 23:30:32.3774|INFO|Microsoft.AspNetCore.Hosting.Internal.WebHost|Request starting HTTP/1.1 GET http://localhost:37645/swagger/v1/swagger.json  
+2020-03-12 23:30:32.5469|INFO|Microsoft.AspNetCore.Hosting.Internal.WebHost|Request finished in 169.5124ms 200 application/json;charset=utf-8
+2020-03-12 23:34:11.2558|INFO|Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager|User profile is available. Using 'C:\Users\Eden\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2020-03-12 23:34:11.8227|INFO|Microsoft.AspNetCore.Hosting.Internal.WebHost|Request starting HTTP/1.1 GET http://localhost:37645/index.html  
+2020-03-12 23:34:11.9786|INFO|Microsoft.AspNetCore.Hosting.Internal.WebHost|Request finished in 157.9275ms 200 text/html
+2020-03-12 23:34:12.5999|INFO|Microsoft.AspNetCore.Hosting.Internal.WebHost|Request starting HTTP/1.1 GET http://localhost:37645/swagger/v1/swagger.json  
+2020-03-12 23:34:12.7585|INFO|Microsoft.AspNetCore.Hosting.Internal.WebHost|Request finished in 158.6368ms 200 application/json;charset=utf-8
+2020-03-12 23:40:46.5108|INFO|Microsoft.AspNetCore.Hosting.Internal.WebHost|Request starting HTTP/1.1 GET http://localhost:37645/api/Users/15  
+2020-03-12 23:40:46.6092|INFO|Microsoft.AspNetCore.Routing.EndpointMiddleware|Executing endpoint 'TaskManager.Controllers.UsersController.GetUser (TaskManager)'
+2020-03-12 23:40:46.6514|INFO|Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker|Route matched with {action = "GetUser", controller = "Users"}. Executing action TaskManager.Controllers.UsersController.GetUser (TaskManager)
+2020-03-12 23:40:47.2503|INFO|Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker|Executing action method TaskManager.Controllers.UsersController.GetUser (TaskManager) with arguments (15) - Validation state: Valid
+2020-03-12 23:40:47.5170|INFO|Microsoft.EntityFrameworkCore.Infrastructure|Entity Framework Core 2.2.4-servicing-10062 initialized 'TaskManagerContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer' with options: None
+2020-03-12 23:40:47.5789|WARN|Microsoft.EntityFrameworkCore.Query|The Include operation for navigation '[x].Role' is unnecessary and was ignored because the navigation is not reachable in the final query results. See https://go.microsoft.com/fwlink/?linkid=850303 for more information.
+2020-03-12 23:40:47.5789|WARN|Microsoft.EntityFrameworkCore.Query|The Include operation for navigation '[x].Group' is unnecessary and was ignored because the navigation is not reachable in the final query results. See https://go.microsoft.com/fwlink/?linkid=850303 for more information.
+2020-03-12 23:40:47.7509|INFO|Microsoft.EntityFrameworkCore.Database.Command|Executed DbCommand (7ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+SELECT TOP(1) [x].[UserId], [x].[GroupId], [x].[RoleId], [x].[Fullname], [x].[Email]
+FROM [User] AS [x]
+WHERE [x].[UserId] = @__id_0
+2020-03-12 23:40:47.7850|INFO|Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker|Executed action method TaskManager.Controllers.UsersController.GetUser (TaskManager), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 532.2086ms.
+2020-03-12 23:40:47.7957|INFO|Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor|Executing ObjectResult, writing value of type 'TaskManager.ViewModels.ApiResult'.
+2020-03-12 23:40:47.8126|INFO|Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker|Executed action TaskManager.Controllers.UsersController.GetUser (TaskManager) in 1156.6689ms
+2020-03-12 23:40:47.8126|INFO|Microsoft.AspNetCore.Routing.EndpointMiddleware|Executed endpoint 'TaskManager.Controllers.UsersController.GetUser (TaskManager)'
+2020-03-12 23:40:47.8126|INFO|Microsoft.AspNetCore.Hosting.Internal.WebHost|Request finished in 1303.2652ms 200 application/json; charset=utf-8
+2020-03-12 23:42:41.1437|INFO|Microsoft.AspNetCore.Hosting.Internal.WebHost|Request starting HTTP/1.1 GET http://localhost:37645/api/Users/15  
+2020-03-12 23:42:41.1472|INFO|Microsoft.AspNetCore.Routing.EndpointMiddleware|Executing endpoint 'TaskManager.Controllers.UsersController.GetUser (TaskManager)'
+2020-03-12 23:42:41.1472|INFO|Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker|Route matched with {action = "GetUser", controller = "Users"}. Executing action TaskManager.Controllers.UsersController.GetUser (TaskManager)
+2020-03-12 23:42:41.2046|INFO|Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker|Executing action method TaskManager.Controllers.UsersController.GetUser (TaskManager) with arguments (15) - Validation state: Valid
+2020-03-12 23:42:41.2407|INFO|Microsoft.EntityFrameworkCore.Infrastructure|Entity Framework Core 2.2.4-servicing-10062 initialized 'TaskManagerContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer' with options: None
+2020-03-12 23:42:41.2904|INFO|Microsoft.EntityFrameworkCore.Database.Command|Executed DbCommand (12ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+SELECT TOP(1) [x].[UserId], [x].[GroupId], [x].[RoleId], [x].[Fullname], [x].[Email]
+FROM [User] AS [x]
+WHERE [x].[UserId] = @__id_0
+2020-03-12 23:42:41.2904|INFO|Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker|Executed action method TaskManager.Controllers.UsersController.GetUser (TaskManager), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 87.5164ms.
+2020-03-12 23:42:41.3053|INFO|Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor|Executing ObjectResult, writing value of type 'TaskManager.ViewModels.ApiResult'.
+2020-03-12 23:42:41.3053|INFO|Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker|Executed action TaskManager.Controllers.UsersController.GetUser (TaskManager) in 164.3314ms
+2020-03-12 23:42:41.3053|INFO|Microsoft.AspNetCore.Routing.EndpointMiddleware|Executed endpoint 'TaskManager.Controllers.UsersController.GetUser (TaskManager)'
+2020-03-12 23:42:41.3053|INFO|Microsoft.AspNetCore.Hosting.Internal.WebHost|Request finished in 170.1986ms 200 application/json; charset=utf-8
+2020-03-12 23:58:24.0109|INFO|Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager|User profile is available. Using 'C:\Users\Eden\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2020-03-12 23:58:25.1136|INFO|Microsoft.AspNetCore.Hosting.Internal.WebHost|Request starting HTTP/1.1 GET http://localhost:37645/index.html  
+2020-03-12 23:58:25.3860|INFO|Microsoft.AspNetCore.Hosting.Internal.WebHost|Request finished in 272.627ms 200 text/html
+2020-03-12 23:58:26.2510|INFO|Microsoft.AspNetCore.Hosting.Internal.WebHost|Request starting HTTP/1.1 GET http://localhost:37645/swagger/v1/swagger.json  
+2020-03-12 23:58:26.4714|INFO|Microsoft.AspNetCore.Hosting.Internal.WebHost|Request finished in 220.4285ms 200 application/json;charset=utf-8

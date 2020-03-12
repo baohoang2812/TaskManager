@@ -4,6 +4,7 @@ using NLog;
 using System;
 using System.Linq;
 using TaskManager.Models;
+using TaskManager.Models.Request;
 using TaskManager.Services;
 using TaskManager.ViewModels;
 
@@ -148,16 +149,19 @@ namespace TaskManager.Controllers
         // POST: api/Users/login
         [Route("login")]
         [HttpPost]
-        public IActionResult Login(LoginViewModel model)
+        public IActionResult Login(LoginRequest request)
         {
             try
             {
                 var service = GetService<UserService>();
-                var user = service.Authenticate(model.Username, model.Password);
+                var user = service.Authenticate(request.Username, request.Password);
                 var result = MapTo<UserViewModel>(user);
                 if (result == null)
                 {
-                    return NotFound();
+                    return NotFound(new ApiResult
+                    {
+                        Message = ResultMessage.NotSupported
+                    });
                 }
                 return Ok(new ApiResult
                 {

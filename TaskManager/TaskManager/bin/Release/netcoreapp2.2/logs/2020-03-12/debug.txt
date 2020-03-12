@@ -1,0 +1,39 @@
+2020-03-12 20:42:20.0445|INFO|Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager|User profile is available. Using 'C:\Users\Eden\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2020-03-12 20:42:20.7476|INFO|Microsoft.AspNetCore.Hosting.Internal.WebHost|Request starting HTTP/1.1 GET http://localhost:37645/index.html  
+2020-03-12 20:42:20.9742|INFO|Microsoft.AspNetCore.Hosting.Internal.WebHost|Request finished in 228.5732ms 200 text/html
+2020-03-12 20:42:21.5701|INFO|Microsoft.AspNetCore.Hosting.Internal.WebHost|Request starting HTTP/1.1 GET http://localhost:37645/swagger/v1/swagger.json  
+2020-03-12 20:42:21.7288|INFO|Microsoft.AspNetCore.Hosting.Internal.WebHost|Request finished in 158.6603ms 200 application/json;charset=utf-8
+2020-03-12 21:56:48.8643|INFO|Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager|User profile is available. Using 'C:\Users\Eden\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2020-03-12 21:56:49.5325|INFO|Microsoft.AspNetCore.Hosting.Internal.WebHost|Request starting HTTP/1.1 GET http://localhost:37645/index.html  
+2020-03-12 21:56:49.8276|INFO|Microsoft.AspNetCore.Hosting.Internal.WebHost|Request finished in 295.457ms 200 text/html
+2020-03-12 21:56:50.5396|INFO|Microsoft.AspNetCore.Hosting.Internal.WebHost|Request starting HTTP/1.1 GET http://localhost:37645/swagger/v1/swagger.json  
+2020-03-12 21:56:50.6962|INFO|Microsoft.AspNetCore.Hosting.Internal.WebHost|Request finished in 156.6867ms 200 application/json;charset=utf-8
+2020-03-12 22:02:09.2761|INFO|Microsoft.AspNetCore.Hosting.Internal.WebHost|Request starting HTTP/1.1 POST http://localhost:37645/api/Users/login application/json-patch+json 48
+2020-03-12 22:02:09.3488|INFO|Microsoft.AspNetCore.Routing.EndpointMiddleware|Executing endpoint 'TaskManager.Controllers.UsersController.Login (TaskManager)'
+2020-03-12 22:02:09.3866|INFO|Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker|Route matched with {action = "Login", controller = "Users"}. Executing action TaskManager.Controllers.UsersController.Login (TaskManager)
+2020-03-12 22:02:10.0295|INFO|Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker|Executing action method TaskManager.Controllers.UsersController.Login (TaskManager) with arguments (TaskManager.ViewModels.LoginViewModel) - Validation state: Valid
+2020-03-12 22:02:10.2973|INFO|Microsoft.EntityFrameworkCore.Infrastructure|Entity Framework Core 2.2.4-servicing-10062 initialized 'TaskManagerContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer' with options: None
+2020-03-12 22:02:10.3746|WARN|Microsoft.EntityFrameworkCore.Query|The Include operation for navigation '[x].Role' is unnecessary and was ignored because the navigation is not reachable in the final query results. See https://go.microsoft.com/fwlink/?linkid=850303 for more information.
+2020-03-12 22:02:10.5639|INFO|Microsoft.EntityFrameworkCore.Database.Command|Executed DbCommand (14ms) [Parameters=[@__username_0='?' (Size = 256), @__password_1='?' (Size = 4000)], CommandType='Text', CommandTimeout='30']
+SELECT TOP(1) [x].[Fullname], [x].[Email], [x].[UserId], [x].[GroupId], [x].[RoleId]
+FROM [User] AS [x]
+WHERE ([x].[Username] = @__username_0) AND ([x].[PasswordHash] = @__password_1)
+2020-03-12 22:02:10.6050|INFO|Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker|Executed action method TaskManager.Controllers.UsersController.Login (TaskManager), returned result Microsoft.AspNetCore.Mvc.NotFoundResult in 572.9503ms.
+2020-03-12 22:02:10.6050|INFO|Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor|Executing ObjectResult, writing value of type 'Microsoft.AspNetCore.Mvc.ProblemDetails'.
+2020-03-12 22:02:10.6249|INFO|Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker|Executed action TaskManager.Controllers.UsersController.Login (TaskManager) in 1234.5267ms
+2020-03-12 22:02:10.6249|INFO|Microsoft.AspNetCore.Routing.EndpointMiddleware|Executed endpoint 'TaskManager.Controllers.UsersController.Login (TaskManager)'
+2020-03-12 22:02:10.6249|INFO|Microsoft.AspNetCore.Hosting.Internal.WebHost|Request finished in 1351.5884ms 404 application/problem+json; charset=utf-8
+2020-03-12 22:02:20.7559|INFO|Microsoft.AspNetCore.Hosting.Internal.WebHost|Request starting HTTP/1.1 POST http://localhost:37645/api/Users/login application/json-patch+json 53
+2020-03-12 22:02:20.7559|INFO|Microsoft.AspNetCore.Routing.EndpointMiddleware|Executing endpoint 'TaskManager.Controllers.UsersController.Login (TaskManager)'
+2020-03-12 22:02:20.7559|INFO|Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker|Route matched with {action = "Login", controller = "Users"}. Executing action TaskManager.Controllers.UsersController.Login (TaskManager)
+2020-03-12 22:02:20.7559|INFO|Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker|Executing action method TaskManager.Controllers.UsersController.Login (TaskManager) with arguments (TaskManager.ViewModels.LoginViewModel) - Validation state: Valid
+2020-03-12 22:02:20.7713|INFO|Microsoft.EntityFrameworkCore.Infrastructure|Entity Framework Core 2.2.4-servicing-10062 initialized 'TaskManagerContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer' with options: None
+2020-03-12 22:02:20.7958|INFO|Microsoft.EntityFrameworkCore.Database.Command|Executed DbCommand (2ms) [Parameters=[@__username_0='?' (Size = 256), @__password_1='?' (Size = 4000)], CommandType='Text', CommandTimeout='30']
+SELECT TOP(1) [x].[Fullname], [x].[Email], [x].[UserId], [x].[GroupId], [x].[RoleId]
+FROM [User] AS [x]
+WHERE ([x].[Username] = @__username_0) AND ([x].[PasswordHash] = @__password_1)
+2020-03-12 22:02:20.8053|INFO|Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker|Executed action method TaskManager.Controllers.UsersController.Login (TaskManager), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 37.6572ms.
+2020-03-12 22:02:20.8053|INFO|Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor|Executing ObjectResult, writing value of type 'TaskManager.ViewModels.ApiResult'.
+2020-03-12 22:02:20.8053|INFO|Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker|Executed action TaskManager.Controllers.UsersController.Login (TaskManager) in 51.2816ms
+2020-03-12 22:02:20.8053|INFO|Microsoft.AspNetCore.Routing.EndpointMiddleware|Executed endpoint 'TaskManager.Controllers.UsersController.Login (TaskManager)'
+2020-03-12 22:02:20.8053|INFO|Microsoft.AspNetCore.Hosting.Internal.WebHost|Request finished in 55.6143ms 200 application/json; charset=utf-8

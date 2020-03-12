@@ -1,0 +1,17 @@
+E:\FPT\Term_7-Spring_2020\PRM391\TaskManager\TaskManager\TaskManager\bin\Release\netcoreapp2.2\appsettings.Development.json
+E:\FPT\Term_7-Spring_2020\PRM391\TaskManager\TaskManager\TaskManager\bin\Release\netcoreapp2.2\appsettings.json
+E:\FPT\Term_7-Spring_2020\PRM391\TaskManager\TaskManager\TaskManager\bin\Release\netcoreapp2.2\Properties\launchSettings.json
+E:\FPT\Term_7-Spring_2020\PRM391\TaskManager\TaskManager\TaskManager\bin\Release\netcoreapp2.2\NLog.config
+E:\FPT\Term_7-Spring_2020\PRM391\TaskManager\TaskManager\TaskManager\bin\Release\netcoreapp2.2\TaskManager.deps.json
+E:\FPT\Term_7-Spring_2020\PRM391\TaskManager\TaskManager\TaskManager\bin\Release\netcoreapp2.2\TaskManager.runtimeconfig.json
+E:\FPT\Term_7-Spring_2020\PRM391\TaskManager\TaskManager\TaskManager\bin\Release\netcoreapp2.2\TaskManager.runtimeconfig.dev.json
+E:\FPT\Term_7-Spring_2020\PRM391\TaskManager\TaskManager\TaskManager\bin\Release\netcoreapp2.2\TaskManager.dll
+E:\FPT\Term_7-Spring_2020\PRM391\TaskManager\TaskManager\TaskManager\bin\Release\netcoreapp2.2\TaskManager.pdb
+E:\FPT\Term_7-Spring_2020\PRM391\TaskManager\TaskManager\TaskManager\obj\Release\netcoreapp2.2\TaskManager.csprojAssemblyReference.cache
+E:\FPT\Term_7-Spring_2020\PRM391\TaskManager\TaskManager\TaskManager\obj\Release\netcoreapp2.2\TaskManager.RazorAssemblyInfo.cache
+E:\FPT\Term_7-Spring_2020\PRM391\TaskManager\TaskManager\TaskManager\obj\Release\netcoreapp2.2\TaskManager.RazorAssemblyInfo.cs
+E:\FPT\Term_7-Spring_2020\PRM391\TaskManager\TaskManager\TaskManager\obj\Release\netcoreapp2.2\TaskManager.AssemblyInfoInputs.cache
+E:\FPT\Term_7-Spring_2020\PRM391\TaskManager\TaskManager\TaskManager\obj\Release\netcoreapp2.2\TaskManager.AssemblyInfo.cs
+E:\FPT\Term_7-Spring_2020\PRM391\TaskManager\TaskManager\TaskManager\obj\Release\netcoreapp2.2\TaskManager.RazorTargetAssemblyInfo.cache
+E:\FPT\Term_7-Spring_2020\PRM391\TaskManager\TaskManager\TaskManager\obj\Release\netcoreapp2.2\TaskManager.dll
+E:\FPT\Term_7-Spring_2020\PRM391\TaskManager\TaskManager\TaskManager\obj\Release\netcoreapp2.2\TaskManager.pdb

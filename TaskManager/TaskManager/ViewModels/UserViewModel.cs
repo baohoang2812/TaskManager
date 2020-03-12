@@ -12,12 +12,6 @@ namespace TaskManager.ViewModels
         public int? GroupId { get; set; }
     }
 
-    public class LoginViewModel
-    {
-        public string Username { get; set; }
-        public string Password { get; set; }
-    }
-
     public class UserCreateViewModel
     {
         public string Username { get; set; }
