@@ -1,4 +1,4 @@
-package baohg.taskmanager.baohg.baohg.request;
+package baohg.taskmanager.baohg.request;
 
 import com.google.gson.annotations.SerializedName;
 

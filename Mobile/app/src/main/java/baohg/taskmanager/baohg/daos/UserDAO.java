@@ -2,7 +2,7 @@ package baohg.taskmanager.baohg.daos;
 
 import baohg.taskmanager.baohg.baohg.apis.APIClient;
 import baohg.taskmanager.baohg.baohg.apis.UserAPI;
-import baohg.taskmanager.baohg.baohg.request.LoginRequest;
+import baohg.taskmanager.baohg.request.LoginRequest;
 import baohg.taskmanager.baohg.dtos.UserDTO;
 import retrofit2.Call;
 import retrofit2.Callback;
