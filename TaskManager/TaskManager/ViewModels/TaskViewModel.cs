@@ -26,17 +26,12 @@ namespace TaskManager.ViewModels
         public string Name { get; set; }
         public int? SourceId { get; set; }
         public string Description { get; set; }
-        public string Report { get; set; }
-        public string ManagerReview { get; set; }
-        public int? Mark { get; set; }
-        public DateTime? ReviewedTime { get; set; }
         public DateTime StartTime { get; set; } = DateTime.Now;
         public DateTime? EndTime { get; set; }
         public int? StatusId { get; set; }
-        public DateTime CreatedTime { get; set; }
+        public DateTime CreatedTime { get; set; } = DateTime.Now;
         public string Creator { get; set; }
         public int? HandlerId { get; set; }
-        public string ConfirmationImage { get; set; }
     }
     public class TaskEditViewModel
     {

@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.Date;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -35,7 +36,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> {
     public void onBindViewHolder(@NonNull TaskViewHolder holder, int position) {
         holder.getTxtTaskName().setText(taskList.get(position).getName());
         holder.getTxtDescription().setText(taskList.get(position).getDescription());
-        holder.getTxtEndTime().setText(taskList.get(position).getEndTime().toString());
+        Date endTime = taskList.get(position).getEndTime();
+        holder.getTxtEndTime().setText(endTime != null ? endTime.toString() : null);
     }
 
     @Override

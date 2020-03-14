@@ -346,3 +346,20 @@ WHERE ([x].[Username] = @__username_0) AND ([x].[PasswordHash] = @__password_1)
 2020-03-13 03:09:25.9419|INFO|Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker|Executed action TaskManager.Controllers.UsersController.Login (TaskManager) in 8.943ms
 2020-03-13 03:09:25.9419|INFO|Microsoft.AspNetCore.Routing.EndpointMiddleware|Executed endpoint 'TaskManager.Controllers.UsersController.Login (TaskManager)'
 2020-03-13 03:09:25.9631|INFO|Microsoft.AspNetCore.Hosting.Internal.WebHost|Request finished in 21.149ms 200 application/json; charset=utf-8
+2020-03-13 03:24:47.8394|INFO|Microsoft.AspNetCore.Hosting.Internal.WebHost|Request starting HTTP/1.1 POST http://localhost:37645/api/Tasks application/json-patch+json 344
+2020-03-13 03:24:47.8394|INFO|Microsoft.AspNetCore.Routing.EndpointMiddleware|Executing endpoint 'TaskManager.Controllers.TasksController.CreateTask (TaskManager)'
+2020-03-13 03:24:47.8597|INFO|Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker|Route matched with {action = "CreateTask", controller = "Tasks"}. Executing action TaskManager.Controllers.TasksController.CreateTask (TaskManager)
+2020-03-13 03:24:47.8772|INFO|Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker|Executing action method TaskManager.Controllers.TasksController.CreateTask (TaskManager) with arguments (TaskManager.ViewModels.TaskCreateViewModel) - Validation state: Valid
+2020-03-13 03:24:47.8772|INFO|Microsoft.EntityFrameworkCore.Infrastructure|Entity Framework Core 2.2.4-servicing-10062 initialized 'TaskManagerContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer' with options: None
+2020-03-13 03:24:48.1032|INFO|Microsoft.EntityFrameworkCore.Database.Command|Executed DbCommand (20ms) [Parameters=[@p0='?' (Size = 4000), @p1='?' (DbType = DateTime), @p2='?' (Size = 50), @p3='?' (Size = 4000), @p4='?' (DbType = DateTime), @p5='?' (DbType = Int32), @p6='?' (Size = 4000), @p7='?' (DbType = Int32), @p8='?' (Size = 200), @p9='?' (Size = 4000), @p10='?' (DbType = DateTime), @p11='?' (DbType = Int32), @p12='?' (DbType = DateTime), @p13='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+SET NOCOUNT ON;
+INSERT INTO [Task] ([ConfirmationImage], [CreatedTime], [Creator], [Description], [EndTime], [HandlerId], [ManagerReview], [Mark], [Name], [Report], [ReviewedTime], [SourceId], [StartTime], [StatusId])
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11, @p12, @p13);
+SELECT [TaskId]
+FROM [Task]
+WHERE @@ROWCOUNT = 1 AND [TaskId] = scope_identity();
+2020-03-13 03:24:48.1278|INFO|Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker|Executed action method TaskManager.Controllers.TasksController.CreateTask (TaskManager), returned result Microsoft.AspNetCore.Mvc.CreatedResult in 250.0947ms.
+2020-03-13 03:24:48.1309|INFO|Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor|Executing ObjectResult, writing value of type 'TaskManager.ViewModels.ApiResult'.
+2020-03-13 03:24:48.1309|INFO|Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker|Executed action TaskManager.Controllers.TasksController.CreateTask (TaskManager) in 282.9344ms
+2020-03-13 03:24:48.1458|INFO|Microsoft.AspNetCore.Routing.EndpointMiddleware|Executed endpoint 'TaskManager.Controllers.TasksController.CreateTask (TaskManager)'
+2020-03-13 03:24:48.1458|INFO|Microsoft.AspNetCore.Hosting.Internal.WebHost|Request finished in 314.6923ms 201 application/json; charset=utf-8

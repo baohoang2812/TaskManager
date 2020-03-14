@@ -2,19 +2,13 @@ package baohg.taskmanager.baohg.dtos;
 
 import java.util.Date;
 
-public class TaskDTO {
+public class TaskDTO{
     public int taskId;
     public String name;
-    public Date endTime;
     public String description;
+    public Date endTime;
 
     public TaskDTO() {
-    }
-
-    public TaskDTO(String name, Date endTime, String description) {
-        this.name = name;
-        this.endTime = endTime;
-        this.description = description;
     }
 
     public int getTaskId() {

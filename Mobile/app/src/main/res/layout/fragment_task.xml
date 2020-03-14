@@ -5,6 +5,17 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".TaskFragment">
-
-
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/wgRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:scrollbars="vertical"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add Task"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:id="@+id/btnAddTask"/>
 </FrameLayout>
