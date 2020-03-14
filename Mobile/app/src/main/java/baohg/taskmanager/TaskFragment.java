@@ -2,6 +2,16 @@ package baohg.taskmanager;
 
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
+
+import com.google.gson.GsonBuilder;
+
+import java.util.List;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -11,24 +21,10 @@ import baohg.taskmanager.baohg.adapters.TaskAdapter;
 import baohg.taskmanager.baohg.daos.TaskDAO;
 import baohg.taskmanager.baohg.dtos.TaskDTO;
 import baohg.taskmanager.baohg.request.GetTaskRequest;
-import baohg.taskmanager.baohg.responses.TaskResponse;
+import baohg.taskmanager.baohg.responses.GetTaskResponse;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.Toast;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 
 
@@ -63,6 +59,8 @@ public class TaskFragment extends Fragment {
                 fragmentTransaction.commit();
             }
         });
+
+
         return view;
     }
 
@@ -74,9 +72,9 @@ public class TaskFragment extends Fragment {
             GetTaskRequest request = new GetTaskRequest();
             request.setUserId(17);
 
-            taskDAO.getAllTask(request, new Callback<TaskResponse>() {
+            taskDAO.getAllTask(request, new Callback<GetTaskResponse>() {
                 @Override
-                public void onResponse(Call<TaskResponse> call, Response<TaskResponse> response) {
+                public void onResponse(Call<GetTaskResponse> call, Response<GetTaskResponse> response) {
                     switch (response.code()){
                         case 200:
                             Toast.makeText(getActivity(), "Success", Toast.LENGTH_SHORT).show();
@@ -97,7 +95,7 @@ public class TaskFragment extends Fragment {
                 }
 
                 @Override
-                public void onFailure(Call<TaskResponse> call, Throwable t) {
+                public void onFailure(Call<GetTaskResponse> call, Throwable t) {
                     Toast.makeText(getActivity(), "Failed" + t.getMessage() , Toast.LENGTH_LONG).show();
                     Log.d("Failure", t.getMessage());
                 }

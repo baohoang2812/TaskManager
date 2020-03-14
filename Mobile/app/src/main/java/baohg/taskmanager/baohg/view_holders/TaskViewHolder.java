@@ -7,13 +7,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import baohg.taskmanager.R;
 
-public class TaskViewHolder extends RecyclerView.ViewHolder{
+public class TaskViewHolder extends RecyclerView.ViewHolder {
     public TextView txtTaskName;
     public TextView txtDescription;
     public TextView txtEndTime;
+    public View cardView;
 
     public TaskViewHolder(@NonNull View itemView) {
         super(itemView);
+        cardView = itemView;
         txtTaskName = itemView.findViewById(R.id.txtTaskName);
         txtDescription = itemView.findViewById(R.id.txtDescription);
         txtEndTime = itemView.findViewById(R.id.txtEndTime);
@@ -29,5 +31,4 @@ public class TaskViewHolder extends RecyclerView.ViewHolder{
     public TextView getTxtEndTime() {
         return txtEndTime;
     }
-
 }

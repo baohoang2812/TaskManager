@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 
 namespace TaskManager.ViewModels
 {
@@ -23,14 +24,22 @@ namespace TaskManager.ViewModels
 
     public class TaskCreateViewModel
     {
+        [JsonProperty("name")]
         public string Name { get; set; }
+        [JsonProperty("sourceId")]
         public int? SourceId { get; set; }
+        [JsonProperty("description")]
         public string Description { get; set; }
+        [JsonProperty("startTime")]
         public DateTime StartTime { get; set; } = DateTime.Now;
+        [JsonProperty("endTime")]
         public DateTime? EndTime { get; set; }
-        public int? StatusId { get; set; }
+        [JsonProperty("statusId")]
+        public int? StatusId { get; set; } = 1;
         public DateTime CreatedTime { get; set; } = DateTime.Now;
-        public string Creator { get; set; }
+        [JsonProperty("creator")]
+        public string Creator { get; set; } = "Eden";
+        [JsonProperty("handlerId")]
         public int? HandlerId { get; set; }
     }
     public class TaskEditViewModel

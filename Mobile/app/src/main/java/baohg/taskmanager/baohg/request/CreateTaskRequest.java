@@ -5,82 +5,54 @@ import com.google.gson.annotations.SerializedName;
 public class CreateTaskRequest {
     @SerializedName("name")
     String name;
-    @SerializedName("sourceId")
-    int sourceId;
     @SerializedName("description")
     String description;
-    @SerializedName("report")
-    String report;
-    @SerializedName("managerReview")
-    String managerReview;
-    @SerializedName("mark")
-    int mark;
-    @SerializedName("reviewedTime")
-    String reviewedTime;
+    @SerializedName("sourceId")
+    Integer sourceId;
     @SerializedName("startTime")
     String startTime;
     @SerializedName("endTime")
     String endTime;
-    @SerializedName("statusId")
-    int statusId;
-    @SerializedName("createdTime")
-    String createdTime;
-    @SerializedName("creator")
-    String creator;
     @SerializedName("handlerId")
-    int handlerId;
-    @SerializedName("confirmationImage")
-    String confirmationImage;
+    Integer handlerId;
 
     public CreateTaskRequest() {
     }
 
-    public CreateTaskRequest(String name, int sourceId, String description, String report,
-                             String managerReview, int mark, String reviewedTime, String startTime,
-                             String endTime, int statusId, String createdTime, String creator, int handlerId,
-                             String confirmationImage) {
-        this.name = name;
-        this.sourceId = sourceId;
-        this.description = description;
-        this.report = report;
-        this.managerReview = managerReview;
-        this.mark = mark;
-        this.reviewedTime = reviewedTime;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.statusId = statusId;
-        this.createdTime = createdTime;
-        this.creator = creator;
-        this.handlerId = handlerId;
-        this.confirmationImage = confirmationImage;
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public Integer getSourceId() {
+        return sourceId;
+    }
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public Integer getHandlerId() {
+        return handlerId;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
-    public void setSourceId(int sourceId) {
-        this.sourceId = sourceId;
-    }
-
     public void setDescription(String description) {
         this.description = description;
     }
 
-    public void setReport(String report) {
-        this.report = report;
-    }
-
-    public void setManagerReview(String managerReview) {
-        this.managerReview = managerReview;
-    }
-
-    public void setMark(int mark) {
-        this.mark = mark;
-    }
-
-    public void setReviewedTime(String reviewedTime) {
-        this.reviewedTime = reviewedTime;
+    public void setSourceId(Integer sourceId) {
+        this.sourceId = sourceId;
     }
 
     public void setStartTime(String startTime) {
@@ -91,23 +63,7 @@ public class CreateTaskRequest {
         this.endTime = endTime;
     }
 
-    public void setStatusId(int statusId) {
-        this.statusId = statusId;
-    }
-
-    public void setCreatedTime(String createdTime) {
-        this.createdTime = createdTime;
-    }
-
-    public void setCreator(String creator) {
-        this.creator = creator;
-    }
-
-    public void setHandlerId(int handlerId) {
+    public void setHandlerId(Integer handlerId) {
         this.handlerId = handlerId;
-    }
-
-    public void setConfirmationImage(String confirmationImage) {
-        this.confirmationImage = confirmationImage;
     }
 }
