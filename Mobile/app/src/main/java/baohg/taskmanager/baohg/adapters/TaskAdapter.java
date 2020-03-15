@@ -50,7 +50,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> {
                 detailFragment.setArguments(bundle);
                 MainActivity activity =(MainActivity) v.getContext();
                 activity.getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragmentContainer, detailFragment)
+                        .replace(R.id.fragmentContainer, detailFragment).addToBackStack("tasks")
                         .commit();
             }
         });

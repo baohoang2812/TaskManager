@@ -21,7 +21,7 @@ public interface TaskAPI {
     Call<GetTaskResponse> getAllTask(@Body GetTaskRequest request);
 
     @GET("api/Tasks/{id}")
-    Call<TaskDTO> getTaskById(@Path("id") int id);
+    Call<TaskResponse> getTaskById(@Path("id") int id);
 
     @POST("api/Tasks")
     Call<TaskResponse> createTask(@Body CreateTaskRequest request);

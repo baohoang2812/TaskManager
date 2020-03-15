@@ -15,7 +15,7 @@ namespace TaskManager.ViewModels
         public DateTime? ReviewedTime { get; set; }
         public DateTime StartTime { get; set; } 
         public DateTime? EndTime { get; set; } 
-        public int? StatusId { get; set; } 
+        public int StatusId { get; set; } 
         public DateTime CreatedTime { get; set; } = DateTime.Now;
         public string Creator { get; set; }
         public int? HandlerId { get; set; }

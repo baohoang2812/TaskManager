@@ -8,6 +8,8 @@ import baohg.taskmanager.baohg.responses.GetTaskResponse;
 import baohg.taskmanager.baohg.responses.TaskResponse;
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public class TaskDAO {
     private TaskAPI taskService;
@@ -16,13 +18,19 @@ public class TaskDAO {
     }
 
     public void getAllTask(GetTaskRequest request, Callback<GetTaskResponse> callBack){
-        Call<GetTaskResponse> call = taskService.getAllTask(request);
-        call.enqueue(callBack);
+        taskService.getAllTask(request).enqueue(callBack);
     }
 
     public void createTask(CreateTaskRequest request, Callback<TaskResponse> callBack){
-        Call<TaskResponse> call = taskService.createTask(request);
-        call.enqueue(callBack);
+        taskService.createTask(request).enqueue(callBack);
+    }
+
+    public void getTaskDetail(@Path("id") int id, Callback<TaskResponse> callBack){
+        taskService.getTaskById(id).enqueue(callBack);
+    }
+
+    public void deleteTask(@Path("id") int id, Callback<TaskResponse> callBack){
+        taskService.deleteTask(id).enqueue(callBack);
     }
 
 }

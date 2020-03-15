@@ -7,11 +7,47 @@ public class TaskDTO{
     public String name;
     public String description;
     public int sourceId;
+    public String report;
+    public String creator;
     public Date startTime;
     public Date endTime;
     public int handlerId;
+    public Date createdTime;
+    public int statusId;
 
     public TaskDTO() {
+    }
+
+    public int getStatusId() {
+        return statusId;
+    }
+
+    public void setStatusId(int statusId) {
+        this.statusId = statusId;
+    }
+
+    public Date getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setCreatedTime(Date createdTime) {
+        this.createdTime = createdTime;
+    }
+
+    public String getReport() {
+        return report;
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setReport(String report) {
+        this.report = report;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator;
     }
 
     public int getSourceId() {

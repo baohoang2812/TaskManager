@@ -12,10 +12,8 @@ import android.widget.Toast;
 import java.util.Calendar;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import baohg.taskmanager.baohg.daos.TaskDAO;
 import baohg.taskmanager.baohg.request.CreateTaskRequest;
-import baohg.taskmanager.baohg.responses.GetTaskResponse;
 import baohg.taskmanager.baohg.responses.TaskResponse;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -72,13 +70,13 @@ public class TaskCreationFragment extends Fragment {
                 taskDAO.createTask(createTaskRequest, new Callback<TaskResponse>() {
                     @Override
                     public void onResponse(Call<TaskResponse> call, Response<TaskResponse> response) {
-                        if(response.isSuccessful()){
+                        if (response.isSuccessful()) {
                             Toast.makeText(getActivity(), "Create Task Successfully", Toast.LENGTH_SHORT).show();
                             getActivity().getSupportFragmentManager()
                                     .beginTransaction()
-                                    .replace(R.id.fragmentContainer ,new TaskFragment())
+                                    .replace(R.id.fragmentContainer, new TaskFragment())
                                     .commit();
-                        }else{
+                        } else {
                             Toast.makeText(getActivity(), "Response fail", Toast.LENGTH_SHORT).show();
                         }
                     }

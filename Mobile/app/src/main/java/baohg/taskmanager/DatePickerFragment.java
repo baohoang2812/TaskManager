@@ -13,10 +13,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import baohg.taskmanager.baohg.constants.CommonConstant;
 
-public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener{
+public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
     int year, month, day;
     Calendar calendar = Calendar.getInstance();
     EditText editText;
+
     public DatePickerFragment() {
     }
 
@@ -52,7 +53,7 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
         this.editText = editText;
     }
 
-    public String getCalendarDate(){
+    public String getCalendarDate() {
         return new StringBuilder()
                 .append(calendar.get(Calendar.YEAR))
                 .append(CommonConstant.HYPHEN)
