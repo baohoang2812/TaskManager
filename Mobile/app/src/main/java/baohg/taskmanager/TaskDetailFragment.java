@@ -11,6 +11,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Calendar;
+
 import androidx.fragment.app.Fragment;
 import baohg.taskmanager.baohg.constants.ResponseCodeConstant;
 import baohg.taskmanager.baohg.daos.TaskDAO;
@@ -51,8 +53,9 @@ public class TaskDetailFragment extends Fragment {
             txtHandler = view.findViewById(R.id.txtHandler);
             txtCreator = view.findViewById(R.id.txtCreator);
             txtStatus = view.findViewById(R.id.txtStatus);
-
             btnDeleteTask = view.findViewById(R.id.btnDeleteTask);
+            edtStartTime = view.findViewById(R.id.edtStartTime);
+            edtEndTime = view.findViewById(R.id.edtEndTime);
             showTaskDetail();
             deleteTask();
         } catch (Exception e) {
@@ -121,6 +124,19 @@ public class TaskDetailFragment extends Fragment {
                             txtHandler.setText(Integer.toString(taskDTO.getHandlerId()));
                             txtCreator.setText(taskDTO.getCreator());
                             txtStatus.setText(Integer.toString(taskDTO.getStatusId()));
+                            DateRangePickerFragment dateRangePickerFragment = new DateRangePickerFragment();
+                            Bundle bundle = new Bundle();
+                            Calendar startTime = Calendar.getInstance();
+                            startTime.setTime(taskDTO.getStartTime());
+                            Calendar endTime = Calendar.getInstance();
+                            endTime.setTime(taskDTO.getEndTime());
+                            bundle.putSerializable("startTime", startTime);
+                            bundle.putSerializable("endTime", endTime);
+                            dateRangePickerFragment.setArguments(bundle);
+                            getChildFragmentManager()
+                                    .beginTransaction()
+                                    .replace(R.id.dateRangePickerFragment, dateRangePickerFragment)
+                                    .commit();
                             break;
                         }
                         default: {

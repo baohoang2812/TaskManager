@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="446dp"
+    android:layout_weight="1"
+    android:orientation="horizontal"
+    tools:context=".DateRangePickerFragment">
+
+    <EditText
+        android:id="@+id/edtStartTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight=".50"
+        android:focusable="false"
+        android:hint="@string/task_start_time"
+        android:inputType="none" />
+
+    <EditText
+        android:id="@+id/edtEndTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight=".50"
+        android:focusable="false"
+        android:hint="@string/task_end_time"
+        android:inputType="none" />
+
+</LinearLayout>

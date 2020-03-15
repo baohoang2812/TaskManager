@@ -9,8 +9,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.util.Calendar;
-
 import androidx.fragment.app.Fragment;
 import baohg.taskmanager.baohg.daos.TaskDAO;
 import baohg.taskmanager.baohg.request.CreateTaskRequest;
@@ -27,9 +25,6 @@ public class TaskCreationFragment extends Fragment {
 
     EditText edtName, edtDescription, edtSourceId, edtHandlerId, edtStartTime, edtEndTime;
     CreateTaskRequest createTaskRequest;
-    DatePickerFragment startTimeFragment, endTimeFragment;
-    Calendar calendar;
-    int year, month, day;
 
     public TaskCreationFragment() {
         // Required empty public constructor
@@ -48,10 +43,6 @@ public class TaskCreationFragment extends Fragment {
         edtStartTime = view.findViewById(R.id.edtStartTime);
         edtEndTime = view.findViewById(R.id.edtEndTime);
         createTaskRequest = new CreateTaskRequest();
-        calendar = Calendar.getInstance();
-        year = calendar.get(Calendar.YEAR);
-        month = calendar.get(Calendar.MONTH);
-        day = calendar.get(Calendar.DAY_OF_MONTH);
         Button btnCreate = view.findViewById(R.id.btnCreate);
         btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,8 +56,6 @@ public class TaskCreationFragment extends Fragment {
                 Integer handlerId = txtHandlerId.isEmpty() ? null : Integer.parseInt(txtHandlerId);
                 createTaskRequest.setSourceId(sourceId);
                 createTaskRequest.setHandlerId(handlerId);
-                createTaskRequest.setStartTime(startTimeFragment.getCalendarDate());
-                createTaskRequest.setEndTime(endTimeFragment.getCalendarDate());
                 taskDAO.createTask(createTaskRequest, new Callback<TaskResponse>() {
                     @Override
                     public void onResponse(Call<TaskResponse> call, Response<TaskResponse> response) {
@@ -87,36 +76,9 @@ public class TaskCreationFragment extends Fragment {
                         t.printStackTrace();
                     }
                 });
-                Toast.makeText(getActivity(), startTimeFragment.getCalendar().toString(), Toast.LENGTH_SHORT).show();
                 Toast.makeText(getActivity(), "Create Button Clicked", Toast.LENGTH_SHORT).show();
             }
         });
-        edtStartTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getActivity(), "clicked On Start Time", Toast.LENGTH_SHORT).show();
-                startTimeFragment = new DatePickerFragment();
-                startTimeFragment.setYear(year);
-                startTimeFragment.setMonth(month);
-                startTimeFragment.setDay(day);
-                startTimeFragment.setEditText(edtStartTime);
-                startTimeFragment.show(getActivity().getSupportFragmentManager(), "DatePicker");
-            }
-        });
-
-        edtEndTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getActivity(), "Clicked on End Time", Toast.LENGTH_SHORT).show();
-                endTimeFragment = new DatePickerFragment();
-                endTimeFragment.setYear(year);
-                endTimeFragment.setMonth(month);
-                endTimeFragment.setDay(day + 1);
-                endTimeFragment.setEditText(edtEndTime);
-                endTimeFragment.show(getActivity().getSupportFragmentManager(), "DatePicker2");
-            }
-        });
-
         return view;
     }
 

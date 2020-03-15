@@ -20,43 +20,23 @@
         android:layout_height="wrap_content"
         android:id="@+id/edtSource"
         android:hint="@string/task_source"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="446dp"
-        android:layout_weight="1"
-        android:orientation="horizontal">
-
-        <EditText
-            android:id="@+id/edtStartTime"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight=".50"
-            android:inputType="none"
-            android:focusable="false"
-            android:hint="@string/task_start_time" />
-
-        <EditText
-            android:id="@+id/edtEndTime"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight=".50"
-            android:inputType="none"
-            android:focusable="false"
-            android:hint="@string/task_end_time" />
-
-    </LinearLayout>
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/edtHandler"
         android:hint="@string/task_handler"/>
-
+    <fragment
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:name="baohg.taskmanager.DateRangePickerFragment"
+        android:id="@+id/dateRangePickerFragment" />
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/btnCreate"
         android:gravity="center"
-        android:text="@string/create" />
+        android:text="@string/create"
+        android:layout_gravity="center"/>
+
 
 </LinearLayout>
