@@ -51,9 +51,12 @@ namespace TaskManager.ViewModels
         public string ManagerReview { get; set; }
         public int? Mark { get; set; }
         public DateTime? ReviewedTime { get; set; }
+        [JsonProperty("startTime")]
         public DateTime StartTime { get; set; }
+        [JsonProperty("endTime")]
         public DateTime? EndTime { get; set; }
         public int? StatusId { get; set; }
+        [JsonProperty("createdTime")]
         public DateTime CreatedTime { get; set; }
         public string Creator { get; set; }
         public int? HandlerId { get; set; }

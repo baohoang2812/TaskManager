@@ -6,7 +6,7 @@ public class EditTaskRequest {
     @SerializedName("name")
     String name;
     @SerializedName("sourceId")
-    int sourceId;
+    Integer sourceId;
     @SerializedName("description")
     String description;
     @SerializedName("report")
@@ -28,7 +28,7 @@ public class EditTaskRequest {
     @SerializedName("creator")
     String creator;
     @SerializedName("handlerId")
-    int handlerId;
+    Integer handlerId;
     @SerializedName("confirmationImage")
     String confirmationImage;
 

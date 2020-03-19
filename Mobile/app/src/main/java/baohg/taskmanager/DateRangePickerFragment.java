@@ -24,6 +24,13 @@ public class DateRangePickerFragment extends Fragment {
         // Required empty public constructor
     }
 
+    public EditText getEdtStartTime() {
+        return edtStartTime;
+    }
+
+    public EditText getEdtEndTime() {
+        return edtEndTime;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

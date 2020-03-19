@@ -22,7 +22,7 @@ import retrofit2.Response;
  * A simple {@link Fragment} subclass.
  */
 public class TaskCreationFragment extends Fragment {
-
+    DateRangePickerFragment dateRangePickerFragment;
     EditText edtName, edtDescription, edtSourceId, edtHandlerId, edtStartTime, edtEndTime;
     CreateTaskRequest createTaskRequest;
 
@@ -43,6 +43,7 @@ public class TaskCreationFragment extends Fragment {
         edtStartTime = view.findViewById(R.id.edtStartTime);
         edtEndTime = view.findViewById(R.id.edtEndTime);
         createTaskRequest = new CreateTaskRequest();
+        dateRangePickerFragment = (DateRangePickerFragment) getChildFragmentManager().findFragmentById(R.id.dateRangePickerFragment);
         Button btnCreate = view.findViewById(R.id.btnCreate);
         btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,6 +57,8 @@ public class TaskCreationFragment extends Fragment {
                 Integer handlerId = txtHandlerId.isEmpty() ? null : Integer.parseInt(txtHandlerId);
                 createTaskRequest.setSourceId(sourceId);
                 createTaskRequest.setHandlerId(handlerId);
+                createTaskRequest.setStartTime(dateRangePickerFragment.getEdtStartTime().getText().toString());
+                createTaskRequest.setEndTime(dateRangePickerFragment.getEdtEndTime().getText().toString());
                 taskDAO.createTask(createTaskRequest, new Callback<TaskResponse>() {
                     @Override
                     public void onResponse(Call<TaskResponse> call, Response<TaskResponse> response) {

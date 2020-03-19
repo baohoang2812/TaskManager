@@ -11,12 +11,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 import androidx.fragment.app.Fragment;
 import baohg.taskmanager.baohg.constants.ResponseCodeConstant;
 import baohg.taskmanager.baohg.daos.TaskDAO;
 import baohg.taskmanager.baohg.dtos.TaskDTO;
+import baohg.taskmanager.baohg.request.UpdateTaskRequest;
 import baohg.taskmanager.baohg.responses.TaskResponse;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -29,9 +32,10 @@ import retrofit2.Response;
 public class TaskDetailFragment extends Fragment {
     EditText edtTaskName, edtDescription, edtStartTime, edtEndTime, edtReport;
     TextView txtStatus, txtCreatedTime, txtHandler, txtCreator;
-    Button btnDeleteTask;
+    Button btnDeleteTask, btnSave;
     TaskDAO taskDAO;
     int taskId;
+    DateRangePickerFragment dateRangePickerFragment;
 
     public TaskDetailFragment() {
         // Required empty public constructor
@@ -42,7 +46,6 @@ public class TaskDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_task_detail, container, false);
-        try {
             taskDAO = new TaskDAO();
             Bundle bundle = getArguments();
             taskId = bundle.getInt("taskId", 0);
@@ -54,10 +57,11 @@ public class TaskDetailFragment extends Fragment {
             txtCreator = view.findViewById(R.id.txtCreator);
             txtStatus = view.findViewById(R.id.txtStatus);
             btnDeleteTask = view.findViewById(R.id.btnDeleteTask);
-            edtStartTime = view.findViewById(R.id.edtStartTime);
-            edtEndTime = view.findViewById(R.id.edtEndTime);
+            btnSave = view.findViewById(R.id.btnSave);
+        try {
             showTaskDetail();
             deleteTask();
+            saveChanges();
         } catch (Exception e) {
             Log.d("Task Detail Exception", e.getMessage());
         }
@@ -120,16 +124,22 @@ public class TaskDetailFragment extends Fragment {
                             edtTaskName.setText(taskDTO.getName());
                             edtDescription.setText(taskDTO.getDescription());
                             edtReport.setText(taskDTO.getReport());
-                            txtCreatedTime.setText(taskDTO.getCreatedTime().toString());
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                            String createdTime = sdf.format(taskDTO.getCreatedTime());
+                            txtCreatedTime.setText(createdTime);
                             txtHandler.setText(Integer.toString(taskDTO.getHandlerId()));
                             txtCreator.setText(taskDTO.getCreator());
                             txtStatus.setText(Integer.toString(taskDTO.getStatusId()));
-                            DateRangePickerFragment dateRangePickerFragment = new DateRangePickerFragment();
+                            dateRangePickerFragment = new DateRangePickerFragment();
                             Bundle bundle = new Bundle();
                             Calendar startTime = Calendar.getInstance();
-                            startTime.setTime(taskDTO.getStartTime());
+                            if(taskDTO.getStartTime() != null){
+                                startTime.setTime(taskDTO.getStartTime());
+                            }
                             Calendar endTime = Calendar.getInstance();
-                            endTime.setTime(taskDTO.getEndTime());
+                            if(taskDTO.getEndTime() != null){
+                                endTime.setTime(taskDTO.getEndTime());
+                            }
                             bundle.putSerializable("startTime", startTime);
                             bundle.putSerializable("endTime", endTime);
                             dateRangePickerFragment.setArguments(bundle);
@@ -153,5 +163,43 @@ public class TaskDetailFragment extends Fragment {
             }
         });
 
+    }
+
+    public void saveChanges(){
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UpdateTaskRequest request= new UpdateTaskRequest();
+                String name = edtTaskName.getText().toString();
+                String description = edtDescription.getText().toString();
+                String report = edtReport.getText().toString();
+                request.setName(name);
+                request.setDescription(description);
+                String startTime = dateRangePickerFragment.getEdtStartTime().getText().toString();
+                String endTime = dateRangePickerFragment.getEdtEndTime().getText().toString();
+                request.setReport(report);
+                request.setStartTime(startTime);
+                request.setCreatedTime(txtCreatedTime.getText().toString());
+                request.setCreator(txtCreator.getText().toString());
+                request.setStatusId(txtStatus.getText().toString());
+                request.setEndTime(endTime);
+                taskDAO.updateTask(taskId, request, new Callback<TaskResponse>() {
+                    @Override
+                    public void onResponse(Call<TaskResponse> call, Response<TaskResponse> response) {
+                        if(response.isSuccessful()){
+                            Toast.makeText(getActivity(), "Update success", Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(getActivity(), "Update Failed", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<TaskResponse> call, Throwable t) {
+                        Toast.makeText(getActivity(), "Update On Failure", Toast.LENGTH_SHORT).show();
+                        t.printStackTrace();
+                    }
+                });
+            }
+        });
     }
 }

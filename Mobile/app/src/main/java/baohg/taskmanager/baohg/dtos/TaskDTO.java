@@ -1,8 +1,9 @@
 package baohg.taskmanager.baohg.dtos;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class TaskDTO{
+public class TaskDTO implements Serializable {
     public int taskId;
     public String name;
     public String description;

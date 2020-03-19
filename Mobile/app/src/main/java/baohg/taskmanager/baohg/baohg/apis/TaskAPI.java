@@ -1,8 +1,8 @@
 package baohg.taskmanager.baohg.baohg.apis;
 
-import baohg.taskmanager.baohg.dtos.TaskDTO;
 import baohg.taskmanager.baohg.request.CreateTaskRequest;
 import baohg.taskmanager.baohg.request.GetTaskRequest;
+import baohg.taskmanager.baohg.request.UpdateTaskRequest;
 import baohg.taskmanager.baohg.responses.GetTaskResponse;
 import baohg.taskmanager.baohg.responses.TaskResponse;
 import okhttp3.MultipartBody;
@@ -27,7 +27,7 @@ public interface TaskAPI {
     Call<TaskResponse> createTask(@Body CreateTaskRequest request);
 
     @PUT("api/Tasks/{id}")
-    Call<TaskResponse> updateTask(@Path("id") int id, @Body CreateTaskRequest request);
+    Call<TaskResponse> updateTask(@Path("id") int id, @Body UpdateTaskRequest request);
 
     @DELETE("api/Tasks/{id}")
     Call<TaskResponse> deleteTask(@Path("id") int id);
