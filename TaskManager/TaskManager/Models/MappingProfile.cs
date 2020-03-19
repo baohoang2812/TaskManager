@@ -14,6 +14,7 @@ namespace TaskManager.Models
         public void MapUser()
         {
             CreateMap<User, UserViewModel>();
+            CreateMap<Role, UserViewModel>().ForMember(dest => dest.RoleName, opts => opts.MapFrom(src => src.Name));
             CreateMap<UserCreateViewModel, User>()
                 .ForMember(x => x.PasswordHash, options => options.MapFrom(x => x.Password));
             CreateMap<UserCreateViewModel, Group>();

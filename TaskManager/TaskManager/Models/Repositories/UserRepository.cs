@@ -25,7 +25,7 @@ namespace TaskManager.Models.Repositories
                 Email = x.Email,
                 UserId =x.UserId,
                 GroupId = x.GroupId,
-                RoleId = x.RoleId,
+                Role = x.Role
             }).FirstOrDefault();
         }
 
@@ -37,7 +37,8 @@ namespace TaskManager.Models.Repositories
                 GroupId = x.GroupId,
                 RoleId = x.RoleId,
                 Fullname = x.Fullname,
-                Email = x.Email
+                Email = x.Email,
+                Role = x.Role
             }).FirstOrDefault();
         }
     }

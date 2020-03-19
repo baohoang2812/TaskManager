@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import baohg.taskmanager.baohg.daos.TaskDAO;
 import baohg.taskmanager.baohg.request.CreateTaskRequest;
 import baohg.taskmanager.baohg.responses.TaskResponse;
@@ -84,6 +85,4 @@ public class TaskCreationFragment extends Fragment {
         });
         return view;
     }
-
-
 }

@@ -4,16 +4,21 @@ import baohg.taskmanager.baohg.baohg.apis.APIClient;
 import baohg.taskmanager.baohg.baohg.apis.UserAPI;
 import baohg.taskmanager.baohg.request.LoginRequest;
 import baohg.taskmanager.baohg.dtos.UserDTO;
+import baohg.taskmanager.baohg.responses.UserResponse;
 import retrofit2.Call;
 import retrofit2.Callback;
 
 public class UserDAO {
+    UserAPI userAPI;
 
-    public boolean checkLogin(String username, String password, Callback<UserDTO> callBack){
-        UserAPI apiService = APIClient.getTaskManagerClient().create(UserAPI.class);
-        LoginRequest request = new LoginRequest(username, password);
-        Call<UserDTO> call =  apiService.login(request);
-        call.enqueue(callBack);
-        return false;
+    public UserDAO() {
+        userAPI = APIClient.getTaskManagerClient().create(UserAPI.class);
+    }
+
+    public void checkLogin(LoginRequest request, Callback<UserResponse> callBack){
+        userAPI.login(request).enqueue(callBack);
+    }
+    public void getUserProfile(int userId, Callback<UserResponse> callBack){
+        userAPI.getUserById(userId).enqueue(callBack);
     }
 }

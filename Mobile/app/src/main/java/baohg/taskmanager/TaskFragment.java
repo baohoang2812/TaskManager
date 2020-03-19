@@ -1,16 +1,23 @@
 package baohg.taskmanager;
 
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.gson.GsonBuilder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.fragment.app.Fragment;
@@ -34,6 +41,8 @@ public class TaskFragment extends Fragment {
     private List<TaskDTO> taskList;
     private RecyclerView recyclerView;
     private TaskAdapter taskAdapter;
+    Button btnAddTask, btnFilter;
+    Spinner spStatus;
 
     public TaskFragment() {
         // Required empty public constructor
@@ -49,16 +58,10 @@ public class TaskFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         loadAllTask();
         // Inflate the layout for this fragment
-        Button button = view.findViewById(R.id.btnAddTask);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragmentContainer, new TaskCreationFragment())
-                        .addToBackStack("tasks")
-                        .commit();
-            }
-        });
+        btnAddTask = view.findViewById(R.id.btnAddTask);
+        btnFilter = view.findViewById(R.id.btnFilter);
+        addTaskListener();
+        addFilterTaskListener();
         return view;
     }
 
@@ -102,4 +105,57 @@ public class TaskFragment extends Fragment {
         }
     }
 
+    public void addTaskListener() {
+        btnAddTask.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragmentContainer, new TaskCreationFragment())
+                        .addToBackStack("tasks")
+                        .commit();
+            }
+        });
+    }
+
+    public void addFilterTaskListener() {
+        btnFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                List<String> statusResource = new ArrayList<>();
+                statusResource.add("Ready");
+                statusResource.add("Finished");
+                // TODO load all status from DB
+                ArrayAdapter<String> statusAdapter = new ArrayAdapter<>(
+                        getActivity(), android.R.layout.simple_spinner_item, statusResource);
+                statusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_filter, null);
+                spStatus = view.findViewById(R.id.spStatus);
+                spStatus.setAdapter(statusAdapter);
+                spStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        Toast.makeText(getContext(), parent.getItemAtPosition(position).toString(), Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+
+                    }
+                });
+
+                AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
+                dialog.setCancelable(true);
+
+                dialog.setTitle("Task Filter");
+                dialog.setView(view);
+                dialog.setPositiveButton("Apply", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                dialog.create().show();
+            }
+        });
+    }
 }

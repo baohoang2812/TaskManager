@@ -2,7 +2,7 @@ package baohg.taskmanager.baohg.baohg.apis;
 
 import baohg.taskmanager.baohg.request.CreateUserRequest;
 import baohg.taskmanager.baohg.request.LoginRequest;
-import baohg.taskmanager.baohg.dtos.UserDTO;
+import baohg.taskmanager.baohg.responses.UserResponse;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -14,7 +14,7 @@ import retrofit2.http.Path;
 
 public interface UserAPI {
     @POST("api/Users/login")
-    Call<UserDTO> login(@Body LoginRequest request);
+    Call<UserResponse> login(@Body LoginRequest request);
 
     @POST("api/Users")
     Call<ResponseBody> createuser(@Body CreateUserRequest request);
@@ -26,5 +26,5 @@ public interface UserAPI {
     Call<ResponseBody> removeUser(@Path("id") int id);
 
     @GET("api/Users/{id}")
-    Call<UserDTO> getUserById(@Path("id") int id);
+    Call<UserResponse> getUserById(@Path("id") int id);
 }

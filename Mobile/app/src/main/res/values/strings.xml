@@ -14,4 +14,13 @@
     <string name="create">Create</string>
     <string name="btn_delete">Delete Task</string>
     <string name="btn_save">Save Changes</string>
+    <string name="tab_profile">Profile</string>
+    <string name="tab_task">Tasks</string>
+    <string name="tab_group">Group</string>
+    <string name="user_email">Email: </string>
+    <string name="user_role">Role: </string>
+    <string name="log_out">Log Out</string>
+    <string name="task_filter">Filter</string>
+    <string name="task_filter_apply">Apply</string>
+    <string name="task_status">Status: </string>
 </resources>

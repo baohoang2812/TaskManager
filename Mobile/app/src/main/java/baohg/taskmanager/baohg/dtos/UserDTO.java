@@ -2,9 +2,7 @@ package baohg.taskmanager.baohg.dtos;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.io.Serializable;
-
-public class UserDTO implements Serializable {
+public class UserDTO{
     @SerializedName("userId")
     int userId;
     @SerializedName("roleId")
@@ -15,6 +13,16 @@ public class UserDTO implements Serializable {
     String email;
     @SerializedName("groupId")
     int groupId;
+    @SerializedName("roleName")
+    String roleName;
+
+    public String getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
+    }
 
     public int getUserId() {
         return userId;
