@@ -22,17 +22,17 @@ public class UpdateTaskRequest implements Serializable {
     @SerializedName("createdTime")
     String createdTime;
     @SerializedName("statusId")
-    String statusId;
+    int statusId;
 
     public UpdateTaskRequest() {
     }
 
-    public void setStatusId(String statusId) {
-        this.statusId = statusId;
+    public int getStatusId() {
+        return statusId;
     }
 
-    public String getStatusId() {
-        return statusId;
+    public void setStatusId(int statusId) {
+        this.statusId = statusId;
     }
 
     public String getCreatedTime() {

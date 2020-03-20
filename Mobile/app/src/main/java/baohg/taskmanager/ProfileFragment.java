@@ -32,6 +32,14 @@ public class ProfileFragment extends Fragment {
         txtEmail = view.findViewById(R.id.txtEmail);
         txtRole = view.findViewById(R.id.txtRole);
         Button btnLogOut = view.findViewById(R.id.btnLogOut);
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("baohg.taskmanager_preferences", Context.MODE_PRIVATE);
+        Bundle bundle = getArguments();
+        if(bundle != null){
+            int userId = bundle.getInt("userId", 0);
+            loadUserProfile(userId);
+        }else{
+            loadUserProfile(sharedPreferences.getInt("userId", 0));
+        }
         btnLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -41,13 +49,12 @@ public class ProfileFragment extends Fragment {
                 startActivity(intent);
             }
         });
-        loadUserProfile();
         return view;
     }
-    private void loadUserProfile(){
+    private void loadUserProfile(int userId){
         UserDAO userDAO = new UserDAO();
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("baohg.taskmanager_preferences", Context.MODE_PRIVATE);
-        userDAO.getUserProfile(sharedPreferences.getInt("userId", 0), new Callback<UserResponse>() {
+
+        userDAO.getUserProfile(userId , new Callback<UserResponse>() {
             @Override
             public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
                 if(response.isSuccessful()){

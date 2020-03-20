@@ -28,6 +28,8 @@ namespace TaskManager.Models
             CreateMap<Task, TaskViewModel>();
             CreateMap<TaskCreateViewModel, Task>();
             CreateMap<TaskEditViewModel, Task>();
+            CreateMap<User, TaskViewModel>().ForMember(dest => dest.HandlerName, opts => opts.MapFrom(src => src.Fullname));
+            CreateMap<Status, TaskViewModel>().ForMember(dest => dest.StatusName, opts => opts.MapFrom(src => src.Name));
         }
 
         public void MapStatus()

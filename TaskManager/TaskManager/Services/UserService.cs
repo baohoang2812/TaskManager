@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using TaskManager.Models;
 using TaskManager.Models.Repositories;
 using TaskManager.ViewModels;
@@ -39,6 +41,17 @@ namespace TaskManager.Services
         public User DeleteUser(int id)
         {
             return _userRepository.Delete(id).Entity;
+        }
+
+        public List<User> GetUserByGroupId(int groupId)
+        {
+            return _userRepository.GetAll().Include(s => s.Role).Where(s => s.GroupId == groupId).Select(s => new User
+            {
+                Fullname = s.Fullname,
+                Email = s.Email,
+                UserId = s.UserId, 
+                Role = s.Role
+            }).ToList();
         }
 
     }

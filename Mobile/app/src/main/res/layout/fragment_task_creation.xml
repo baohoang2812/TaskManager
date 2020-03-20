@@ -20,11 +20,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/edtSource"
         android:hint="@string/task_source"/>
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/edtHandler"
-        android:hint="@string/task_handler"/>
     <fragment
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

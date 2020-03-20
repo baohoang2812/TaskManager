@@ -24,6 +24,31 @@ namespace TaskManager.Controllers
 
 
         // GET: api/Users/5
+        [HttpGet]
+        public IActionResult GetAllUser(int groupId)
+        {
+            try
+            {
+                var service = GetService<UserService>();
+                var userList = service.GetUserByGroupId(groupId);
+                var result = MapToList<UserViewModel>(userList);
+                return Ok(new ApiResult
+                {
+                    Message = ResultMessage.Success,
+                    Data = result
+                });
+            }
+            catch (Exception e)
+            {
+                _logger.Error(e, e.Message);
+                return Error(new ApiResult
+                {
+                    Message = ResultMessage.Error
+                });
+            }
+
+        }
+        // GET: api/Users/5
         [HttpGet("{id}")]
         public IActionResult GetUser(int id)
         {

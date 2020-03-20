@@ -1,6 +1,5 @@
 package baohg.taskmanager.baohg.adapters;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,11 +18,9 @@ import baohg.taskmanager.baohg.view_holders.TaskViewHolder;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> {
     private List<TaskDTO> taskList;
-    Context context;
 
-    public TaskAdapter(List<TaskDTO> taskList, Context context) {
+    public TaskAdapter(List<TaskDTO> taskList) {
         this.taskList = taskList;
-        this.context = context;
     }
 
     @NonNull
@@ -39,6 +36,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> {
     public void onBindViewHolder(@NonNull TaskViewHolder holder, final int position) {
         holder.getTxtTaskName().setText(taskList.get(position).getName());
         holder.getTxtDescription().setText(taskList.get(position).getDescription());
+        holder.getTxtStatus().setText(taskList.get(position).getStatusName());
         Date endTime = taskList.get(position).getEndTime();
         holder.getTxtEndTime().setText(endTime != null ? endTime.toString() : null);
         holder.cardView.setOnClickListener(new View.OnClickListener() {

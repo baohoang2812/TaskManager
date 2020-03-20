@@ -2,6 +2,7 @@ package baohg.taskmanager.baohg.baohg.apis;
 
 import baohg.taskmanager.baohg.request.CreateUserRequest;
 import baohg.taskmanager.baohg.request.LoginRequest;
+import baohg.taskmanager.baohg.responses.GetUserResponse;
 import baohg.taskmanager.baohg.responses.UserResponse;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -11,6 +12,7 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface UserAPI {
     @POST("api/Users/login")
@@ -27,4 +29,7 @@ public interface UserAPI {
 
     @GET("api/Users/{id}")
     Call<UserResponse> getUserById(@Path("id") int id);
+
+    @GET("api/Users")
+    Call<GetUserResponse> getAllUser(@Query("groupId") int groupId);
 }

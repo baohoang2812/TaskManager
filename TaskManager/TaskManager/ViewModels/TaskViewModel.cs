@@ -16,10 +16,12 @@ namespace TaskManager.ViewModels
         public DateTime StartTime { get; set; } 
         public DateTime? EndTime { get; set; } 
         public int StatusId { get; set; } 
+        public string StatusName { get; set; }
         public DateTime CreatedTime { get; set; } = DateTime.Now;
         public string Creator { get; set; }
         public int? HandlerId { get; set; }
         public string ConfirmationImage { get; set; }
+        public string HandlerName { get; set; }
     }
 
     public class TaskCreateViewModel
@@ -38,7 +40,7 @@ namespace TaskManager.ViewModels
         public int? StatusId { get; set; } = 1;
         public DateTime CreatedTime { get; set; } = DateTime.Now;
         [JsonProperty("creator")]
-        public string Creator { get; set; } = "Eden";
+        public string Creator { get; set; }
         [JsonProperty("handlerId")]
         public int? HandlerId { get; set; }
     }

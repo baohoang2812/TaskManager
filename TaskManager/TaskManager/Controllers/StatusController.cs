@@ -18,12 +18,12 @@ namespace TaskManager.Controllers
         }
         private Logger _logger = LogManager.GetCurrentClassLogger();
         [HttpGet]
-        public IActionResult GetStatus()
+        public IActionResult GetStatus(string name)
         {
             try
             {
                 var statusService = GetService<StatusService>();
-                var result = MapToList<StatusViewModel>(statusService.getAllStatus());
+                var result = MapToList<StatusViewModel>(statusService.getAllStatus(name));
                 return Ok(new ApiResult
                 {
                     Message = ResultMessage.Success,

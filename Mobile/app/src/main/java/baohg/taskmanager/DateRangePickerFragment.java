@@ -20,6 +20,7 @@ public class DateRangePickerFragment extends Fragment {
     EditText edtStartTime, edtEndTime;
     DatePickerFragment startTimeFragment, endTimeFragment;
     Calendar startTime, endTime;
+
     public DateRangePickerFragment() {
         // Required empty public constructor
     }
@@ -41,7 +42,7 @@ public class DateRangePickerFragment extends Fragment {
             startTime = (Calendar) bundle.getSerializable("startTime");
             endTime = (Calendar) bundle.getSerializable("endTime");
             Toast.makeText(getActivity(), "Has Bundle", Toast.LENGTH_SHORT).show();
-        }else {
+        } else {
             startTime = Calendar.getInstance();
             endTime = Calendar.getInstance();
             endTime.add(Calendar.DAY_OF_MONTH, 1);
@@ -56,7 +57,7 @@ public class DateRangePickerFragment extends Fragment {
         endTimeFragment = new DatePickerFragment();
         endTimeFragment.setCalendar(endTime);
         endTimeFragment.setEditText(edtEndTime);
-        if(bundle!=null){
+        if (bundle != null) {
             startTimeFragment.setTextCalendar();
             endTimeFragment.setTextCalendar();
         }

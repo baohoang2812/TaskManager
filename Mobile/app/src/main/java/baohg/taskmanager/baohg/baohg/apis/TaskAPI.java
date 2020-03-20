@@ -3,6 +3,7 @@ package baohg.taskmanager.baohg.baohg.apis;
 import baohg.taskmanager.baohg.request.CreateTaskRequest;
 import baohg.taskmanager.baohg.request.GetTaskRequest;
 import baohg.taskmanager.baohg.request.UpdateTaskRequest;
+import baohg.taskmanager.baohg.responses.BaseResponse;
 import baohg.taskmanager.baohg.responses.GetTaskResponse;
 import baohg.taskmanager.baohg.responses.TaskResponse;
 import okhttp3.MultipartBody;
@@ -34,5 +35,5 @@ public interface TaskAPI {
 
     @Multipart
     @POST("api/Tasks/upload")
-    Call<Object> uploadConfirmation(@Part MultipartBody.Part image);
+    Call<BaseResponse> uploadConfirmation(@Part MultipartBody.Part image);
 }

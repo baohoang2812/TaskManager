@@ -19,5 +19,6 @@
         android:id="@+id/navigation"
         android:layout_gravity="bottom"
         app:menu="@menu/navigation"
-        android:background="?android:attr/windowBackground"/>
+        android:background="?android:attr/windowBackground"
+        app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior"/>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

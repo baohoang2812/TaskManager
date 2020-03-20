@@ -6,6 +6,7 @@ namespace TaskManager.Models.Repositories
     public interface ITaskRepository: IBaseRepository<Task, int>
     {
         IQueryable<Task> GetAllTask();
+        Task GetTaskById(int id);
     }
     public class TaskRepository : BaseRepository<Task, int>, ITaskRepository
     {
@@ -16,14 +17,18 @@ namespace TaskManager.Models.Repositories
 
         public IQueryable<Task> GetAllTask()
         {
-            return GetAll().Include(x => x.Handler).Select(x => new Task
+            return GetAll().Include(x => x.Handler).Include(x => x.Status).Select(x => new Task
             {
                 TaskId = x.TaskId,
                 Name = x.Name,
-                StatusId = x.StatusId,
                 Description = x.Description,
-                EndTime = x.EndTime
+                EndTime = x.EndTime,
+                Status = x.Status
             });
+        }
+        public Task GetTaskById(int id)
+        {
+            return GetAll().Include(x => x.Status).Include(x => x.Handler).Where(x => x.TaskId == id).FirstOrDefault();
         }
     }
 }

@@ -4,6 +4,7 @@ import baohg.taskmanager.baohg.baohg.apis.APIClient;
 import baohg.taskmanager.baohg.baohg.apis.UserAPI;
 import baohg.taskmanager.baohg.request.LoginRequest;
 import baohg.taskmanager.baohg.dtos.UserDTO;
+import baohg.taskmanager.baohg.responses.GetUserResponse;
 import baohg.taskmanager.baohg.responses.UserResponse;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -20,5 +21,9 @@ public class UserDAO {
     }
     public void getUserProfile(int userId, Callback<UserResponse> callBack){
         userAPI.getUserById(userId).enqueue(callBack);
+    }
+
+    public void getAllUser(int groupId, Callback<GetUserResponse> callBack){
+        userAPI.getAllUser(groupId).enqueue(callBack);
     }
 }

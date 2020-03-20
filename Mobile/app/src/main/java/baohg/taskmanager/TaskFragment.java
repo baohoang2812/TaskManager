@@ -89,7 +89,7 @@ public class TaskFragment extends Fragment {
                         case ResponseCodeConstant.OK:
                             Toast.makeText(getActivity(), "Success", Toast.LENGTH_SHORT).show();
                             taskList = response.body().getData();
-                            taskAdapter = new TaskAdapter(taskList, getActivity());
+                            taskAdapter = new TaskAdapter(taskList);
                             recyclerView.setAdapter(taskAdapter);
                             break;
                         case ResponseCodeConstant.UNAUTHORIZED:
@@ -101,7 +101,6 @@ public class TaskFragment extends Fragment {
                             Toast.makeText(getActivity(), "Default", Toast.LENGTH_SHORT).show();
                             break;
                     }
-                    Log.d("Get All Task Response", new GsonBuilder().setPrettyPrinting().create().toJson(response));
                 }
 
                 @Override
@@ -136,7 +135,7 @@ public class TaskFragment extends Fragment {
                 getTaskRequest.setUserId(userId);
                 statusSource = new ArrayList<>();
                 StatusDAO statusDAO = new StatusDAO();
-                statusDAO.getAllStatus(new Callback<StatusResponse>() {
+                statusDAO.getAllStatus(null, new Callback<StatusResponse>() {
                     @Override
                     public void onResponse(Call<StatusResponse> call, Response<StatusResponse> response) {
                         if(response.isSuccessful()){
@@ -190,7 +189,7 @@ public class TaskFragment extends Fragment {
                             public void onResponse(Call<GetTaskResponse> call, Response<GetTaskResponse> response) {
                                 if(response.isSuccessful()){
                                     taskList = response.body().getData();
-                                    taskAdapter = new TaskAdapter(taskList, getActivity());
+                                    taskAdapter = new TaskAdapter(taskList);
                                     recyclerView.setAdapter(taskAdapter);
                                 }
                             }

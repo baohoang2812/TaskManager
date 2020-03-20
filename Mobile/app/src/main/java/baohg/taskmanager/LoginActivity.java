@@ -36,7 +36,13 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
                 if (response.code() == ResponseCodeConstant.OK) {
                     SharedPreferences sharedPreferences = getSharedPreferences("baohg.taskmanager_preferences", MODE_PRIVATE);
-                    sharedPreferences.edit().putInt("userId", response.body().getData().getUserId()).commit();
+                    SharedPreferences.Editor editor =sharedPreferences.edit();
+                    UserDTO userDTO = response.body().getData();
+                    editor.putInt("userId", userDTO.getUserId());
+                    editor.putString("userFullName", userDTO.getFullName());
+                    editor.putString("userRole", userDTO.getRoleName());
+                    editor.putInt("groupId", userDTO.getGroupId());
+                    editor.commit();
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);
                 } else {

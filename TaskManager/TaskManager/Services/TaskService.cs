@@ -30,7 +30,7 @@ namespace TaskManager.Services
 
         public Task GetById(int id)
         {
-            return _taskRepository.GetById(id);
+            return _taskRepository.GetTaskById(id);
         }
 
         public Task EditTask(int id, TaskEditViewModel model)

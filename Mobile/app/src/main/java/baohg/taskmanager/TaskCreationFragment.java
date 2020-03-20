@@ -1,6 +1,8 @@
 package baohg.taskmanager;
 
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,9 +26,8 @@ import retrofit2.Response;
  */
 public class TaskCreationFragment extends Fragment {
     DateRangePickerFragment dateRangePickerFragment;
-    EditText edtName, edtDescription, edtSourceId, edtHandlerId, edtStartTime, edtEndTime;
+    EditText edtName, edtDescription, edtSourceId, edtStartTime, edtEndTime;
     CreateTaskRequest createTaskRequest;
-
     public TaskCreationFragment() {
         // Required empty public constructor
     }
@@ -40,10 +41,12 @@ public class TaskCreationFragment extends Fragment {
         edtName = view.findViewById(R.id.edtName);
         edtDescription = view.findViewById(R.id.edtDescription);
         edtSourceId = view.findViewById(R.id.edtSource);
-        edtHandlerId = view.findViewById(R.id.edtHandler);
         edtStartTime = view.findViewById(R.id.edtStartTime);
         edtEndTime = view.findViewById(R.id.edtEndTime);
         createTaskRequest = new CreateTaskRequest();
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("baohg.taskmanager_preferences", Context.MODE_PRIVATE);
+        final int userId = sharedPreferences.getInt("userId",0);
+        final String userFullName = sharedPreferences.getString("userFullName", "");
         dateRangePickerFragment = (DateRangePickerFragment) getChildFragmentManager().findFragmentById(R.id.dateRangePickerFragment);
         Button btnCreate = view.findViewById(R.id.btnCreate);
         btnCreate.setOnClickListener(new View.OnClickListener() {
@@ -53,13 +56,13 @@ public class TaskCreationFragment extends Fragment {
                 createTaskRequest.setName(edtName.getText().toString());
                 createTaskRequest.setDescription(edtDescription.getText().toString());
                 String txtSourceId = edtSourceId.getText().toString();
-                String txtHandlerId = edtHandlerId.getText().toString();
                 Integer sourceId = txtSourceId.isEmpty() ? null : Integer.parseInt(txtSourceId);
-                Integer handlerId = txtHandlerId.isEmpty() ? null : Integer.parseInt(txtHandlerId);
+                Integer handlerId = userId;
                 createTaskRequest.setSourceId(sourceId);
                 createTaskRequest.setHandlerId(handlerId);
                 createTaskRequest.setStartTime(dateRangePickerFragment.getEdtStartTime().getText().toString());
                 createTaskRequest.setEndTime(dateRangePickerFragment.getEdtEndTime().getText().toString());
+                createTaskRequest.setCreator(userFullName);
                 taskDAO.createTask(createTaskRequest, new Callback<TaskResponse>() {
                     @Override
                     public void onResponse(Call<TaskResponse> call, Response<TaskResponse> response) {

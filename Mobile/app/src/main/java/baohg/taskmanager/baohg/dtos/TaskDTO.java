@@ -15,8 +15,17 @@ public class TaskDTO implements Serializable {
     public int handlerId;
     public Date createdTime;
     public int statusId;
+    public String statusName;
 
     public TaskDTO() {
+    }
+
+    public String getStatusName() {
+        return statusName;
+    }
+
+    public void setStatusName(String statusName) {
+        this.statusName = statusName;
     }
 
     public int getStatusId() {

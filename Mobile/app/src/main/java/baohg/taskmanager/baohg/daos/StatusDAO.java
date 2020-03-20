@@ -12,7 +12,7 @@ public class StatusDAO implements Serializable {
     public StatusDAO() {
         statusAPI = APIClient.getTaskManagerClient().create(StatusAPI.class);
     }
-    public void getAllStatus(Callback<StatusResponse> callBack){
-        statusAPI.getAllStatus().enqueue(callBack);
+    public void getAllStatus(String name, Callback<StatusResponse> callBack){
+        statusAPI.getAllStatus(name).enqueue(callBack);
     }
 }

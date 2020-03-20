@@ -15,8 +15,18 @@ public class CreateTaskRequest {
     String endTime;
     @SerializedName("handlerId")
     Integer handlerId;
+    @SerializedName("creator")
+    String creator;
 
     public CreateTaskRequest() {
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator;
     }
 
     public String getName() {
