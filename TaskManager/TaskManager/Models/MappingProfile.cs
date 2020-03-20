@@ -9,6 +9,7 @@ namespace TaskManager.Models
         {
             MapUser();
             MapTask();
+            MapStatus();
         }
 
         public void MapUser()
@@ -27,6 +28,11 @@ namespace TaskManager.Models
             CreateMap<Task, TaskViewModel>();
             CreateMap<TaskCreateViewModel, Task>();
             CreateMap<TaskEditViewModel, Task>();
+        }
+
+        public void MapStatus()
+        {
+            CreateMap<Status, StatusViewModel>();
         }
     }
 }
