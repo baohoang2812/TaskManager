@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -38,7 +39,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> {
         holder.getTxtDescription().setText(taskList.get(position).getDescription());
         holder.getTxtStatus().setText(taskList.get(position).getStatusName());
         Date endTime = taskList.get(position).getEndTime();
-        holder.getTxtEndTime().setText(endTime != null ? endTime.toString() : null);
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        holder.getTxtEndTime().setText(endTime != null ? sdf.format(endTime) : null);
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

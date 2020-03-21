@@ -4,7 +4,9 @@ package baohg.taskmanager;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Editable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -25,6 +28,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import baohg.taskmanager.baohg.adapters.TaskAdapter;
 import baohg.taskmanager.baohg.constants.ResponseCodeConstant;
+import baohg.taskmanager.baohg.constants.RoleConstant;
 import baohg.taskmanager.baohg.daos.StatusDAO;
 import baohg.taskmanager.baohg.daos.TaskDAO;
 import baohg.taskmanager.baohg.dtos.StatusDTO;
@@ -51,6 +55,10 @@ public class TaskFragment extends Fragment {
     View taskView;
     GetTaskRequest getTaskRequest;
     int userId;
+    AlertDialog.Builder dialog;
+    AlertDialog alertDialog;
+    String userRole;
+    EditText edtHandlerId;
 
     public TaskFragment() {
         // Required empty public constructor
@@ -62,26 +70,81 @@ public class TaskFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_task, container, false);
         //get recycle view from xml
-        userId = getActivity().getSharedPreferences("baohg.taskmanager_preferences", Context.MODE_PRIVATE).getInt("userId", 0);
+        SharedPreferences sharedPreference = getActivity().getSharedPreferences("baohg.taskmanager_preferences", Context.MODE_PRIVATE);
+        userId = sharedPreference.getInt("userId", 0);
+        userRole = sharedPreference.getString("userRole", null);
         recyclerView = view.findViewById(R.id.wgRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         loadAllTask();
         // Inflate the layout for this fragment
         btnAddTask = view.findViewById(R.id.btnAddTask);
         btnFilter = view.findViewById(R.id.btnFilter);
-//        taskView = getActivity().getLayoutInflater().inflate(R.layout.dialog_filter, container, false);
+        buildAlertDialog();
         addTaskListener();
         addFilterTaskListener();
         return view;
     }
 
+    private void buildAlertDialog() {
+        if (taskView == null)
+            taskView = getActivity().getLayoutInflater().inflate(R.layout.dialog_filter, null);
+        dialog = new AlertDialog.Builder(getActivity());
+        dialog.setView(taskView);
+        dialog.setCancelable(true);
+        edtHandlerId = taskView.findViewById(R.id.edtHandlerId);
+        if (userRole != null && (RoleConstant.ADMIN.equalsIgnoreCase(userRole) || RoleConstant.MANAGER.equalsIgnoreCase(userRole))) {
+            edtHandlerId.setEnabled(true);
+        } else {
+            edtHandlerId.setVisibility(View.GONE);
+        }
+        dialog.setTitle("Task Filter");
+        dialog.setPositiveButton("Apply", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                TaskDAO taskDAO = new TaskDAO();
+                dateRangePickerFragment = (DateRangePickerFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.dateRangePickerFragment2);
+                getTaskRequest.setStartTime(dateRangePickerFragment.getEdtStartTime().getText().toString());
+                getTaskRequest.setEndTime(dateRangePickerFragment.getEdtEndTime().getText().toString());
+                String txtHandlerId = edtHandlerId.getText().toString();
+                Integer hanlderId = txtHandlerId.isEmpty() ? null : Integer.parseInt(txtHandlerId);
+                getTaskRequest.setHandlerId(hanlderId);
+                taskDAO.getAllTask(getTaskRequest, new Callback<GetTaskResponse>() {
+                    @Override
+                    public void onResponse(Call<GetTaskResponse> call, Response<GetTaskResponse> response) {
+                        if (response.isSuccessful()) {
+                            taskList = response.body().getData();
+                            taskAdapter = new TaskAdapter(taskList);
+                            recyclerView.setAdapter(taskAdapter);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<GetTaskResponse> call, Throwable t) {
+                        Toast.makeText(getActivity(), "Failure get Task By Filter", Toast.LENGTH_SHORT).show();
+                        t.printStackTrace();
+                    }
+                });
+                dialog.dismiss();
+
+            }
+        });
+        dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        alertDialog = dialog.create();
+    }
 
     public void loadAllTask() {
         try {
             TaskDAO taskDAO = new TaskDAO();
             GetTaskRequest request = new GetTaskRequest();
             request.setUserId(userId);
-
+            if(RoleConstant.USER.equalsIgnoreCase(userRole)){
+                request.setHandlerId(userId);
+            }
             taskDAO.getAllTask(request, new Callback<GetTaskResponse>() {
                 @Override
                 public void onResponse(Call<GetTaskResponse> call, Response<GetTaskResponse> response) {
@@ -130,7 +193,7 @@ public class TaskFragment extends Fragment {
         btnFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                taskView = getActivity().getLayoutInflater().inflate(R.layout.dialog_filter,null);
+
                 getTaskRequest = new GetTaskRequest();
                 getTaskRequest.setUserId(userId);
                 statusSource = new ArrayList<>();
@@ -138,8 +201,7 @@ public class TaskFragment extends Fragment {
                 statusDAO.getAllStatus(null, new Callback<StatusResponse>() {
                     @Override
                     public void onResponse(Call<StatusResponse> call, Response<StatusResponse> response) {
-                        if(response.isSuccessful()){
-                            Toast.makeText(getActivity(), "Load Status Success", Toast.LENGTH_SHORT).show();
+                        if (response.isSuccessful()) {
                             statusSource = response.body().getStatusList();
                             ArrayAdapter<StatusDTO> statusAdapter = new ArrayAdapter<>(
                                     getActivity(), android.R.layout.simple_spinner_item, statusSource);
@@ -149,7 +211,6 @@ public class TaskFragment extends Fragment {
                             spStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                 @Override
                                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                                    Toast.makeText(getContext(), parent.getItemAtPosition(position).toString(), Toast.LENGTH_SHORT).show();
                                     StatusDTO statusDTO = (StatusDTO) parent.getItemAtPosition(position);
                                     getTaskRequest.setStatusId(statusDTO.getStatusId());
                                 }
@@ -159,7 +220,7 @@ public class TaskFragment extends Fragment {
 
                                 }
                             });
-                        }else{
+                        } else {
                             Toast.makeText(getContext(), "Load Status Failed", Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -171,45 +232,7 @@ public class TaskFragment extends Fragment {
                     }
                 });
 
-
-                AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
-                dialog.setCancelable(true);
-
-                dialog.setTitle("Task Filter");
-                dialog.setView(taskView);
-                dialog.setPositiveButton("Apply", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        TaskDAO taskDAO = new TaskDAO();
-//                        dateRangePickerFragment = (DateRangePickerFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.dateRangePickerFragment2);
-//                        getTaskRequest.setStartTime(dateRangePickerFragment.getEdtStartTime().getText().toString());
-//                        getTaskRequest.setEndTime(dateRangePickerFragment.getEdtEndTime().getText().toString());
-                        taskDAO.getAllTask(getTaskRequest, new Callback<GetTaskResponse>() {
-                            @Override
-                            public void onResponse(Call<GetTaskResponse> call, Response<GetTaskResponse> response) {
-                                if(response.isSuccessful()){
-                                    taskList = response.body().getData();
-                                    taskAdapter = new TaskAdapter(taskList);
-                                    recyclerView.setAdapter(taskAdapter);
-                                }
-                            }
-
-                            @Override
-                            public void onFailure(Call<GetTaskResponse> call, Throwable t) {
-                                Toast.makeText(getActivity(), "Failure get Task By Filter", Toast.LENGTH_SHORT).show();
-                                t.printStackTrace();
-                            }
-                        });
-                        dialog.dismiss();
-                    }
-                });
-                dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-                dialog.create().show();
+                alertDialog.show();
             }
         });
     }

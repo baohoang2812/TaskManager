@@ -22,7 +22,10 @@ namespace TaskManager.Models.Repositories
                 TaskId = x.TaskId,
                 Name = x.Name,
                 Description = x.Description,
+                StartTime = x.StartTime,
                 EndTime = x.EndTime,
+                StatusId = x.StatusId,
+                HandlerId = x.HandlerId,
                 Status = x.Status
             });
         }

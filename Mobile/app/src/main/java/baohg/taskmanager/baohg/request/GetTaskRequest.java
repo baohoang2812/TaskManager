@@ -10,19 +10,39 @@ public class GetTaskRequest {
      @SerializedName("endTime")
      String endTime;
      @SerializedName("handlerId")
-     int handlerId;
+     Integer handlerId;
      @SerializedName("statusId")
      int statusId;
 
      public GetTaskRequest() {
      }
 
-     public GetTaskRequest(int userId, String startTime, String endTime, int handlerId, int statusId) {
+     public GetTaskRequest(int userId, String startTime, String endTime, Integer handlerId, int statusId) {
           this.userId = userId;
           this.startTime = startTime;
           this.endTime = endTime;
           this.handlerId = handlerId;
           this.statusId = statusId;
+     }
+
+     public int getUserId() {
+          return userId;
+     }
+
+     public String getStartTime() {
+          return startTime;
+     }
+
+     public String getEndTime() {
+          return endTime;
+     }
+
+     public Integer getHandlerId() {
+          return handlerId;
+     }
+
+     public int getStatusId() {
+          return statusId;
      }
 
      public void setUserId(int userId) {
@@ -37,7 +57,7 @@ public class GetTaskRequest {
           this.endTime = endTime;
      }
 
-     public void setHandlerId(int handlerId) {
+     public void setHandlerId(Integer handlerId) {
           this.handlerId = handlerId;
      }
 

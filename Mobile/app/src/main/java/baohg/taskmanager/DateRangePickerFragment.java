@@ -47,7 +47,6 @@ public class DateRangePickerFragment extends Fragment {
             endTime = Calendar.getInstance();
             endTime.add(Calendar.DAY_OF_MONTH, 1);
         }
-
         View view = inflater.inflate(R.layout.fragment_date_range_picker, container, false);
         edtStartTime = view.findViewById(R.id.edtStartTime);
         edtEndTime = view.findViewById(R.id.edtEndTime);
