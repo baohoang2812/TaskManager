@@ -23,8 +23,48 @@ public class UpdateTaskRequest implements Serializable {
     String createdTime;
     @SerializedName("statusId")
     int statusId;
+    @SerializedName("reviewedTime")
+    String reviewedTime;
+    @SerializedName("comment")
+    String comment;
+    @SerializedName("mark")
+    Integer mark;
+    @SerializedName("handlerId")
+    Integer handlerId;
 
     public UpdateTaskRequest() {
+    }
+
+    public void setHandlerId(Integer handlerId) {
+        this.handlerId = handlerId;
+    }
+
+    public Integer getHandlerId() {
+        return handlerId;
+    }
+
+    public void setReviewedTime(String reviewedTime) {
+        this.reviewedTime = reviewedTime;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public void setMark(Integer mark) {
+        this.mark = mark;
+    }
+
+    public String getReviewedTime() {
+        return reviewedTime;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public Integer getMark() {
+        return mark;
     }
 
     public int getStatusId() {

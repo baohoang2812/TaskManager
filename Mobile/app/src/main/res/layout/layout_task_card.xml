@@ -22,6 +22,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Task Name"
+                android:textColor="@color/colorBlue"
                 android:textSize="25sp"
                 android:textStyle="bold"
                 />
@@ -36,13 +37,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
+                android:drawableLeft="@drawable/ic_description"
+                android:textStyle="italic"
                 android:text="Description"/>
             <TextView
                 android:id="@+id/txtEndTime"
+                android:drawableRight="@drawable/ic_clock"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="20-03-2020"
                 android:textSize="15sp"
+                android:textStyle="bold"
                 android:gravity="right"/>
         </LinearLayout>
     </androidx.cardview.widget.CardView>

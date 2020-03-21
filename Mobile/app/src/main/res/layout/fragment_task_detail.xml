@@ -14,19 +14,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Task Detail"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="General Information"
+                android:textColor="@color/colorBlue"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -34,57 +26,98 @@
                 android:id="@+id/edtTaskName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/task_name" />
+                android:drawableLeft="@drawable/ic_subtitles"
+                android:hint="@string/task_name"
+                android:textSize="25sp"
+                android:textColor="@color/colorBlue"
+                android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/edtDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_description"
                 android:hint="@string/task_description" />
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Created Time: " />
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/txtCreatedTime"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Created Time" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_clock"
+                    android:text="Created Time: "
+                    android:textStyle="bold" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Status: " />
+                <TextView
+                    android:id="@+id/txtCreatedTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:hint="Created Time" />
+            </LinearLayout>
 
-            <TextView
-                android:id="@+id/txtStatus"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Status" />
+                android:orientation="horizontal">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Creator: " />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_timeline"
+                    android:text="Status: "
+                    android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/txtCreator"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Creator" />
+                <TextView
+                    android:id="@+id/txtStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="Status" />
+            </LinearLayout>
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Handler: " />
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/txtHandler"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_create"
+                    android:text="Creator: "
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txtCreator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:hint="Creator" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/task_handler" />
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_profile"
+                    android:text="Handler: "
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txtHandler"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:hint="@string/task_handler" />
+            </LinearLayout>
+
 
             <RelativeLayout
                 android:id="@+id/dateRangePickerFragment"
@@ -100,6 +133,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="REPORT"
+                android:textColor="@color/colorBlue"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -120,6 +154,9 @@
                 android:id="@+id/btnUpload"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_file_upload_white"
+                android:background="@color/colorBlue"
+                android:textColor="@color/colorWhite"
                 android:text="Upload Image" />
 
             <ImageView
@@ -128,16 +165,123 @@
                 android:layout_height="wrap_content" />
 
             <LinearLayout
-                android:id="@+id/reviewFragmentContainer"
+                android:id="@+id/sectionReview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical" />
+                android:orientation="vertical">
 
-            <LinearLayout
-                android:id="@+id/fragmentReviewSection"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@android:color/darker_gray" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Review"
+                    android:textSize="20sp"
+                    android:textColor="@color/colorBlue"
+                    android:textStyle="bold" />
+                <View
+                    android:layout_width="55dp"
+                    android:layout_height="5dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/colorBlue"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/ic_clock"
+                        android:text="Reviewed Time"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/txtReviewTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp" />
+                </LinearLayout>
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_comment"
+                    android:text="Comment"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/edtComment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="top|left"
+                    android:hint="Comment"
+                    android:lines="10"
+                    android:maxLines="15"
+                    android:minLines="5" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:drawableLeft="@drawable/ic_mark"
+                    android:text="Mark" />
+
+                <EditText
+                    android:id="@+id/edtMark"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:digits="0123456789."
+                    android:hint="10"
+                    android:inputType="number" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/btnAccept"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Accept"
+                        android:background="@color/colorPrimary"
+                        android:drawableLeft="@drawable/ic_verified_accept"
+                        android:textColor="@color/colorWhite"/>
+
+                    <Button
+                        android:id="@+id/btnDecline"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/ic_cancel_reject"
+                        android:background="@color/colorOrange"
+                        android:text="Decline" />
+
+                    <Button
+                        android:id="@+id/btnFinish"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/ic_flag_finish"
+                        android:background="@color/colorAccent"
+                        android:textColor="@color/colorWhite"
+                        android:text="Finish" />
+
+                    <Button
+                        android:id="@+id/btnFailed"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/ic_mood_bad_failed"
+                        android:background="@color/colorYellow"
+                        android:textColor="@color/colorWhite"
+                        android:text="Failed" />
+                </LinearLayout>
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -148,14 +292,21 @@
                     android:id="@+id/btnDeleteTask"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_delete_remove"
+                    android:textColor="@color/colorWhite"
+                    android:background="@color/colorBrightOrange"
                     android:text="@string/btn_delete" />
 
                 <Button
                     android:id="@+id/btnSave"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_done_save"
+                    android:textColor="@color/colorWhite"
+                    android:background="@color/colorBlue"
                     android:text="@string/btn_save" />
             </LinearLayout>
         </LinearLayout>
+
     </ScrollView>
 </LinearLayout>

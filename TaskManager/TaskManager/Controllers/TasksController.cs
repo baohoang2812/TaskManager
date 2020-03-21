@@ -99,15 +99,19 @@ namespace TaskManager.Controllers
                 var service = GetService<TaskService>();
                 var task = service.EditTask(id, model);
                 var result = MapTo<TaskViewModel>(task);
-                if(task == null)
+                _unitOfWork.SaveChanges();
+                if (task == null)
                 {
                     return NotFound(new ApiResult
                     {
                         Message = ResultMessage.NotFound,
                     });
                 }
-                _unitOfWork.SaveChanges();
-                return NoContent();
+                return Ok(new ApiResult
+                {
+                    Message = ResultMessage.Success,
+                    Data = result
+                }); 
 
             }
             catch (Exception e) 

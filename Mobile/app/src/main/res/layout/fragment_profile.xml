@@ -4,35 +4,94 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:layout_marginRight="40dp"
     tools:context=".ProfileFragment">
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
 
-    <TextView
+        android:orientation="horizontal">
+        <ImageButton
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:scaleType="fitCenter"
+            android:padding="25dp"
+            android:background="@null"
+            android:adjustViewBounds="true"
+            android:src="@drawable/ic_account_circle"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/log_out"
+            android:layout_gravity="right|center"
+            android:background="@color/colorBlue"
+            android:textColor="@color/colorWhite"
+            android:id="@+id/btnLogOut"/>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/txtFullName"
-        android:textSize="20sp"
-        android:textStyle="bold"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/user_email"
-        android:textSize="15sp"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/txtEmail"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/user_role"
-        android:textSize="15sp"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/txtRole"/>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/log_out"
-        android:id="@+id/btnLogOut"/>
+        android:layout_marginLeft="20dp"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtFullName"
+            android:hint="User Full Name"
+            android:textSize="30sp"
+            android:textColor="@color/colorBlue"
+            android:textStyle="bold"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtRole"
+            android:textStyle="bold"
+            android:textColor="@color/colorBlue"
+            android:hint="ROLE"
+            android:textSize="23sp"/>
+        <View
+            android:layout_width="55dp"
+            android:layout_height="5dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/colorBlue"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="50dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/user_email"
+                android:drawableLeft="@drawable/ic_email"
+                android:textStyle="bold"
+                android:textSize="15sp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:id="@+id/txtEmail"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/user_phone"
+            android:drawableLeft="@drawable/ic_phone"
+            android:textStyle="bold"
+            android:textSize="15sp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
+            android:id="@+id/txtPhone"/>
+        </LinearLayout>
+    </LinearLayout>
+
+
+
 </LinearLayout>

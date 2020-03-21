@@ -35,7 +35,7 @@ namespace TaskManager.Services
 
         public Task EditTask(int id, TaskEditViewModel model)
         {
-            var task = _taskRepository.GetById(id);
+            var task = _taskRepository.GetTaskById(id);
             return task != null ? _taskRepository.Update(Map(model, task)).Entity : null;
         }
 

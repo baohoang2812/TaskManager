@@ -6,25 +6,33 @@
     android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".TaskFragment">
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add Task"
+        android:text="Add"
         android:textStyle="bold"
         android:textSize="20sp"
-        android:id="@+id/btnAddTask"
-        />
+        android:id="@+id/btnAddTask" />
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/task_filter"
         android:textStyle="bold"
         android:textSize="20sp"
+        android:drawableLeft="@drawable/ic_filter_list"
         android:id="@+id/btnFilter"/>
+<!--    <android.support.design.widget.FloatingActionButton-->
+<!--        android:id="@+id/fab"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_gravity="bottom|end"-->
+<!--        android:src="@drawable/ic_add_circle"/>-->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/wgRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
         android:scrollbars="vertical"/>
+
 </LinearLayout>

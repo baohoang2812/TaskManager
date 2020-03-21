@@ -7,21 +7,57 @@ public class TaskDTO implements Serializable {
     public int taskId;
     public String name;
     public String description;
-    public int sourceId;
+    public Integer sourceId;
     public String report;
     public String creator;
     public Date startTime;
     public Date endTime;
     public int handlerId;
+    public String handlerName;
     public Date createdTime;
     public int statusId;
     public String statusName;
+    public Integer mark;
+    public String comment;
+    public Date reviewedTime;
 
     public TaskDTO() {
     }
 
+    public void setHandlerName(String handlerName) {
+        this.handlerName = handlerName;
+    }
+
+    public String getHandlerName() {
+        return handlerName;
+    }
+
     public String getStatusName() {
         return statusName;
+    }
+
+    public void setMark(Integer mark) {
+        this.mark = mark;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public void setReviewedTime(Date reviewedTime) {
+        this.reviewedTime = reviewedTime;
+    }
+
+    public Integer getMark() {
+        return mark;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public Date getReviewedTime() {
+        return reviewedTime;
     }
 
     public void setStatusName(String statusName) {
@@ -60,8 +96,12 @@ public class TaskDTO implements Serializable {
         this.creator = creator;
     }
 
-    public int getSourceId() {
+    public Integer getSourceId() {
         return sourceId;
+    }
+
+    public void setSourceId(Integer sourceId) {
+        this.sourceId = sourceId;
     }
 
     public Date getStartTime() {
@@ -72,9 +112,7 @@ public class TaskDTO implements Serializable {
         return handlerId;
     }
 
-    public void setSourceId(int sourceId) {
-        this.sourceId = sourceId;
-    }
+
 
     public void setStartTime(Date startTime) {
         this.startTime = startTime;

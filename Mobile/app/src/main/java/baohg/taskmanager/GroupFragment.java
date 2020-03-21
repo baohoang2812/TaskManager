@@ -1,10 +1,11 @@
 package baohg.taskmanager;
 
-import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import java.util.List;
 
@@ -18,6 +19,7 @@ import baohg.taskmanager.baohg.constants.ResponseCodeConstant;
 import baohg.taskmanager.baohg.daos.UserDAO;
 import baohg.taskmanager.baohg.dtos.UserDTO;
 import baohg.taskmanager.baohg.responses.GetUserResponse;
+import me.dm7.barcodescanner.zxing.ZXingScannerView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -27,6 +29,7 @@ import static android.content.Context.MODE_PRIVATE;
 public class GroupFragment extends Fragment {
     RecyclerView recyclerView;
     UserAdapter userAdapter;
+    Button btnSearch;
     List<UserDTO> userList;
     @Nullable
     @Override
@@ -35,6 +38,19 @@ public class GroupFragment extends Fragment {
         recyclerView = view.findViewById(R.id.wgRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         loadAllUserInGroup(getActivity().getSharedPreferences("baohg.taskmanager_preferences", MODE_PRIVATE).getInt("groupId",0));
+        btnSearch = view.findViewById(R.id.btnSearchByQRCode);
+        btnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try{
+
+                    Intent intent = new Intent("com.google.zxing.client.android.SCAN");
+                    intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        });
         return view;
     }
 
@@ -58,4 +74,5 @@ public class GroupFragment extends Fragment {
             }
         });
     }
+
 }

@@ -4,7 +4,6 @@ package baohg.taskmanager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,14 +15,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
+import java.util.Date;
 
 import androidx.fragment.app.Fragment;
 import baohg.taskmanager.baohg.constants.ResponseCodeConstant;
@@ -47,16 +46,18 @@ import static android.app.Activity.RESULT_OK;
  * A simple {@link Fragment} subclass.
  */
 public class TaskDetailFragment extends Fragment {
-    EditText edtTaskName, edtDescription, edtReport;
-    TextView txtStatus, txtCreatedTime, txtHandler, txtCreator;
-    Button btnDeleteTask, btnSave, btnUpload;
+    EditText edtTaskName, edtDescription, edtReport, edtMark, edtComment;
+    TextView txtStatus, txtCreatedTime, txtHandler, txtCreator, txtReviedTime;
+    Button btnDeleteTask, btnSave, btnUpload, btnAccept, btnReject, btnFinish, btnFailed;
     TaskDAO taskDAO;
     int taskId;
     int statusId;
     DateRangePickerFragment dateRangePickerFragment;
     StatusDTO statusDTO;
+    Integer handlerId;
     private static int RESULT_UPLOAD_IMAGE = 1;
     ImageView imageView;
+    boolean isUser;
 
     public TaskDetailFragment() {
         // Required empty public constructor
@@ -81,32 +82,47 @@ public class TaskDetailFragment extends Fragment {
         btnSave = view.findViewById(R.id.btnSave);
         btnUpload = view.findViewById(R.id.btnUpload);
         imageView = view.findViewById(R.id.imgView);
+        txtReviedTime = view.findViewById(R.id.txtReviewTime);
+        edtComment = view.findViewById(R.id.edtComment);
+        edtMark = view.findViewById(R.id.edtMark);
+        btnAccept = view.findViewById(R.id.btnAccept);
+        btnReject = view.findViewById(R.id.btnDecline);
+        btnFinish = view.findViewById(R.id.btnFinish);
+        btnFailed = view.findViewById(R.id.btnFailed);
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("baohg.taskmanager_preferences", Context.MODE_PRIVATE);
         String userRole = sharedPreferences.getString("userRole", "");
-        if (RoleConstant.ADMIN.equalsIgnoreCase(userRole) || RoleConstant.MANAGER.equalsIgnoreCase(userRole)) {
-            TaskReviewFragment taskReviewFragment = new TaskReviewFragment();
-            getChildFragmentManager().beginTransaction().replace(R.id.fragmentReviewSection, taskReviewFragment).commit();
-//            taskReviewFragment.getBtnAccept().setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    changeStatus(StatusConstant.ACCEPTED);
-//                }
-//            });
-//            taskReviewFragment.getBtnDecline().setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    changeStatus(StatusConstant.REJECTED);
-//                }
-//            });
-//            taskReviewFragment.getBtnFinish().setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    changeStatus(StatusConstant.FINISHED);
-//                }
-//            });
+        btnAccept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeStatus(StatusConstant.PROCESSING);
+            }
+        });
+        btnReject.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeStatus(StatusConstant.REJECTED);
+            }
+        });
+        btnFinish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeStatus(StatusConstant.FINISHED);
+            }
+        });
+        btnFailed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeStatus(StatusConstant.FAILED);
+            }
+        });
+        isUser = RoleConstant.USER.equalsIgnoreCase(userRole) ? true : false;
+        if (isUser) {
+            LinearLayout layout = view.findViewById(R.id.sectionReview);
+            layout.setVisibility(View.GONE);
         }
         try {
             showTaskDetail();
+
             deleteTask();
             saveChanges();
             uploadConfirmationImage();
@@ -168,17 +184,22 @@ public class TaskDetailFragment extends Fragment {
                         }
                         case ResponseCodeConstant.OK: {
                             TaskDTO taskDTO = responseBody.getData();
-                            Toast.makeText(getActivity(), "OK", Toast.LENGTH_SHORT).show();
                             edtTaskName.setText(taskDTO.getName());
                             edtDescription.setText(taskDTO.getDescription());
                             edtReport.setText(taskDTO.getReport());
                             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                             String createdTime = sdf.format(taskDTO.getCreatedTime());
                             txtCreatedTime.setText(createdTime);
-                            txtHandler.setText(Integer.toString(taskDTO.getHandlerId()));
+                            handlerId = taskDTO.getHandlerId();
+                            txtHandler.setText(taskDTO.getHandlerName());
                             txtCreator.setText(taskDTO.getCreator());
                             statusId = taskDTO.getStatusId();
                             txtStatus.setText(taskDTO.getStatusName());
+                            edtComment.setText(taskDTO.getComment());
+                            String txtMark = taskDTO.getMark() != null ? taskDTO.getMark().toString() : "";
+                            edtMark.setText(txtMark);
+                            String reviewedTime = taskDTO.getReviewedTime() != null ? sdf.format(taskDTO.getReviewedTime()) : "";
+                            txtReviedTime.setText(reviewedTime);
                             dateRangePickerFragment = new DateRangePickerFragment();
                             Bundle bundle = new Bundle();
                             Calendar startTime = Calendar.getInstance();
@@ -196,6 +217,26 @@ public class TaskDetailFragment extends Fragment {
                                     .beginTransaction()
                                     .replace(R.id.dateRangePickerFragment, dateRangePickerFragment)
                                     .commit();
+
+                            // set Buttons by Status
+                            String status = txtStatus.getText().toString();
+                            switch (status) {
+                                case StatusConstant.NOT_STARTED: {
+                                    btnFinish.setVisibility(View.GONE);
+                                    btnFailed.setVisibility(View.GONE);
+                                    break;
+                                }
+                                case StatusConstant.PROCESSING: {
+                                    btnAccept.setVisibility(View.GONE);
+                                    btnReject.setVisibility(View.GONE);
+                                    break;
+                                }
+                                default:{
+                                    btnAccept.setVisibility(View.GONE);
+                                    btnReject.setVisibility(View.GONE);
+                                }
+
+                            }
                             break;
                         }
                         default: {
@@ -208,7 +249,7 @@ public class TaskDetailFragment extends Fragment {
             @Override
             public void onFailure(Call<TaskResponse> call, Throwable t) {
                 Toast.makeText(getActivity(), "FAILURE", Toast.LENGTH_SHORT).show();
-                Log.d("FAILURE", t.getMessage());
+                t.printStackTrace();
             }
         });
 
@@ -232,11 +273,30 @@ public class TaskDetailFragment extends Fragment {
                 request.setCreator(txtCreator.getText().toString());
                 request.setStatusId(statusId);
                 request.setEndTime(endTime);
+                request.setHandlerId(handlerId);
+                if (!isUser) {
+                    // get current time
+                    Date date = new Date();
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+                    String reviewTime = sdf.format(date);
+                    request.setReviewedTime(reviewTime);
+                    request.setComment(edtComment.getText().toString());
+                    Integer mark = edtMark.getText().toString().isEmpty() ? null : Integer.parseInt(edtMark.getText().toString());
+                    request.setMark(mark);
+                }
                 taskDAO.updateTask(taskId, request, new Callback<TaskResponse>() {
                     @Override
                     public void onResponse(Call<TaskResponse> call, Response<TaskResponse> response) {
                         if (response.isSuccessful()) {
+                            if (response.code() == ResponseCodeConstant.OK && StatusConstant.FAILED.equalsIgnoreCase(txtStatus.getText().toString())) {
+                                TaskCreationFragment creationFragment = new TaskCreationFragment();
+                                Bundle bundle = new Bundle();
+                                bundle.putSerializable("source", response.body().getData());
+                                creationFragment.setArguments(bundle);
+                                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, creationFragment).commit();
+                            }
                             Toast.makeText(getActivity(), "Update success", Toast.LENGTH_SHORT).show();
+
                         } else {
                             Toast.makeText(getActivity(), "Update Failed", Toast.LENGTH_SHORT).show();
                         }
@@ -277,17 +337,17 @@ public class TaskDetailFragment extends Fragment {
         }
     }
 
-    private void changeStatus(String name){
+    private void changeStatus(String name) {
         StatusDAO statusDAO = new StatusDAO();
         statusDAO.getAllStatus(name, new Callback<StatusResponse>() {
             @Override
             public void onResponse(Call<StatusResponse> call, Response<StatusResponse> response) {
-                if(response.isSuccessful() && response.body().getStatusList().size() == 1){
+                if (response.isSuccessful() && response.body().getStatusList().size() == 1) {
                     statusDTO = response.body().getStatusList().get(0);
-                    if(statusDTO != null){
+                    if (statusDTO != null) {
                         txtStatus.setText(statusDTO.getName());
                         statusId = statusDTO.getStatusId();
-                    }else{
+                    } else {
                         Toast.makeText(getContext(), "Status not exists", Toast.LENGTH_SHORT).show();
                     }
                 }

@@ -10,7 +10,7 @@ namespace TaskManager.ViewModels
         public int? SourceId { get; set; }
         public string Description { get; set; }
         public string Report { get; set; }
-        public string ManagerReview { get; set; }
+        public string Comment { get; set; }
         public int? Mark { get; set; }
         public DateTime? ReviewedTime { get; set; }
         public DateTime StartTime { get; set; } 
@@ -37,7 +37,7 @@ namespace TaskManager.ViewModels
         [JsonProperty("endTime")]
         public DateTime? EndTime { get; set; }
         [JsonProperty("statusId")]
-        public int? StatusId { get; set; } = 1;
+        public int? StatusId { get; set; } = 8;
         public DateTime CreatedTime { get; set; } = DateTime.Now;
         [JsonProperty("creator")]
         public string Creator { get; set; }
@@ -50,8 +50,10 @@ namespace TaskManager.ViewModels
         public int? SourceId { get; set; }
         public string Description { get; set; }
         public string Report { get; set; }
+        [JsonProperty("comment")]
         public string ManagerReview { get; set; }
         public int? Mark { get; set; }
+        [JsonProperty("reviewedTime")]
         public DateTime? ReviewedTime { get; set; }
         [JsonProperty("startTime")]
         public DateTime StartTime { get; set; }

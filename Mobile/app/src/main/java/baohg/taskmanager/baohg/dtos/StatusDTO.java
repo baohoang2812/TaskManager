@@ -12,6 +12,14 @@ public class StatusDTO implements Serializable {
     @SerializedName("name")
     public String name;
 
+    public StatusDTO() {
+    }
+
+    public StatusDTO(int statusId, String name) {
+        this.statusId = statusId;
+        this.name = name;
+    }
+
     public int getStatusId() {
         return statusId;
     }

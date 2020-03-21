@@ -9,11 +9,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import java.text.SimpleDateFormat;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import baohg.taskmanager.baohg.daos.TaskDAO;
+import baohg.taskmanager.baohg.dtos.TaskDTO;
 import baohg.taskmanager.baohg.request.CreateTaskRequest;
 import baohg.taskmanager.baohg.responses.TaskResponse;
 import retrofit2.Call;
@@ -26,8 +30,10 @@ import retrofit2.Response;
  */
 public class TaskCreationFragment extends Fragment {
     DateRangePickerFragment dateRangePickerFragment;
+    TextView txtHandler;
     EditText edtName, edtDescription, edtSourceId, edtStartTime, edtEndTime;
     CreateTaskRequest createTaskRequest;
+
     public TaskCreationFragment() {
         // Required empty public constructor
     }
@@ -38,15 +44,34 @@ public class TaskCreationFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_task_creation, container, false);
+        // get User info
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("baohg.taskmanager_preferences", Context.MODE_PRIVATE);
+        int userId = sharedPreferences.getInt("userId",0);
+        final String userFullName = sharedPreferences.getString("userFullName", "");
         edtName = view.findViewById(R.id.edtName);
         edtDescription = view.findViewById(R.id.edtDescription);
         edtSourceId = view.findViewById(R.id.edtSource);
         edtStartTime = view.findViewById(R.id.edtStartTime);
         edtEndTime = view.findViewById(R.id.edtEndTime);
+        txtHandler = view.findViewById(R.id.txtHandlerId);
+        txtHandler.setText(userId+"");
+//        txtHandler.setVisibility(View.GONE);
         createTaskRequest = new CreateTaskRequest();
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("baohg.taskmanager_preferences", Context.MODE_PRIVATE);
-        final int userId = sharedPreferences.getInt("userId",0);
-        final String userFullName = sharedPreferences.getString("userFullName", "");
+        // create task from failed task
+        Bundle bundle = getArguments();
+        if(bundle != null){
+            TaskDTO source = (TaskDTO) bundle.getSerializable("source");
+            edtName.setText(source.getName());
+            edtDescription.setText(source.getDescription());
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            edtStartTime.setText(sdf.format(source.getStartTime()));
+            edtEndTime.setText(sdf.format(source.getEndTime()));
+            String txtSourceId = source.getSourceId() == null ? "" : source.getSourceId()+"";
+            edtSourceId.setText(txtSourceId);
+            edtSourceId.setVisibility(View.GONE);
+            txtHandler.setVisibility(View.VISIBLE);
+        }
+
         dateRangePickerFragment = (DateRangePickerFragment) getChildFragmentManager().findFragmentById(R.id.dateRangePickerFragment);
         Button btnCreate = view.findViewById(R.id.btnCreate);
         btnCreate.setOnClickListener(new View.OnClickListener() {
@@ -57,7 +82,8 @@ public class TaskCreationFragment extends Fragment {
                 createTaskRequest.setDescription(edtDescription.getText().toString());
                 String txtSourceId = edtSourceId.getText().toString();
                 Integer sourceId = txtSourceId.isEmpty() ? null : Integer.parseInt(txtSourceId);
-                Integer handlerId = userId;
+                String txtHandlerId = txtHandler.getText().toString();
+                Integer handlerId = txtHandlerId.isEmpty() || txtHandlerId == null ? null : Integer.parseInt(txtHandlerId);
                 createTaskRequest.setSourceId(sourceId);
                 createTaskRequest.setHandlerId(handlerId);
                 createTaskRequest.setStartTime(dateRangePickerFragment.getEdtStartTime().getText().toString());

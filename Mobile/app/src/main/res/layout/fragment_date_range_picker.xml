@@ -13,11 +13,13 @@
         android:layout_height="wrap_content"
         android:layout_weight=".50"
         android:focusable="false"
+        android:drawableLeft="@drawable/ic_clock"
         android:hint="@string/task_start_time"
         android:inputType="none" />
 
     <EditText
         android:id="@+id/edtEndTime"
+        android:drawableLeft="@drawable/ic_clock"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight=".50"

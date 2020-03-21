@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TaskManager</string>
+    <string name="app_name">TASKY</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -18,6 +18,7 @@
     <string name="tab_task">Tasks</string>
     <string name="tab_group">Group</string>
     <string name="user_email">Email: </string>
+    <string name="user_phone">Phone: </string>
     <string name="user_role">Role: </string>
     <string name="log_out">Log Out</string>
     <string name="task_filter">Filter</string>
