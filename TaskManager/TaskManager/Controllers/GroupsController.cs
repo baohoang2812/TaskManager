@@ -21,60 +21,66 @@ namespace TaskManager.Controllers
         private readonly TaskManagerContext _context;
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
-        public GroupsController(TaskManagerContext context, IMapper mapper, IUnitOfWork unitOfWork): base(unitOfWork, mapper)
+        public GroupsController(TaskManagerContext context, IMapper mapper, IUnitOfWork unitOfWork) : base(unitOfWork, mapper)
         {
             _context = context;
         }
 
         // GET: api/Groups
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Group>>> GetGroup()
+        public IActionResult GetGroup()
         {
-            return await _context.Group.ToListAsync();
+            try
+            {
+                var groupService = GetService<GroupService>();
+                var group = groupService.GetAllGroup();
+                var result = MapToList<GroupViewModel>(group);
+                return Ok(new ApiResult
+                {
+                    Data = result,
+                    Message = ResultMessage.Success
+                });
+            }
+            catch (Exception e)
+            {
+                _logger.Error(e, e.Message);
+                return Error(new ApiResult
+                {
+                    Message = ResultMessage.Error
+                });
+            }
         }
 
         // GET: api/Groups/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Group>> GetGroup(int id)
+        public IActionResult GetGroup(int id)
         {
-            var @group = await _context.Group.FindAsync(id);
-
-            if (@group == null)
-            {
-                return NotFound();
-            }
-
-            return @group;
-        }
-
-        // PUT: api/Groups/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutGroup(int id, Group @group)
-        {
-            if (id != @group.GroupId)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(@group).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                var groupService = GetService<GroupService>();
+                var group = groupService.GetGroupById(id);
+                if (group == null)
+                {
+                    return NotFound(new ApiResult
+                    {
+                        Message = ResultMessage.NotFound
+                    });
+                }
+                var result = MapTo<GroupViewModel>(group);
+                return Ok(new ApiResult
+                {
+                    Data = result,
+                    Message = ResultMessage.Success
+                });
             }
-            catch (DbUpdateConcurrencyException)
+            catch (Exception e)
             {
-                if (!GroupExists(id))
+                _logger.Error(e, e.Message);
+                return Error(new ApiResult
                 {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                    Message = ResultMessage.Error
+                });
             }
-
-            return NoContent();
         }
 
         // POST: api/Groups
@@ -86,8 +92,18 @@ namespace TaskManager.Controllers
                 var userService = GetService<UserService>();
                 var user = userService.GetUserById(request.UserId);
                 // check Group User is manager
-                var manager = userService.GetUserById(request.ManagerId);
-                if(user == null || user.RoleId != RoleName.ADMIN || manager.RoleId != RoleName.MANAGER)
+                if(request.ManagerId != null)
+                {
+                    var manager = userService.GetUserById(request.ManagerId ?? 0);
+                    if (manager == null)
+                    {
+                        return Unauthorized(new ApiResult
+                        {
+                            Message = ResultMessage.Unauthorized
+                        });
+                    }
+                }
+                if (user == null || user.Role.Name != RoleName.ADMIN)
                 {
                     return Unauthorized(new ApiResult
                     {
@@ -98,12 +114,13 @@ namespace TaskManager.Controllers
                 var group = service.CreateGroup(request);
                 var result = MapTo<GroupViewModel>(group);
                 _unitOfWork.SaveChanges();
-                return Created($"/api/Groups?id={group.GroupId}",new ApiResult
+                return Created($"/api/Groups?id={group.GroupId}", new ApiResult
                 {
                     Data = result,
                     Message = ResultMessage.Success
                 });
-            }catch(Exception e)
+            }
+            catch (Exception e)
             {
                 _logger.Error(e, e.Message);
                 return Error(new ApiResult

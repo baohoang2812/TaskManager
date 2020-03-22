@@ -2,7 +2,9 @@ package baohg.taskmanager.baohg.request;
 
 import com.google.gson.annotations.SerializedName;
 
-public class LoginRequest {
+import java.io.Serializable;
+
+public class LoginRequest implements Serializable {
     @SerializedName("username")
     public String username;
     @SerializedName("password")

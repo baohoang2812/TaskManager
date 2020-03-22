@@ -1,6 +1,7 @@
 package baohg.taskmanager;
 
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -15,7 +16,6 @@ import android.widget.Toast;
 import java.text.SimpleDateFormat;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import baohg.taskmanager.baohg.daos.TaskDAO;
 import baohg.taskmanager.baohg.dtos.TaskDTO;
 import baohg.taskmanager.baohg.request.CreateTaskRequest;
@@ -46,7 +46,7 @@ public class TaskCreationFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_task_creation, container, false);
         // get User info
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("baohg.taskmanager_preferences", Context.MODE_PRIVATE);
-        int userId = sharedPreferences.getInt("userId",0);
+        int userId = sharedPreferences.getInt("userId", 0);
         final String userFullName = sharedPreferences.getString("userFullName", "");
         edtName = view.findViewById(R.id.edtName);
         edtDescription = view.findViewById(R.id.edtDescription);
@@ -54,21 +54,22 @@ public class TaskCreationFragment extends Fragment {
         edtStartTime = view.findViewById(R.id.edtStartTime);
         edtEndTime = view.findViewById(R.id.edtEndTime);
         txtHandler = view.findViewById(R.id.txtHandlerId);
-        txtHandler.setText(userId+"");
-//        txtHandler.setVisibility(View.GONE);
+        txtHandler.setText(userId + "");
+        edtSourceId.setVisibility(View.GONE);
         createTaskRequest = new CreateTaskRequest();
         // create task from failed task
         Bundle bundle = getArguments();
-        if(bundle != null){
+        if (bundle != null) {
             TaskDTO source = (TaskDTO) bundle.getSerializable("source");
             edtName.setText(source.getName());
             edtDescription.setText(source.getDescription());
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             edtStartTime.setText(sdf.format(source.getStartTime()));
             edtEndTime.setText(sdf.format(source.getEndTime()));
-            String txtSourceId = source.getSourceId() == null ? "" : source.getSourceId()+"";
+            String txtSourceId = source.getSourceId() == null ? "" : source.getSourceId() + "";
             edtSourceId.setText(txtSourceId);
             edtSourceId.setVisibility(View.GONE);
+            edtSourceId.setVisibility(View.VISIBLE);
             txtHandler.setVisibility(View.VISIBLE);
         }
 
@@ -77,41 +78,66 @@ public class TaskCreationFragment extends Fragment {
         btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TaskDAO taskDAO = new TaskDAO();
-                createTaskRequest.setName(edtName.getText().toString());
-                createTaskRequest.setDescription(edtDescription.getText().toString());
-                String txtSourceId = edtSourceId.getText().toString();
-                Integer sourceId = txtSourceId.isEmpty() ? null : Integer.parseInt(txtSourceId);
-                String txtHandlerId = txtHandler.getText().toString();
-                Integer handlerId = txtHandlerId.isEmpty() || txtHandlerId == null ? null : Integer.parseInt(txtHandlerId);
-                createTaskRequest.setSourceId(sourceId);
-                createTaskRequest.setHandlerId(handlerId);
-                createTaskRequest.setStartTime(dateRangePickerFragment.getEdtStartTime().getText().toString());
-                createTaskRequest.setEndTime(dateRangePickerFragment.getEdtEndTime().getText().toString());
-                createTaskRequest.setCreator(userFullName);
-                taskDAO.createTask(createTaskRequest, new Callback<TaskResponse>() {
-                    @Override
-                    public void onResponse(Call<TaskResponse> call, Response<TaskResponse> response) {
-                        if (response.isSuccessful()) {
-                            Toast.makeText(getActivity(), "Create Task Successfully", Toast.LENGTH_SHORT).show();
-                            getActivity().getSupportFragmentManager()
-                                    .beginTransaction()
-                                    .replace(R.id.fragmentContainer, new TaskFragment())
-                                    .commit();
-                        } else {
-                            Toast.makeText(getActivity(), "Response fail", Toast.LENGTH_SHORT).show();
+                boolean isValid = true;
+                String errorMsg = "";
+                String taskName = edtName.getText().toString();
+                String description = edtDescription.getText().toString();
+                if (isEmpty(taskName)) {
+                    isValid = false;
+                    errorMsg += "Name is required \n";
+                }
+                if (isEmpty(description)) {
+                    isValid = false;
+                    errorMsg += "Description is required \n";
+                }
+                if (isValid) {
+                    TaskDAO taskDAO = new TaskDAO();
+                    createTaskRequest.setName(taskName);
+                    createTaskRequest.setDescription(description);
+                    String txtSourceId = edtSourceId.getText().toString();
+                    Integer sourceId = txtSourceId.isEmpty() ? null : Integer.parseInt(txtSourceId);
+                    String txtHandlerId = txtHandler.getText().toString();
+                    Integer handlerId = txtHandlerId.isEmpty() || txtHandlerId == null ? null : Integer.parseInt(txtHandlerId);
+                    createTaskRequest.setSourceId(sourceId);
+                    createTaskRequest.setHandlerId(handlerId);
+                    createTaskRequest.setStartTime(dateRangePickerFragment.getEdtStartTime().getText().toString());
+                    createTaskRequest.setEndTime(dateRangePickerFragment.getEdtEndTime().getText().toString());
+                    createTaskRequest.setCreator(userFullName);
+                    taskDAO.createTask(createTaskRequest, new Callback<TaskResponse>() {
+                        @Override
+                        public void onResponse(Call<TaskResponse> call, Response<TaskResponse> response) {
+                            if (response.isSuccessful()) {
+                                Toast.makeText(getActivity(), "Create Task Successfully", Toast.LENGTH_SHORT).show();
+                                getActivity().getSupportFragmentManager()
+                                        .beginTransaction()
+                                        .replace(R.id.fragmentContainer, new TaskFragment())
+                                        .commit();
+                            } else {
+                                Toast.makeText(getActivity(), "Response fail", Toast.LENGTH_SHORT).show();
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onFailure(Call<TaskResponse> call, Throwable t) {
-                        Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
-                        t.printStackTrace();
-                    }
-                });
-                Toast.makeText(getActivity(), "Create Button Clicked", Toast.LENGTH_SHORT).show();
+                        @Override
+                        public void onFailure(Call<TaskResponse> call, Throwable t) {
+                            Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
+                            t.printStackTrace();
+                        }
+                    });
+                } else {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setTitle("Invalid");
+                    builder.setIcon(android.R.drawable.ic_dialog_alert);
+                    builder.setMessage(errorMsg);
+                    builder.setPositiveButton("Got It", null);
+                    builder.show();
+                }
             }
         });
         return view;
     }
+
+    private boolean isEmpty(String text) {
+        return text.isEmpty();
+    }
+
 }

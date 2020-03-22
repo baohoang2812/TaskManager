@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using TaskManager.Models.Request;
 using TaskManager.ViewModels;
 
 namespace TaskManager.Models
@@ -10,6 +11,7 @@ namespace TaskManager.Models
             MapUser();
             MapTask();
             MapStatus();
+            MapGroup();
         }
 
         public void MapUser()
@@ -21,6 +23,7 @@ namespace TaskManager.Models
             CreateMap<UserCreateViewModel, Group>();
             CreateMap<UserCreateViewModel, Role>();
             CreateMap<UserEditViewModel, User>();
+            CreateMap<Role, UserViewModel>();
         }
 
         public void MapTask()
@@ -30,12 +33,18 @@ namespace TaskManager.Models
                 .ForMember(dest => dest.Comment, opts => opts.MapFrom(src => src.ManagerReview));
             CreateMap<TaskCreateViewModel, Task>();
             CreateMap<TaskEditViewModel, Task>();
-            //CreateMap<Status, TaskViewModel>().ForMember(dest => dest.StatusName, opts => opts.MapFrom(src => src.Name));
         }
 
         public void MapStatus()
         {
             CreateMap<Status, StatusViewModel>();
+        }
+
+        public void MapGroup()
+        {
+            CreateMap<Group, GroupViewModel>();
+            CreateMap<User, GroupViewModel>();
+            CreateMap<CreateGroupRequest, Group>();
         }
     }
 }

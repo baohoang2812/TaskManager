@@ -86,9 +86,11 @@ namespace TaskManager
                 .AddScoped<ITaskRepository, TaskRepository>()
                 .AddScoped<IGroupRepository, GroupRepository>()
                 .AddScoped<IStatusRepository, StatusRepository>()
+                .AddScoped<IRoleRepository, RoleRepository>()
                 .AddScoped<TaskService>()
                 .AddScoped<GroupService>()
-                .AddScoped<StatusService>();
+                .AddScoped<StatusService>()
+                .AddScoped<RoleService>();
         }
     }
 }

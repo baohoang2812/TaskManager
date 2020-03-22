@@ -59,7 +59,7 @@ namespace TaskManager.Services
                 query = query.Where(s => s.HandlerId == request.HandlerId);
             }
 
-            switch (user.RoleId)
+            switch (user.Role.Name)
             {
                 case RoleName.ADMIN:
                     {
@@ -70,13 +70,17 @@ namespace TaskManager.Services
                         if (user.GroupId != null)
                         {
                             var groupUsers = _userRepository.GetAll().Where(x => x.GroupId == user.GroupId).Select(e => e.UserId).ToList();
-                            query.Where(x => groupUsers.Contains(x.HandlerId ?? 0));
+                            query = query.Where(x => groupUsers.Contains(x.HandlerId ?? 0));
+                        }
+                        else
+                        {
+                            query = query.Where(x => x.HandlerId == user.UserId);
                         }
                         break;
                     }
                 case RoleName.USER:
                     {
-                        query.Where(x => x.HandlerId == user.UserId);
+                        query = query.Where(x => x.HandlerId == user.UserId);
                         break;
                     }
                 default:

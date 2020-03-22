@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using NLog;
 using System;
 using System.Linq;
+using TaskManager.Constants;
 using TaskManager.Models;
 using TaskManager.Models.Request;
 using TaskManager.Services;
@@ -23,14 +24,13 @@ namespace TaskManager.Controllers
         }
 
 
-        // GET: api/Users/5
-        [HttpGet]
-        public IActionResult GetAllUser(int groupId)
+        [HttpPost("all")]
+        public IActionResult GetAllUser(GetUserRequest request)
         {
             try
             {
                 var service = GetService<UserService>();
-                var userList = service.GetUserByGroupId(groupId);
+                var userList = service.GetAllUser(request);
                 var result = MapToList<UserViewModel>(userList);
                 return Ok(new ApiResult
                 {
@@ -87,8 +87,21 @@ namespace TaskManager.Controllers
         {
             try
             {
-
                 var service = GetService<UserService>();
+                var roleService = GetService<RoleService>();
+                var role = roleService.GetRoleByName(model.RoleName);
+                if(role != null)
+                {
+                    model.RoleId = role.RoleId;
+                }
+                else
+                {
+                    return BadRequest(new ApiResult
+                    {
+                        Message = ResultMessage.NotFound
+                    });
+                }
+                    
                 var result = service.EditUser(id, model);
                 _unitOfWork.SaveChanges();
                 if (result == null)
@@ -98,15 +111,20 @@ namespace TaskManager.Controllers
                         Message = ResultMessage.NotFound
                     });
                 }
-                return NoContent();
+                return Ok(new ApiResult
+                {
+                    Data = result,
+                    Message = ResultMessage.Success,
+                });
             }
             catch (Exception e)
             {
                 _logger.Error(e, e.Message);
                 return Error(new ApiResult
                 {
+                    Data = null,
                     Message = ResultMessage.Error
-                });
+                }); ;
             }
         }
 
@@ -117,12 +135,22 @@ namespace TaskManager.Controllers
             try
             {
                 var service = GetService<UserService>();
-                var existedUser = service.Authenticate(model.Username, model.Password);
+                var roleService = GetService<RoleService>();
+                var role = roleService.GetRoleByName(RoleName.USER);
+                if(role != null)
+                {
+                    model.RoleId = role.RoleId;
+                }
+                else
+                {
+                    throw new Exception("Role not found");
+                }
+                var existedUser = service.GetUserByUsername(model.Username);
                 if(existedUser != null)
                 {
                     return BadRequest(new ApiResult
                     {
-                        Message = ResultMessage.Existed
+                        Message = "Username existed"
                     });
                 }
                 var user = service.CreateUser(model);

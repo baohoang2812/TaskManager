@@ -2,7 +2,9 @@ package baohg.taskmanager.baohg.request;
 
 import com.google.gson.annotations.SerializedName;
 
-public class CreateTaskRequest {
+import java.io.Serializable;
+
+public class CreateTaskRequest implements Serializable {
     @SerializedName("name")
     String name;
     @SerializedName("description")

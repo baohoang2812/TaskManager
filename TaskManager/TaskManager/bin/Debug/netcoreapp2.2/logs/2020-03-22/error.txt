@@ -173,3 +173,176 @@ The statement has been terminated.
    at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(Boolean acceptAllChangesOnSuccess)
    at Microsoft.EntityFrameworkCore.DbContext.SaveChanges(Boolean acceptAllChangesOnSuccess)
 2020-03-22 01:25:32.7196|ERROR|TaskManager.Controllers.TasksController|An error occurred while updating the entries. See the inner exception for details.
+2020-03-22 15:57:04.4451|ERROR|TaskManager.Controllers.GroupsController|Error mapping types.
+
+Mapping types:
+List`1 -> IList`1
+System.Collections.Generic.List`1[[TaskManager.Models.Group, TaskManager, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]] -> System.Collections.Generic.IList`1[[TaskManager.ViewModels.GroupViewModel, TaskManager, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]
+2020-03-22 15:58:46.4821|ERROR|TaskManager.Controllers.GroupsController|Error mapping types.
+
+Mapping types:
+List`1 -> IList`1
+System.Collections.Generic.List`1[[TaskManager.Models.Group, TaskManager, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]] -> System.Collections.Generic.IList`1[[TaskManager.ViewModels.GroupViewModel, TaskManager, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]
+2020-03-22 16:00:54.4219|ERROR|TaskManager.Controllers.GroupsController|Error mapping types.
+
+Mapping types:
+List`1 -> IList`1
+System.Collections.Generic.List`1[[TaskManager.Models.Group, TaskManager, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]] -> System.Collections.Generic.IList`1[[TaskManager.ViewModels.GroupViewModel, TaskManager, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]
+2020-03-22 19:32:41.1748|ERROR|TaskManager.Controllers.UsersController|Object reference not set to an instance of an object.
+2020-03-22 19:35:48.8740|ERROR|TaskManager.Controllers.UsersController|Object reference not set to an instance of an object.
+2020-03-22 19:36:19.7369|ERROR|TaskManager.Controllers.UsersController|Object reference not set to an instance of an object.
+2020-03-22 19:43:18.9994|ERROR|TaskManager.Controllers.GroupsController|Missing type map configuration or unsupported mapping.
+
+Mapping types:
+CreateGroupRequest -> Group
+TaskManager.Models.Request.CreateGroupRequest -> TaskManager.Models.Group
+2020-03-22 19:50:54.7412|ERROR|Microsoft.EntityFrameworkCore.Database.Command|Failed executing DbCommand (18ms) [Parameters=[@p0='?' (DbType = DateTime), @p1='?' (Size = 200), @p2='?' (DbType = Int32), @p3='?' (Size = 50)], CommandType='Text', CommandTimeout='30']
+SET NOCOUNT ON;
+INSERT INTO [Group] ([CreatedTime], [Description], [ManagerId], [Name])
+VALUES (@p0, @p1, @p2, @p3);
+SELECT [GroupId]
+FROM [Group]
+WHERE @@ROWCOUNT = 1 AND [GroupId] = scope_identity();
+2020-03-22 19:50:54.7522|ERROR|Microsoft.EntityFrameworkCore.Update|An exception occurred in the database while saving changes for context type 'TaskManager.Models.TaskManagerContext'.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while updating the entries. See the inner exception for details. ---> System.Data.SqlClient.SqlException: The INSERT statement conflicted with the FOREIGN KEY constraint "FK_Group_User". The conflict occurred in database "TaskManager", table "dbo.User", column 'UserId'.
+The statement has been terminated.
+   at System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at System.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at System.Data.SqlClient.SqlDataReader.TryConsumeMetaData()
+   at System.Data.SqlClient.SqlDataReader.get_MetaData()
+   at System.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async, Int32 timeout, Task& task, Boolean asyncWrite, SqlDataReader ds)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean asyncWrite, String method)
+   at System.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior)
+   at System.Data.SqlClient.SqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   at System.Data.Common.DbCommand.ExecuteReader()
+   at Microsoft.EntityFrameworkCore.Storage.Internal.RelationalCommand.Execute(IRelationalConnection connection, DbCommandMethod executeMethod, IReadOnlyDictionary`2 parameterValues)
+   at Microsoft.EntityFrameworkCore.Storage.Internal.RelationalCommand.ExecuteReader(IRelationalConnection connection, IReadOnlyDictionary`2 parameterValues)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.Execute(DbContext _, ValueTuple`2 parameters)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.Execute(IEnumerable`1 commandBatches, IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChanges(IReadOnlyList`1 entries)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(IReadOnlyList`1 entriesToSave)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(Boolean acceptAllChangesOnSuccess)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChanges(Boolean acceptAllChangesOnSuccess)
+2020-03-22 19:50:54.8450|ERROR|TaskManager.Controllers.GroupsController|An error occurred while updating the entries. See the inner exception for details.
+2020-03-22 22:32:13.2556|ERROR|Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware|An unhandled exception has occurred while executing the request.
+2020-03-22 22:34:20.3746|ERROR|Microsoft.EntityFrameworkCore.Query|An exception occurred while iterating over the results of a query for context type 'TaskManager.Models.TaskManagerContext'.
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at lambda_method(Closure , TransparentIdentifier`2 )
+   at System.Linq.Enumerable.WhereSelectEnumerableIterator`2.MoveNext()
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider._TrackEntities[TOut,TIn](IEnumerable`1 results, QueryContext queryContext, IList`1 entityTrackingInfos, IList`1 entityAccessors)+MoveNext()
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider.ExceptionInterceptor`1.EnumeratorExceptionInterceptor.MoveNext()
+2020-03-22 22:34:20.4789|ERROR|TaskManager.Controllers.TasksController|Object reference not set to an instance of an object.
+2020-03-22 22:35:45.7194|ERROR|Microsoft.EntityFrameworkCore.Query|An exception occurred while iterating over the results of a query for context type 'TaskManager.Models.TaskManagerContext'.
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at lambda_method(Closure , TransparentIdentifier`2 )
+   at System.Linq.Enumerable.WhereSelectEnumerableIterator`2.MoveNext()
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider._TrackEntities[TOut,TIn](IEnumerable`1 results, QueryContext queryContext, IList`1 entityTrackingInfos, IList`1 entityAccessors)+MoveNext()
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider.ExceptionInterceptor`1.EnumeratorExceptionInterceptor.MoveNext()
+2020-03-22 22:35:45.7724|ERROR|TaskManager.Controllers.TasksController|Object reference not set to an instance of an object.
+2020-03-22 22:35:48.3085|ERROR|Microsoft.EntityFrameworkCore.Query|An exception occurred while iterating over the results of a query for context type 'TaskManager.Models.TaskManagerContext'.
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at lambda_method(Closure , TransparentIdentifier`2 )
+   at System.Linq.Enumerable.WhereSelectEnumerableIterator`2.MoveNext()
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider._TrackEntities[TOut,TIn](IEnumerable`1 results, QueryContext queryContext, IList`1 entityTrackingInfos, IList`1 entityAccessors)+MoveNext()
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider.ExceptionInterceptor`1.EnumeratorExceptionInterceptor.MoveNext()
+2020-03-22 22:35:48.3481|ERROR|TaskManager.Controllers.TasksController|Object reference not set to an instance of an object.
+2020-03-22 22:35:57.7463|ERROR|Microsoft.EntityFrameworkCore.Query|An exception occurred while iterating over the results of a query for context type 'TaskManager.Models.TaskManagerContext'.
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at lambda_method(Closure , TransparentIdentifier`2 )
+   at System.Linq.Enumerable.WhereSelectEnumerableIterator`2.MoveNext()
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider._TrackEntities[TOut,TIn](IEnumerable`1 results, QueryContext queryContext, IList`1 entityTrackingInfos, IList`1 entityAccessors)+MoveNext()
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider.ExceptionInterceptor`1.EnumeratorExceptionInterceptor.MoveNext()
+2020-03-22 22:35:57.7828|ERROR|TaskManager.Controllers.TasksController|Object reference not set to an instance of an object.
+2020-03-22 22:36:01.6732|ERROR|Microsoft.EntityFrameworkCore.Query|An exception occurred while iterating over the results of a query for context type 'TaskManager.Models.TaskManagerContext'.
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at lambda_method(Closure , TransparentIdentifier`2 )
+   at System.Linq.Enumerable.WhereSelectEnumerableIterator`2.MoveNext()
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider._TrackEntities[TOut,TIn](IEnumerable`1 results, QueryContext queryContext, IList`1 entityTrackingInfos, IList`1 entityAccessors)+MoveNext()
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider.ExceptionInterceptor`1.EnumeratorExceptionInterceptor.MoveNext()
+2020-03-22 22:36:01.7232|ERROR|TaskManager.Controllers.TasksController|Object reference not set to an instance of an object.
+2020-03-22 22:36:03.8078|ERROR|Microsoft.EntityFrameworkCore.Query|An exception occurred while iterating over the results of a query for context type 'TaskManager.Models.TaskManagerContext'.
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at lambda_method(Closure , TransparentIdentifier`2 )
+   at System.Linq.Enumerable.WhereSelectEnumerableIterator`2.MoveNext()
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider._TrackEntities[TOut,TIn](IEnumerable`1 results, QueryContext queryContext, IList`1 entityTrackingInfos, IList`1 entityAccessors)+MoveNext()
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider.ExceptionInterceptor`1.EnumeratorExceptionInterceptor.MoveNext()
+2020-03-22 22:36:03.8555|ERROR|TaskManager.Controllers.TasksController|Object reference not set to an instance of an object.
+2020-03-22 22:36:07.0150|ERROR|Microsoft.EntityFrameworkCore.Query|An exception occurred while iterating over the results of a query for context type 'TaskManager.Models.TaskManagerContext'.
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at lambda_method(Closure , TransparentIdentifier`2 )
+   at System.Linq.Enumerable.WhereSelectEnumerableIterator`2.MoveNext()
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider._TrackEntities[TOut,TIn](IEnumerable`1 results, QueryContext queryContext, IList`1 entityTrackingInfos, IList`1 entityAccessors)+MoveNext()
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider.ExceptionInterceptor`1.EnumeratorExceptionInterceptor.MoveNext()
+2020-03-22 22:36:07.0611|ERROR|TaskManager.Controllers.TasksController|Object reference not set to an instance of an object.
+2020-03-22 22:36:41.0272|ERROR|Microsoft.EntityFrameworkCore.Query|An exception occurred while iterating over the results of a query for context type 'TaskManager.Models.TaskManagerContext'.
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at lambda_method(Closure , TransparentIdentifier`2 )
+   at System.Linq.Enumerable.WhereSelectEnumerableIterator`2.MoveNext()
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider._TrackEntities[TOut,TIn](IEnumerable`1 results, QueryContext queryContext, IList`1 entityTrackingInfos, IList`1 entityAccessors)+MoveNext()
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider.ExceptionInterceptor`1.EnumeratorExceptionInterceptor.MoveNext()
+2020-03-22 22:36:41.1089|ERROR|TaskManager.Controllers.TasksController|Object reference not set to an instance of an object.
+2020-03-22 22:37:04.7766|ERROR|Microsoft.EntityFrameworkCore.Query|An exception occurred while iterating over the results of a query for context type 'TaskManager.Models.TaskManagerContext'.
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at lambda_method(Closure , TransparentIdentifier`2 )
+   at System.Linq.Enumerable.WhereSelectEnumerableIterator`2.MoveNext()
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider._TrackEntities[TOut,TIn](IEnumerable`1 results, QueryContext queryContext, IList`1 entityTrackingInfos, IList`1 entityAccessors)+MoveNext()
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider.ExceptionInterceptor`1.EnumeratorExceptionInterceptor.MoveNext()
+2020-03-22 22:37:04.8222|ERROR|TaskManager.Controllers.TasksController|Object reference not set to an instance of an object.
+2020-03-22 22:37:40.6589|ERROR|Microsoft.EntityFrameworkCore.Query|An exception occurred while iterating over the results of a query for context type 'TaskManager.Models.TaskManagerContext'.
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at lambda_method(Closure , TransparentIdentifier`2 )
+   at System.Linq.Enumerable.WhereSelectEnumerableIterator`2.MoveNext()
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider._TrackEntities[TOut,TIn](IEnumerable`1 results, QueryContext queryContext, IList`1 entityTrackingInfos, IList`1 entityAccessors)+MoveNext()
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider.ExceptionInterceptor`1.EnumeratorExceptionInterceptor.MoveNext()
+2020-03-22 22:37:52.2249|ERROR|TaskManager.Controllers.TasksController|Object reference not set to an instance of an object.
+2020-03-22 22:38:26.1778|ERROR|Microsoft.EntityFrameworkCore.Query|An exception occurred while iterating over the results of a query for context type 'TaskManager.Models.TaskManagerContext'.
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at lambda_method(Closure , TransparentIdentifier`2 )
+   at System.Linq.Enumerable.WhereSelectEnumerableIterator`2.MoveNext()
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider._TrackEntities[TOut,TIn](IEnumerable`1 results, QueryContext queryContext, IList`1 entityTrackingInfos, IList`1 entityAccessors)+MoveNext()
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider.ExceptionInterceptor`1.EnumeratorExceptionInterceptor.MoveNext()
+2020-03-22 22:38:37.2158|ERROR|TaskManager.Controllers.TasksController|Object reference not set to an instance of an object.
+2020-03-22 23:30:03.6764|ERROR|TaskManager.Controllers.GroupsController|The instance of entity type 'User' cannot be tracked because another instance with the same key value for {'UserId'} is already being tracked. When attaching existing entities, ensure that only one entity instance with a given key value is attached. Consider using 'DbContextOptionsBuilder.EnableSensitiveDataLogging' to see the conflicting key values.
+2020-03-22 23:30:12.0587|ERROR|TaskManager.Controllers.GroupsController|The instance of entity type 'User' cannot be tracked because another instance with the same key value for {'UserId'} is already being tracked. When attaching existing entities, ensure that only one entity instance with a given key value is attached. Consider using 'DbContextOptionsBuilder.EnableSensitiveDataLogging' to see the conflicting key values.
+2020-03-22 23:32:04.9521|ERROR|TaskManager.Controllers.GroupsController|The instance of entity type 'User' cannot be tracked because another instance with the same key value for {'UserId'} is already being tracked. When attaching existing entities, ensure that only one entity instance with a given key value is attached. Consider using 'DbContextOptionsBuilder.EnableSensitiveDataLogging' to see the conflicting key values.
+2020-03-22 23:32:47.1905|ERROR|TaskManager.Controllers.GroupsController|The instance of entity type 'User' cannot be tracked because another instance with the same key value for {'UserId'} is already being tracked. When attaching existing entities, ensure that only one entity instance with a given key value is attached. Consider using 'DbContextOptionsBuilder.EnableSensitiveDataLogging' to see the conflicting key values.
+2020-03-22 23:33:21.1533|ERROR|Microsoft.EntityFrameworkCore.Database.Command|Failed executing DbCommand (8ms) [Parameters=[@p8='?' (DbType = Int32), @p0='?' (Size = 10), @p1='?' (Size = 256), @p2='?' (Size = 4000), @p3='?' (DbType = Int32), @p4='?' (Size = 4000), @p5='?' (Size = 15), @p6='?' (DbType = Int32), @p7='?' (Size = 256)], CommandType='Text', CommandTimeout='30']
+SET NOCOUNT ON;
+UPDATE [User] SET [Code] = @p0, [Email] = @p1, [Fullname] = @p2, [GroupId] = @p3, [PasswordHash] = @p4, [Phone] = @p5, [RoleId] = @p6, [Username] = @p7
+WHERE [UserId] = @p8;
+SELECT @@ROWCOUNT;
+2020-03-22 23:33:21.1533|ERROR|Microsoft.EntityFrameworkCore.Update|An exception occurred in the database while saving changes for context type 'TaskManager.Models.TaskManagerContext'.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while updating the entries. See the inner exception for details. ---> System.Data.SqlClient.SqlException: Cannot insert the value NULL into column 'PasswordHash', table 'TaskManager.dbo.User'; column does not allow nulls. UPDATE fails.
+The statement has been terminated.
+   at System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at System.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at System.Data.SqlClient.SqlDataReader.TryConsumeMetaData()
+   at System.Data.SqlClient.SqlDataReader.get_MetaData()
+   at System.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async, Int32 timeout, Task& task, Boolean asyncWrite, SqlDataReader ds)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean asyncWrite, String method)
+   at System.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior)
+   at System.Data.SqlClient.SqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   at System.Data.Common.DbCommand.ExecuteReader()
+   at Microsoft.EntityFrameworkCore.Storage.Internal.RelationalCommand.Execute(IRelationalConnection connection, DbCommandMethod executeMethod, IReadOnlyDictionary`2 parameterValues)
+   at Microsoft.EntityFrameworkCore.Storage.Internal.RelationalCommand.ExecuteReader(IRelationalConnection connection, IReadOnlyDictionary`2 parameterValues)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.Execute(DbContext _, ValueTuple`2 parameters)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.Execute(IEnumerable`1 commandBatches, IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChanges(IReadOnlyList`1 entries)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(IReadOnlyList`1 entriesToSave)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(Boolean acceptAllChangesOnSuccess)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChanges(Boolean acceptAllChangesOnSuccess)
+2020-03-22 23:33:38.2284|ERROR|TaskManager.Controllers.GroupsController|An error occurred while updating the entries. See the inner exception for details.

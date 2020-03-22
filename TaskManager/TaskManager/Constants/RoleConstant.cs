@@ -2,9 +2,9 @@
 {
     public static class RoleName
     {
-        public const int ADMIN = 1;
-        public const int MANAGER = 2;
-        public const int USER = 3;
+        public const string ADMIN = "Admin";
+        public const string MANAGER = "Manager";
+        public const string USER = "User";
     }
 
 }

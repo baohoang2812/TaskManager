@@ -2,30 +2,31 @@ package baohg.taskmanager.baohg.request;
 
 import com.google.gson.annotations.SerializedName;
 
-public class CreateUserRequest {
+import java.io.Serializable;
+
+public class CreateUserRequest implements Serializable {
     @SerializedName("username")
     String username;
     @SerializedName("password")
     String password;
-    @SerializedName("roleId")
-    int roleId;
     @SerializedName("fullname")
     String fullName;
     @SerializedName("email")
     String email;
+    @SerializedName("phone")
+    String phone;
     @SerializedName("groupId")
     int groupId;
 
     public CreateUserRequest() {
     }
 
-    public CreateUserRequest(String username, String password, int roleId, String fullName, String email, int groupId) {
-        this.username = username;
-        this.password = password;
-        this.roleId = roleId;
+    public void setFullName(String fullName) {
         this.fullName = fullName;
-        this.email = email;
-        this.groupId = groupId;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public void setUsername(String username) {
@@ -36,9 +37,6 @@ public class CreateUserRequest {
         this.password = password;
     }
 
-    public void setRoleId(int roleId) {
-        this.roleId = roleId;
-    }
 
     public void setFullname(String fullName) {
         this.fullName = fullName;

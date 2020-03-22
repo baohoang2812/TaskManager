@@ -1,4 +1,4 @@
-package baohg.taskmanager.baohg.baohg.apis;
+package baohg.taskmanager.baohg.apis;
 
 import baohg.taskmanager.baohg.request.CreateTaskRequest;
 import baohg.taskmanager.baohg.request.GetTaskRequest;

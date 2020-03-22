@@ -1,7 +1,7 @@
 package baohg.taskmanager.baohg.daos;
 
-import baohg.taskmanager.baohg.baohg.apis.APIClient;
-import baohg.taskmanager.baohg.baohg.apis.TaskAPI;
+import baohg.taskmanager.baohg.apis.APIClient;
+import baohg.taskmanager.baohg.apis.TaskAPI;
 import baohg.taskmanager.baohg.request.CreateTaskRequest;
 import baohg.taskmanager.baohg.request.GetTaskRequest;
 import baohg.taskmanager.baohg.request.UpdateTaskRequest;

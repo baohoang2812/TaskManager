@@ -1,4 +1,4 @@
-package baohg.taskmanager.baohg.baohg.apis;
+package baohg.taskmanager.baohg.apis;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

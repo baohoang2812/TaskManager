@@ -26,6 +26,7 @@ namespace TaskManager.Models.Repositories
                 EndTime = x.EndTime,
                 StatusId = x.StatusId,
                 HandlerId = x.HandlerId,
+                Handler = x.Handler,
                 Status = x.Status
             });
         }

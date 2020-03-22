@@ -1,6 +1,7 @@
 package baohg.taskmanager;
 
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -140,14 +141,12 @@ public class TaskDetailFragment extends Fragment {
                     @Override
                     public void onResponse(Call<TaskResponse> call, Response<TaskResponse> response) {
                         if (response.isSuccessful()) {
-                            TaskResponse taskResponse = response.body();
                             switch (response.code()) {
                                 case ResponseCodeConstant.NOT_FOUND: {
                                     Toast.makeText(getActivity(), "Task Not Found", Toast.LENGTH_SHORT).show();
                                 }
                                 case ResponseCodeConstant.ERROR: {
-                                    Toast.makeText(getActivity(), "ERROR: " + taskResponse.getMessage(), Toast.LENGTH_SHORT).show();
-                                    Log.d("ERROR", taskResponse.getMessage());
+                                    Toast.makeText(getActivity(), "ERROR: " + response.message(), Toast.LENGTH_SHORT).show();
                                 }
                                 case ResponseCodeConstant.NO_CONTENT: {
                                     getActivity()
@@ -163,7 +162,7 @@ public class TaskDetailFragment extends Fragment {
 
                     @Override
                     public void onFailure(Call<TaskResponse> call, Throwable t) {
-                        Log.d("FAILURE", t.getMessage());
+                        t.printStackTrace();
                     }
                 });
             }
@@ -179,7 +178,7 @@ public class TaskDetailFragment extends Fragment {
                     TaskResponse responseBody = response.body();
                     switch (response.code()) {
                         case ResponseCodeConstant.NOT_FOUND: {
-                            Toast.makeText(getActivity(), responseBody.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), response.message(), Toast.LENGTH_SHORT).show();
                             break;
                         }
                         case ResponseCodeConstant.OK: {
@@ -240,7 +239,7 @@ public class TaskDetailFragment extends Fragment {
                             break;
                         }
                         default: {
-                            Toast.makeText(getActivity(), responseBody.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), response.message(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
@@ -259,9 +258,19 @@ public class TaskDetailFragment extends Fragment {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UpdateTaskRequest request = new UpdateTaskRequest();
+                boolean isValid = true;
+                String errorMsg = "";
                 String name = edtTaskName.getText().toString();
                 String description = edtDescription.getText().toString();
+                if (isEmpty(name)) {
+                    isValid = false;
+                    errorMsg += "Name is required \n";
+                }
+                if (isEmpty(description)) {
+                    isValid = false;
+                    errorMsg += "Description is required \n";
+                }
+                UpdateTaskRequest request = new UpdateTaskRequest();
                 String report = edtReport.getText().toString();
                 request.setName(name);
                 request.setDescription(description);
@@ -282,32 +291,45 @@ public class TaskDetailFragment extends Fragment {
                     request.setReviewedTime(reviewTime);
                     request.setComment(edtComment.getText().toString());
                     Integer mark = edtMark.getText().toString().isEmpty() ? null : Integer.parseInt(edtMark.getText().toString());
+                    if(mark != null && (mark <0 || mark >10)){
+                        isValid = false;
+                        errorMsg = "Mark must be [0-10] ";
+                    }
                     request.setMark(mark);
                 }
-                taskDAO.updateTask(taskId, request, new Callback<TaskResponse>() {
-                    @Override
-                    public void onResponse(Call<TaskResponse> call, Response<TaskResponse> response) {
-                        if (response.isSuccessful()) {
-                            if (response.code() == ResponseCodeConstant.OK && StatusConstant.FAILED.equalsIgnoreCase(txtStatus.getText().toString())) {
-                                TaskCreationFragment creationFragment = new TaskCreationFragment();
-                                Bundle bundle = new Bundle();
-                                bundle.putSerializable("source", response.body().getData());
-                                creationFragment.setArguments(bundle);
-                                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, creationFragment).commit();
+                if(isValid){
+                    taskDAO.updateTask(taskId, request, new Callback<TaskResponse>() {
+                        @Override
+                        public void onResponse(Call<TaskResponse> call, Response<TaskResponse> response) {
+                            if (response.isSuccessful()) {
+                                if (response.code() == ResponseCodeConstant.OK && StatusConstant.FAILED.equalsIgnoreCase(txtStatus.getText().toString())) {
+                                    TaskCreationFragment creationFragment = new TaskCreationFragment();
+                                    Bundle bundle = new Bundle();
+                                    bundle.putSerializable("source", response.body().getData());
+                                    creationFragment.setArguments(bundle);
+                                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, creationFragment).commit();
+                                }
+                                Toast.makeText(getActivity(), "Update success", Toast.LENGTH_SHORT).show();
+
+                            } else {
+                                Toast.makeText(getActivity(), "Update Failed", Toast.LENGTH_SHORT).show();
                             }
-                            Toast.makeText(getActivity(), "Update success", Toast.LENGTH_SHORT).show();
-
-                        } else {
-                            Toast.makeText(getActivity(), "Update Failed", Toast.LENGTH_SHORT).show();
                         }
-                    }
 
-                    @Override
-                    public void onFailure(Call<TaskResponse> call, Throwable t) {
-                        Toast.makeText(getActivity(), "Update On Failure", Toast.LENGTH_SHORT).show();
-                        t.printStackTrace();
-                    }
-                });
+                        @Override
+                        public void onFailure(Call<TaskResponse> call, Throwable t) {
+                            Toast.makeText(getActivity(), "Update On Failure", Toast.LENGTH_SHORT).show();
+                            t.printStackTrace();
+                        }
+                    });
+                }else{
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setTitle("Invalid");
+                    builder.setIcon(android.R.drawable.ic_dialog_alert);
+                    builder.setMessage(errorMsg);
+                    builder.setPositiveButton("Got It", null);
+                    builder.show();
+                }
             }
         });
     }
@@ -358,5 +380,8 @@ public class TaskDetailFragment extends Fragment {
                 t.printStackTrace();
             }
         });
+    }
+    private boolean isEmpty(String text) {
+        return text.isEmpty();
     }
 }

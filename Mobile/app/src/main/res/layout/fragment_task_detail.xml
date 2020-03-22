@@ -14,6 +14,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btnDeleteTask"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:drawableLeft="@drawable/ic_delete_remove"
+                android:textColor="@color/colorWhite"
+                android:layout_gravity="right"
+                android:background="@color/colorBrightOrange"
+                android:text="@string/btn_delete" />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -241,17 +252,18 @@
                     android:hint="10"
                     android:inputType="number" />
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
-
                     <Button
                         android:id="@+id/btnAccept"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Accept"
                         android:background="@color/colorPrimary"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="10dp"
                         android:drawableLeft="@drawable/ic_verified_accept"
                         android:textColor="@color/colorWhite"/>
 
@@ -259,17 +271,25 @@
                         android:id="@+id/btnDecline"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
                         android:drawableLeft="@drawable/ic_cancel_reject"
                         android:background="@color/colorOrange"
                         android:text="Decline" />
-
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
                     <Button
                         android:id="@+id/btnFinish"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
                         android:drawableLeft="@drawable/ic_flag_finish"
                         android:background="@color/colorAccent"
                         android:textColor="@color/colorWhite"
+                        android:layout_alignParentRight="true"
                         android:text="Finish" />
 
                     <Button
@@ -279,24 +299,15 @@
                         android:drawableLeft="@drawable/ic_mood_bad_failed"
                         android:background="@color/colorYellow"
                         android:textColor="@color/colorWhite"
+                        android:layout_centerInParent="true"
                         android:text="Failed" />
-                </LinearLayout>
+                </RelativeLayout>
             </LinearLayout>
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/btnDeleteTask"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/ic_delete_remove"
-                    android:textColor="@color/colorWhite"
-                    android:background="@color/colorBrightOrange"
-                    android:text="@string/btn_delete" />
-
                 <Button
                     android:id="@+id/btnSave"
                     android:layout_width="wrap_content"
@@ -304,8 +315,11 @@
                     android:drawableLeft="@drawable/ic_done_save"
                     android:textColor="@color/colorWhite"
                     android:background="@color/colorBlue"
-                    android:text="@string/btn_save" />
-            </LinearLayout>
+                    android:layout_centerInParent="true"
+                    android:text="@string/btn_save"
+                    android:padding="5dp"/>
+
+            </RelativeLayout>
         </LinearLayout>
 
     </ScrollView>

@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import java.util.Calendar;
 
@@ -41,7 +40,6 @@ public class DateRangePickerFragment extends Fragment {
         if (bundle != null) {
             startTime = (Calendar) bundle.getSerializable("startTime");
             endTime = (Calendar) bundle.getSerializable("endTime");
-            Toast.makeText(getActivity(), "Has Bundle", Toast.LENGTH_SHORT).show();
         } else {
             startTime = Calendar.getInstance();
             endTime = Calendar.getInstance();
@@ -63,7 +61,6 @@ public class DateRangePickerFragment extends Fragment {
         edtStartTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "clicked On Start Time", Toast.LENGTH_SHORT).show();
                 startTimeFragment.show(getActivity().getSupportFragmentManager(), "DatePicker");
             }
         });
@@ -71,7 +68,6 @@ public class DateRangePickerFragment extends Fragment {
         edtEndTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "Clicked on End Time", Toast.LENGTH_SHORT).show();
                 endTimeFragment.show(getActivity().getSupportFragmentManager(), "DatePicker2");
             }
         });

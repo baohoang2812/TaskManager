@@ -31,6 +31,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/txtStatusName"
                 android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/viewfinder_laser"
                 android:text="Status"/>
             <TextView
                 android:id="@+id/txtDescription"

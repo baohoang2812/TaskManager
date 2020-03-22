@@ -1,6 +1,8 @@
 package baohg.taskmanager.baohg.responses;
 
-public class BaseResponse {
+import java.io.Serializable;
+
+public class BaseResponse implements Serializable {
     String message;
 
     public String getMessage() {

@@ -2,8 +2,8 @@ package baohg.taskmanager.baohg.daos;
 
 import java.io.Serializable;
 
-import baohg.taskmanager.baohg.baohg.apis.APIClient;
-import baohg.taskmanager.baohg.baohg.apis.StatusAPI;
+import baohg.taskmanager.baohg.apis.APIClient;
+import baohg.taskmanager.baohg.apis.StatusAPI;
 import baohg.taskmanager.baohg.responses.StatusResponse;
 import retrofit2.Callback;
 

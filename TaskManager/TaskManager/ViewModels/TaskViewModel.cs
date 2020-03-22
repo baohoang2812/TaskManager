@@ -33,7 +33,7 @@ namespace TaskManager.ViewModels
         [JsonProperty("description")]
         public string Description { get; set; }
         [JsonProperty("startTime")]
-        public DateTime StartTime { get; set; } = DateTime.Now;
+        public DateTime? StartTime { get; set; }
         [JsonProperty("endTime")]
         public DateTime? EndTime { get; set; }
         [JsonProperty("statusId")]
@@ -65,5 +65,6 @@ namespace TaskManager.ViewModels
         public string Creator { get; set; }
         public int? HandlerId { get; set; }
         public string ConfirmationImage { get; set; }
+        public DateTime? ModifyTime { get; set; } = DateTime.Now;
     }
 }

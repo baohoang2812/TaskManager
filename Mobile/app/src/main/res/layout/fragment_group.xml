@@ -6,12 +6,28 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".GroupFragment">
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:drawableLeft="@drawable/ic_search"
-        android:text="Search"
-        android:id="@+id/btnSearchByQRCode"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_search"
+            android:background="@color/viewfinder_laser"
+            android:textColor="@color/colorWhite"
+            android:text="Search"
+            android:id="@+id/btnSearchByQRCode"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Create"
+            android:drawableLeft="@drawable/ic_group_add"
+            android:background="@color/colorBlue"
+            android:textColor="@color/colorWhite"
+            android:layout_alignParentRight="true"
+            android:id="@+id/btnCreateGroup"/>
+    </RelativeLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"

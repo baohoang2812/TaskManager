@@ -10,8 +10,8 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import baohg.taskmanager.MainActivity;
-import baohg.taskmanager.ProfileFragment;
 import baohg.taskmanager.R;
+import baohg.taskmanager.UserDetailFragment;
 import baohg.taskmanager.baohg.dtos.UserDTO;
 import baohg.taskmanager.baohg.view_holders.UserViewHolder;
 
@@ -37,13 +37,13 @@ public class UserAdapter extends RecyclerView.Adapter<UserViewHolder> {
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ProfileFragment profileFragment = new ProfileFragment();
+                UserDetailFragment userDetailFragment = new UserDetailFragment();
                 Bundle bundle = new Bundle();
                 bundle.putInt("userId", userList.get(position).getUserId());
-                profileFragment.setArguments(bundle);
+                userDetailFragment.setArguments(bundle);
                 MainActivity mainActivity = (MainActivity) v.getContext();
                 mainActivity.getSupportFragmentManager()
-                        .beginTransaction().replace(R.id.fragmentContainer, profileFragment).commit();
+                        .beginTransaction().replace(R.id.fragmentContainer, userDetailFragment).commit();
             }
         });
     }

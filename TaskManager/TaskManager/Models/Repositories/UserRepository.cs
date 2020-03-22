@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace TaskManager.Models.Repositories
@@ -37,8 +38,9 @@ namespace TaskManager.Models.Repositories
                 GroupId = x.GroupId,
                 RoleId = x.RoleId,
                 Fullname = x.Fullname,
+                Phone = x.Phone,
                 Email = x.Email,
-                Role = x.Role
+                Role = x.Role,
             }).FirstOrDefault();
         }
     }

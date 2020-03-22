@@ -2,7 +2,9 @@ package baohg.taskmanager.baohg.request;
 
 import com.google.gson.annotations.SerializedName;
 
-public class EditTaskRequest {
+import java.io.Serializable;
+
+public class EditTaskRequest implements Serializable {
     @SerializedName("name")
     String name;
     @SerializedName("sourceId")

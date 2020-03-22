@@ -1,4 +1,4 @@
-package baohg.taskmanager.baohg.baohg.apis;
+package baohg.taskmanager.baohg.apis;
 
 import baohg.taskmanager.baohg.responses.StatusResponse;
 import retrofit2.Call;

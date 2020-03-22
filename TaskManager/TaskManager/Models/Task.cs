@@ -18,13 +18,14 @@ namespace TaskManager.Models
         public string ManagerReview { get; set; }
         public int? Mark { get; set; }
         public DateTime? ReviewedTime { get; set; }
-        public DateTime StartTime { get; set; }
+        public DateTime? StartTime { get; set; }
         public DateTime? EndTime { get; set; }
         public int StatusId { get; set; }
         public DateTime CreatedTime { get; set; }
         public string Creator { get; set; }
         public int? HandlerId { get; set; }
         public string ConfirmationImage { get; set; }
+        public DateTime? ModifyTime { get; set; }
 
         public virtual User Handler { get; set; }
         public virtual Task Source { get; set; }

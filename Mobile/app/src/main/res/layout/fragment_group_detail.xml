@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Group Name"
+        android:textStyle="bold"
+        android:textColor="@color/colorBlue"
+        android:textSize="25sp"
+        android:id="@+id/txtGroupName"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="2020-03-03"
+        android:drawableLeft="@drawable/ic_clock"
+        android:textColor="@color/colorBlue"
+        android:textSize="15sp"
+        android:textStyle="italic"
+        android:id="@+id/txtCreatedTime"/>
+
+    <View
+        android:layout_width="55dp"
+        android:layout_height="5dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/colorBlue"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Description"
+        android:drawableLeft="@drawable/ic_description"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:textColor="@color/colorBlue"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:lines="10"
+        android:id="@+id/txtDescription"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Member List"
+        android:textStyle="bold"
+        android:textColor="@color/colorBlue"
+        android:textSize="20sp"/>
+    <View
+        android:layout_width="55dp"
+        android:layout_height="5dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/colorBlue"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"
+        android:clipToPadding="false"
+        android:id="@+id/wgRecyclerView"/>
+</LinearLayout>

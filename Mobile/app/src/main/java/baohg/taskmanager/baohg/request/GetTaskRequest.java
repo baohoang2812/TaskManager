@@ -2,7 +2,9 @@ package baohg.taskmanager.baohg.request;
 
 import com.google.gson.annotations.SerializedName;
 
-public class GetTaskRequest {
+import java.io.Serializable;
+
+public class GetTaskRequest implements Serializable {
      @SerializedName("userId")
      int userId;
      @SerializedName("startTime")
@@ -13,16 +15,18 @@ public class GetTaskRequest {
      Integer handlerId;
      @SerializedName("statusId")
      int statusId;
+     @SerializedName("handlerCode")
+     String handlerCode;
 
      public GetTaskRequest() {
      }
 
-     public GetTaskRequest(int userId, String startTime, String endTime, Integer handlerId, int statusId) {
-          this.userId = userId;
-          this.startTime = startTime;
-          this.endTime = endTime;
-          this.handlerId = handlerId;
-          this.statusId = statusId;
+     public String getHandlerCode() {
+          return handlerCode;
+     }
+
+     public void setHandlerCode(String handlerCode) {
+          this.handlerCode = handlerCode;
      }
 
      public int getUserId() {

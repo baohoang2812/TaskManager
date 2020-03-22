@@ -23,21 +23,22 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ProfileFragment extends Fragment {
-    TextView txtFullname, txtEmail, txtRole;
+    TextView txtFullname, txtEmail, txtRole, txtPhone;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view =  inflater.inflate(R.layout.fragment_profile, container, false);
+        View view = inflater.inflate(R.layout.fragment_profile, container, false);
         txtFullname = view.findViewById(R.id.txtFullName);
         txtEmail = view.findViewById(R.id.txtEmail);
         txtRole = view.findViewById(R.id.txtRole);
+        txtPhone = view.findViewById(R.id.txtPhone);
         Button btnLogOut = view.findViewById(R.id.btnLogOut);
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("baohg.taskmanager_preferences", Context.MODE_PRIVATE);
         Bundle bundle = getArguments();
-        if(bundle != null){
+        if (bundle != null) {
             int userId = bundle.getInt("userId", 0);
             loadUserProfile(userId);
-        }else{
+        } else {
             loadUserProfile(sharedPreferences.getInt("userId", 0));
         }
         btnLogOut.setOnClickListener(new View.OnClickListener() {
@@ -51,20 +52,22 @@ public class ProfileFragment extends Fragment {
         });
         return view;
     }
-    private void loadUserProfile(int userId){
+
+    private void loadUserProfile(int userId) {
         UserDAO userDAO = new UserDAO();
 
-        userDAO.getUserProfile(userId , new Callback<UserResponse>() {
+        userDAO.getUserProfile(userId, new Callback<UserResponse>() {
             @Override
             public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
-                if(response.isSuccessful()){
-                    if(response.code() == ResponseCodeConstant.OK){
+                if (response.isSuccessful()) {
+                    if (response.code() == ResponseCodeConstant.OK) {
                         UserDTO userDTO = response.body().getData();
                         txtFullname.setText(userDTO.getFullName());
                         txtEmail.setText(userDTO.getEmail());
                         txtRole.setText(userDTO.getRoleName());
-                    }else{
-                        Toast.makeText(getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        txtPhone.setText(userDTO.getPhoneNumber());
+                    } else {
+                        Toast.makeText(getContext(), response.message(), Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -72,7 +75,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onFailure(Call<UserResponse> call, Throwable t) {
                 t.printStackTrace();
-                Toast.makeText(getContext(), "FAILURE" + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "FAILURE", Toast.LENGTH_SHORT).show();
             }
         });
 
