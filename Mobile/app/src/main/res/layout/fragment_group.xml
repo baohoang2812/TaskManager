@@ -13,7 +13,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawableLeft="@drawable/ic_search"
-            android:background="@color/viewfinder_laser"
+            android:background="@color/zxing_custom_viewfinder_laser"
             android:textColor="@color/colorWhite"
             android:text="Search"
             android:id="@+id/btnSearchByQRCode"/>

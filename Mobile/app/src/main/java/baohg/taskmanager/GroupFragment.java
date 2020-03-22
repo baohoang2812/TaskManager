@@ -1,5 +1,6 @@
 package baohg.taskmanager;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -7,6 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
+
+import com.google.zxing.Result;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import java.util.List;
 
@@ -38,6 +44,7 @@ public class GroupFragment extends Fragment {
     GroupAdapter groupAdapter;
     Button btnSearch, btnCreateGroup;
     List<UserDTO> userList;
+    private IntentIntegrator qrScanner;
 
     @Nullable
     @Override
@@ -49,10 +56,12 @@ public class GroupFragment extends Fragment {
         String userRole = sharedPreferences.getString("userRole", "");
         btnSearch = view.findViewById(R.id.btnSearchByQRCode);
         btnCreateGroup = view.findViewById(R.id.btnCreateGroup);
+        qrScanner = new IntentIntegrator(getActivity());
+        qrScanner.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES);
         if (!RoleConstant.ADMIN.equalsIgnoreCase(userRole)) {
             loadAllUserInGroup(sharedPreferences.getInt("groupId", 0));
             btnCreateGroup.setVisibility(View.GONE);
-            if(RoleConstant.USER.equalsIgnoreCase(userRole)){
+            if (RoleConstant.USER.equalsIgnoreCase(userRole)) {
                 btnSearch.setVisibility(View.GONE);
             }
         } else {
@@ -61,13 +70,7 @@ public class GroupFragment extends Fragment {
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-
-                    Intent intent = new Intent("com.google.zxing.client.android.SCAN");
-                    intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                qrScanner.initiateScan();
             }
         });
         btnCreateGroup.setOnClickListener(new View.OnClickListener() {
@@ -80,7 +83,9 @@ public class GroupFragment extends Fragment {
         return view;
     }
 
+
     public void loadAllUserInGroup(int groupId) {
+        final ProgressDialog progressDialog = new ProgressDialog(getActivity());
         UserDAO userDAO = new UserDAO();
         GetUserRequest request = new GetUserRequest();
         request.setGroupId(groupId);
@@ -92,6 +97,7 @@ public class GroupFragment extends Fragment {
                         userList = response.body().getData();
                         userAdapter = new UserAdapter(userList);
                         recyclerView.setAdapter(userAdapter);
+                        progressDialog.dismiss();
                     }
                 }
             }
@@ -99,11 +105,14 @@ public class GroupFragment extends Fragment {
             @Override
             public void onFailure(Call<GetUserResponse> call, Throwable t) {
                 t.printStackTrace();
+                progressDialog.dismiss();
             }
         });
     }
 
     private void loadAllGroup() {
+        final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+        progressDialog.show();
         GroupDAO groupDAO = new GroupDAO();
         groupDAO.getAllGroup(new Callback<GetGroupResponse>() {
             @Override
@@ -112,14 +121,15 @@ public class GroupFragment extends Fragment {
                     List<GroupDTO> groupList = response.body().getData();
                     groupAdapter = new GroupAdapter(groupList);
                     recyclerView.setAdapter(groupAdapter);
+                    progressDialog.dismiss();
                 }
             }
 
             @Override
             public void onFailure(Call<GetGroupResponse> call, Throwable t) {
                 t.printStackTrace();
+                progressDialog.dismiss();
             }
         });
     }
-
 }

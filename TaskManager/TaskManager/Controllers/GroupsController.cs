@@ -97,9 +97,9 @@ namespace TaskManager.Controllers
                     var manager = userService.GetUserById(request.ManagerId ?? 0);
                     if (manager == null)
                     {
-                        return Unauthorized(new ApiResult
+                        return NotFound(new ApiResult
                         {
-                            Message = ResultMessage.Unauthorized
+                            Message = ResultMessage.NotFound
                         });
                     }
                 }

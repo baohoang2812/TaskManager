@@ -1,5 +1,6 @@
 package baohg.taskmanager;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,6 +43,8 @@ public class UserFragment extends Fragment {
     }
 
     private void loadAllUser(){
+        final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+        progressDialog.show();
         UserDAO userDAO = new UserDAO();
         GetUserRequest request = new GetUserRequest();
         userDAO.getAllUser(request, new Callback<GetUserResponse>() {
@@ -50,12 +53,14 @@ public class UserFragment extends Fragment {
                 if(response.isSuccessful()){
                     userAdapter = new UserAdapter(response.body().getData());
                     recyclerView.setAdapter(userAdapter);
+                    progressDialog.dismiss();
                 }
             }
 
             @Override
             public void onFailure(Call<GetUserResponse> call, Throwable t) {
                 t.printStackTrace();
+                progressDialog.dismiss();
             }
         });
     }

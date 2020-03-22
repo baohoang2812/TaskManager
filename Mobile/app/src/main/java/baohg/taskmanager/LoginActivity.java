@@ -58,4 +58,9 @@ public class LoginActivity extends AppCompatActivity {
         });
 
     }
+
+    @Override
+    public void onBackPressed() {
+        // not reverse after log out
+    }
 }

@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import androidx.fragment.app.Fragment;
 import baohg.taskmanager.baohg.daos.TaskDAO;
@@ -89,6 +90,21 @@ public class TaskCreationFragment extends Fragment {
                 if (isEmpty(description)) {
                     isValid = false;
                     errorMsg += "Description is required \n";
+                }
+                String txtStartDate = dateRangePickerFragment.getEdtStartTime().getText().toString();
+                String txtEndDate = dateRangePickerFragment.getEdtEndTime().getText().toString();
+                if(!txtStartDate.isEmpty() && !txtEndDate.isEmpty()){
+                    try{
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                        Date startDate = sdf.parse(txtStartDate);
+                        Date endDate = sdf.parse(txtEndDate);
+                        if(startDate.after(endDate)){
+                            isValid = false;
+                            errorMsg += "Start Date must before End Date \n";
+                        }
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
                 }
                 if (isValid) {
                     TaskDAO taskDAO = new TaskDAO();

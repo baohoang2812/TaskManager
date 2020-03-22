@@ -3,6 +3,7 @@ package baohg.taskmanager;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
@@ -137,34 +138,46 @@ public class TaskDetailFragment extends Fragment {
         btnDeleteTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                taskDAO.deleteTask(taskId, new Callback<TaskResponse>() {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle("Warning");
+                builder.setIcon(android.R.drawable.ic_dialog_alert);
+                builder.setMessage("Are you sure to delete?");
+                builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onResponse(Call<TaskResponse> call, Response<TaskResponse> response) {
-                        if (response.isSuccessful()) {
-                            switch (response.code()) {
-                                case ResponseCodeConstant.NOT_FOUND: {
-                                    Toast.makeText(getActivity(), "Task Not Found", Toast.LENGTH_SHORT).show();
+                    public void onClick(DialogInterface dialog, int which) {
+                        taskDAO.deleteTask(taskId, new Callback<TaskResponse>() {
+                            @Override
+                            public void onResponse(Call<TaskResponse> call, Response<TaskResponse> response) {
+                                if (response.isSuccessful()) {
+                                    switch (response.code()) {
+                                        case ResponseCodeConstant.NOT_FOUND: {
+                                            Toast.makeText(getActivity(), "Task Not Found", Toast.LENGTH_SHORT).show();
+                                        }
+                                        case ResponseCodeConstant.ERROR: {
+                                            Toast.makeText(getActivity(), "ERROR: " + response.message(), Toast.LENGTH_SHORT).show();
+                                        }
+                                        case ResponseCodeConstant.NO_CONTENT: {
+                                            getActivity()
+                                                    .getSupportFragmentManager()
+                                                    .beginTransaction()
+                                                    .replace(R.id.fragmentContainer, new TaskFragment()).commit();
+                                        }
+                                        default:
+                                            break;
+                                    }
                                 }
-                                case ResponseCodeConstant.ERROR: {
-                                    Toast.makeText(getActivity(), "ERROR: " + response.message(), Toast.LENGTH_SHORT).show();
-                                }
-                                case ResponseCodeConstant.NO_CONTENT: {
-                                    getActivity()
-                                            .getSupportFragmentManager()
-                                            .beginTransaction()
-                                            .replace(R.id.fragmentContainer, new TaskFragment()).commit();
-                                }
-                                default:
-                                    break;
                             }
-                        }
-                    }
 
-                    @Override
-                    public void onFailure(Call<TaskResponse> call, Throwable t) {
-                        t.printStackTrace();
+                            @Override
+                            public void onFailure(Call<TaskResponse> call, Throwable t) {
+                                t.printStackTrace();
+                            }
+                        });
                     }
                 });
+                builder.setNegativeButton("Cancel", null);
+                builder.show();
+
             }
         });
     }
@@ -270,18 +283,32 @@ public class TaskDetailFragment extends Fragment {
                     isValid = false;
                     errorMsg += "Description is required \n";
                 }
+                String txtStartDate = dateRangePickerFragment.getEdtStartTime().getText().toString();
+                String txtEndDate = dateRangePickerFragment.getEdtEndTime().getText().toString();
+                if(!txtStartDate.isEmpty() && !txtEndDate.isEmpty()){
+                    try{
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                        Date startDate = sdf.parse(txtStartDate);
+                        Date endDate = sdf.parse(txtEndDate);
+                        if(startDate.after(endDate)){
+                            isValid = false;
+                            errorMsg += "Start Date must before End Date \n";
+                        }
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
                 UpdateTaskRequest request = new UpdateTaskRequest();
                 String report = edtReport.getText().toString();
                 request.setName(name);
                 request.setDescription(description);
-                String startTime = dateRangePickerFragment.getEdtStartTime().getText().toString();
-                String endTime = dateRangePickerFragment.getEdtEndTime().getText().toString();
+
                 request.setReport(report);
-                request.setStartTime(startTime);
+                request.setStartTime(txtStartDate);
                 request.setCreatedTime(txtCreatedTime.getText().toString());
                 request.setCreator(txtCreator.getText().toString());
                 request.setStatusId(statusId);
-                request.setEndTime(endTime);
+                request.setEndTime(txtEndDate);
                 request.setHandlerId(handlerId);
                 if (!isUser) {
                     // get current time

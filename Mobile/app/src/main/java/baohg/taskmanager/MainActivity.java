@@ -1,11 +1,14 @@
 package baohg.taskmanager;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -77,5 +80,32 @@ public class MainActivity extends AppCompatActivity {
 
     private void loadFragment(Fragment fragment) {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, fragment).addToBackStack(null).commit();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if(result != null){
+            if(result.getContents() == null){
+                Toast.makeText(this, "Not Found", Toast.LENGTH_SHORT).show();
+            }
+            else{
+                try{
+                    String txtUserId = result.getContents();
+                    int userId = Integer.parseInt(txtUserId);
+                    UserDetailFragment userDetailFragment = new UserDetailFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("userId", userId);
+                    userDetailFragment.setArguments(bundle);
+                    getSupportFragmentManager()
+                            .beginTransaction().replace(R.id.fragmentContainer, userDetailFragment).commitAllowingStateLoss();
+                }catch (Exception e){
+                    e.printStackTrace();
+                    Toast.makeText(this, "Invalid UserId", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }else{
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 }
