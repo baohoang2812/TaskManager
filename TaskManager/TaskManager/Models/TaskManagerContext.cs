@@ -45,11 +45,6 @@ namespace TaskManager.Models
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(50);
-
-                entity.HasOne(d => d.Manager)
-                    .WithMany(p => p.Group)
-                    .HasForeignKey(d => d.ManagerId)
-                    .HasConstraintName("FK_Group_User");
             });
 
             modelBuilder.Entity<Role>(entity =>
@@ -125,7 +120,7 @@ namespace TaskManager.Models
                     .IsRequired()
                     .HasMaxLength(256);
 
-                entity.HasOne(d => d.GroupNavigation)
+                entity.HasOne(d => d.Group)
                     .WithMany(p => p.User)
                     .HasForeignKey(d => d.GroupId)
                     .HasConstraintName("FK_User_Group");

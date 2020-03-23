@@ -26,7 +26,7 @@ import retrofit2.Response;
 
 public class GroupCreationFragment extends Fragment {
     Button btnCreate;
-    EditText edtName, edtDescription, edtManagerId;
+    EditText edtName, edtDescription;
     int userId;
 
     @Nullable
@@ -36,7 +36,6 @@ public class GroupCreationFragment extends Fragment {
         btnCreate = view.findViewById(R.id.btnCreate);
         edtName = view.findViewById(R.id.edtGroupName);
         edtDescription = view.findViewById(R.id.edtDescription);
-        edtManagerId = view.findViewById(R.id.edtManagerId);
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("baohg.taskmanager_preferences", Context.MODE_PRIVATE);
         userId = sharedPreferences.getInt("userId", 0);
         btnCreate.setOnClickListener(new View.OnClickListener() {
@@ -56,9 +55,6 @@ public class GroupCreationFragment extends Fragment {
                     request.setCreatedTime(sdf.format(new Date()));
                     request.setUserId(userId);
                     request.setName(groupName);
-                    String txtManagerId = edtManagerId.getText().toString();
-                    Integer managerId = txtManagerId.isEmpty() ? null : Integer.parseInt(txtManagerId);
-                    request.setManagerId(managerId);
                     GroupDAO groupDAO = new GroupDAO();
                     groupDAO.createGroup(request, new Callback<GroupResponse>() {
                         @Override

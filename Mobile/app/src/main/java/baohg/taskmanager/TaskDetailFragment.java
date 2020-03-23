@@ -10,6 +10,8 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -60,6 +62,7 @@ public class TaskDetailFragment extends Fragment {
     private static int RESULT_UPLOAD_IMAGE = 1;
     ImageView imageView;
     boolean isUser;
+    LinearLayout reviewSection, reportSection;
 
     public TaskDetailFragment() {
         // Required empty public constructor
@@ -91,40 +94,70 @@ public class TaskDetailFragment extends Fragment {
         btnReject = view.findViewById(R.id.btnDecline);
         btnFinish = view.findViewById(R.id.btnFinish);
         btnFailed = view.findViewById(R.id.btnFailed);
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("baohg.taskmanager_preferences", Context.MODE_PRIVATE);
-        String userRole = sharedPreferences.getString("userRole", "");
-        btnAccept.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                changeStatus(StatusConstant.PROCESSING);
-            }
-        });
-        btnReject.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                changeStatus(StatusConstant.REJECTED);
-            }
-        });
-        btnFinish.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                changeStatus(StatusConstant.FINISHED);
-            }
-        });
-        btnFailed.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                changeStatus(StatusConstant.FAILED);
-            }
-        });
-        isUser = RoleConstant.USER.equalsIgnoreCase(userRole) ? true : false;
-        if (isUser) {
-            LinearLayout layout = view.findViewById(R.id.sectionReview);
-            layout.setVisibility(View.GONE);
-        }
+        reviewSection = view.findViewById(R.id.sectionReview);
+        reportSection = view.findViewById(R.id.reportSection);
         try {
-            showTaskDetail();
+            SharedPreferences sharedPreferences = getActivity().getSharedPreferences("baohg.taskmanager_preferences", Context.MODE_PRIVATE);
+            String userRole = sharedPreferences.getString("userRole", "");
+            btnAccept.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    changeStatus(StatusConstant.PROCESSING);
+                }
+            });
+            btnReject.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    changeStatus(StatusConstant.REJECTED);
+                }
+            });
+            btnFinish.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (isReviewed()) {
+                        changeStatus(StatusConstant.FINISHED);
+                    } else {
+                        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getActivity());
+                        alertBuilder.setTitle("Please check");
+                        alertBuilder.setMessage("Please fill in review section");
+                        alertBuilder.setIcon(R.drawable.ic_warning);
+                        alertBuilder.setPositiveButton("Got It", null);
+                        alertBuilder.show();
+                    }
+                }
+            });
+            btnFailed.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    changeStatus(StatusConstant.FAILED);
+                }
+            });
+            isUser = RoleConstant.USER.equalsIgnoreCase(userRole) ? true : false;
+            if (isUser) {
+                switchReviewSectionState();
+                btnAccept.setVisibility(View.GONE);
+                btnReject.setVisibility(View.GONE);
+                btnFailed.setVisibility(View.GONE);
+                btnFinish.setVisibility(View.GONE);
+            }
+            switchReviewSectionState();
+            edtReport.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    switchReviewSectionState();
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                }
+            });
+            showTaskDetail();
             deleteTask();
             saveChanges();
             uploadConfirmationImage();
@@ -133,6 +166,7 @@ public class TaskDetailFragment extends Fragment {
         }
         return view;
     }
+
 
     public void deleteTask() {
         btnDeleteTask.setOnClickListener(new View.OnClickListener() {
@@ -207,6 +241,7 @@ public class TaskDetailFragment extends Fragment {
                             txtCreator.setText(taskDTO.getCreator());
                             statusId = taskDTO.getStatusId();
                             txtStatus.setText(taskDTO.getStatusName());
+                            setReportSectionVisibility();
                             edtComment.setText(taskDTO.getComment());
                             String txtMark = taskDTO.getMark() != null ? taskDTO.getMark().toString() : "";
                             edtMark.setText(txtMark);
@@ -229,26 +264,9 @@ public class TaskDetailFragment extends Fragment {
                                     .beginTransaction()
                                     .replace(R.id.dateRangePickerFragment, dateRangePickerFragment)
                                     .commit();
-
-                            // set Buttons by Status
-                            String status = txtStatus.getText().toString();
-                            switch (status) {
-                                case StatusConstant.NOT_STARTED: {
-                                    btnFinish.setVisibility(View.GONE);
-                                    btnFailed.setVisibility(View.GONE);
-                                    break;
-                                }
-                                case StatusConstant.PROCESSING: {
-                                    btnAccept.setVisibility(View.GONE);
-                                    btnReject.setVisibility(View.GONE);
-                                    break;
-                                }
-                                default:{
-                                    btnAccept.setVisibility(View.GONE);
-                                    btnReject.setVisibility(View.GONE);
-                                }
-
-                            }
+                            setButtonVisibility();
+                            setReportSectionVisibility();
+                            setReviewSectionVisibility();
                             break;
                         }
                         default: {
@@ -285,16 +303,16 @@ public class TaskDetailFragment extends Fragment {
                 }
                 String txtStartDate = dateRangePickerFragment.getEdtStartTime().getText().toString();
                 String txtEndDate = dateRangePickerFragment.getEdtEndTime().getText().toString();
-                if(!txtStartDate.isEmpty() && !txtEndDate.isEmpty()){
-                    try{
+                if (!txtStartDate.isEmpty() && !txtEndDate.isEmpty()) {
+                    try {
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                         Date startDate = sdf.parse(txtStartDate);
                         Date endDate = sdf.parse(txtEndDate);
-                        if(startDate.after(endDate)){
+                        if (startDate.after(endDate)) {
                             isValid = false;
                             errorMsg += "Start Date must before End Date \n";
                         }
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
@@ -318,13 +336,13 @@ public class TaskDetailFragment extends Fragment {
                     request.setReviewedTime(reviewTime);
                     request.setComment(edtComment.getText().toString());
                     Integer mark = edtMark.getText().toString().isEmpty() ? null : Integer.parseInt(edtMark.getText().toString());
-                    if(mark != null && (mark <0 || mark >10)){
+                    if (mark != null && (mark < 0 || mark > 10)) {
                         isValid = false;
                         errorMsg = "Mark must be [0-10] ";
                     }
                     request.setMark(mark);
                 }
-                if(isValid){
+                if (isValid) {
                     taskDAO.updateTask(taskId, request, new Callback<TaskResponse>() {
                         @Override
                         public void onResponse(Call<TaskResponse> call, Response<TaskResponse> response) {
@@ -337,7 +355,9 @@ public class TaskDetailFragment extends Fragment {
                                     getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, creationFragment).commit();
                                 }
                                 Toast.makeText(getActivity(), "Update success", Toast.LENGTH_SHORT).show();
-
+                                setButtonVisibility();
+                                setReportSectionVisibility();
+                                setReviewSectionVisibility();
                             } else {
                                 Toast.makeText(getActivity(), "Update Failed", Toast.LENGTH_SHORT).show();
                             }
@@ -349,7 +369,7 @@ public class TaskDetailFragment extends Fragment {
                             t.printStackTrace();
                         }
                     });
-                }else{
+                } else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                     builder.setTitle("Invalid");
                     builder.setIcon(android.R.drawable.ic_dialog_alert);
@@ -369,6 +389,81 @@ public class TaskDetailFragment extends Fragment {
                 startActivityForResult(intent, RESULT_UPLOAD_IMAGE);
             }
         });
+    }
+
+    private void setButtonVisibility() {
+        // set Buttons by Status
+        String status = txtStatus.getText().toString();
+        switch (status) {
+            case StatusConstant.NOT_STARTED: {
+                btnFinish.setVisibility(View.GONE);
+                btnFailed.setVisibility(View.GONE);
+                btnAccept.setVisibility(View.VISIBLE);
+                btnReject.setVisibility(View.VISIBLE);
+                break;
+            }
+            case StatusConstant.PROCESSING: {
+                btnAccept.setVisibility(View.GONE);
+                btnReject.setVisibility(View.GONE);
+                btnFinish.setVisibility(View.VISIBLE);
+                btnFailed.setVisibility(View.VISIBLE);
+                break;
+            }
+            case StatusConstant.REJECTED: {
+                btnFinish.setVisibility(View.GONE);
+                btnFailed.setVisibility(View.GONE);
+                btnReject.setVisibility(View.GONE);
+                btnAccept.setVisibility(View.VISIBLE);
+                break;
+            }
+            default: {
+                // failed/ finished
+                btnAccept.setVisibility(View.GONE);
+                btnReject.setVisibility(View.GONE);
+                btnFailed.setVisibility(View.GONE);
+                btnFinish.setVisibility(View.GONE);
+            }
+        }
+    }
+
+    private void setReportSectionVisibility() {
+        String status = txtStatus.getText().toString();
+        if (isNotStartedOrRejectedStatus(status)) {
+            reportSection.setVisibility(View.GONE);
+        } else {
+            reportSection.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void setReviewSectionVisibility() {
+        String status = txtStatus.getText().toString();
+        if (isNotStartedOrRejectedStatus(status)) {
+            reviewSection.setVisibility(View.GONE);
+        } else {
+            reviewSection.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void switchReviewSectionState() {
+        if (!isReported() || isUser) {
+            edtComment.setEnabled(false);
+            edtMark.setEnabled(false);
+        } else {
+            edtComment.setEnabled(true);
+            edtMark.setEnabled(true);
+        }
+    }
+
+    private boolean isReported() {
+        return !edtReport.getText().toString().isEmpty();
+    }
+
+    private boolean isReviewed() {
+        return !edtComment.getText().toString().isEmpty() && !edtMark.getText().toString().isEmpty();
+    }
+
+    private boolean isNotStartedOrRejectedStatus(String status) {
+        return StatusConstant.NOT_STARTED.equalsIgnoreCase(status) || StatusConstant.REJECTED.equalsIgnoreCase(status);
     }
 
     @Override
@@ -408,6 +503,7 @@ public class TaskDetailFragment extends Fragment {
             }
         });
     }
+
     private boolean isEmpty(String text) {
         return text.isEmpty();
     }

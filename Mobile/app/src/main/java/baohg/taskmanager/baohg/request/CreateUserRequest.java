@@ -15,8 +15,6 @@ public class CreateUserRequest implements Serializable {
     String email;
     @SerializedName("phone")
     String phone;
-    @SerializedName("groupId")
-    int groupId;
 
     public CreateUserRequest() {
     }
@@ -36,17 +34,8 @@ public class CreateUserRequest implements Serializable {
     public void setPassword(String password) {
         this.password = password;
     }
-
-
-    public void setFullname(String fullName) {
-        this.fullName = fullName;
-    }
-
     public void setEmail(String email) {
         this.email = email;
     }
 
-    public void setGroupId(int groupId) {
-        this.groupId = groupId;
-    }
 }

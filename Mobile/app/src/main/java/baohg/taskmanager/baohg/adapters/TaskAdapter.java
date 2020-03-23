@@ -68,7 +68,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> {
         }
         Date endTime = taskList.get(position).getEndTime();
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-        holder.getTxtEndTime().setText(endTime != null ? sdf.format(endTime) : null);
+        holder.getTxtEndTime().setText(endTime != null ? sdf.format(endTime) : "");
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

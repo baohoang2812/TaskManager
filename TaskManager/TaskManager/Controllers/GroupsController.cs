@@ -91,18 +91,6 @@ namespace TaskManager.Controllers
             {
                 var userService = GetService<UserService>();
                 var user = userService.GetUserById(request.UserId);
-                // check Group User is manager
-                if(request.ManagerId != null)
-                {
-                    var manager = userService.GetUserById(request.ManagerId ?? 0);
-                    if (manager == null)
-                    {
-                        return NotFound(new ApiResult
-                        {
-                            Message = ResultMessage.NotFound
-                        });
-                    }
-                }
                 if (user == null || user.Role.Name != RoleName.ADMIN)
                 {
                     return Unauthorized(new ApiResult

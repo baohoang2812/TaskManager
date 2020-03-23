@@ -5,8 +5,6 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 public class CreateGroupRequest implements Serializable {
-    @SerializedName("managerId")
-    Integer managerId;
     @SerializedName("userId")
     int userId;
     @SerializedName("description")
@@ -25,14 +23,6 @@ public class CreateGroupRequest implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Integer getManagerId() {
-        return managerId;
-    }
-
-    public void setManagerId(Integer managerId) {
-        this.managerId = managerId;
     }
 
     public int getUserId() {

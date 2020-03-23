@@ -11,13 +11,11 @@ namespace TaskManager.Models
         }
 
         public int GroupId { get; set; }
-        public int? ManagerId { get; set; }
         public string Name { get; set; }
         public DateTime? CreatedTime { get; set; }
         public string Description { get; set; }
         public DateTime? ModifyTime { get; set; }
 
-        public virtual User Manager { get; set; }
         public virtual ICollection<User> User { get; set; }
     }
 }

@@ -52,21 +52,22 @@ namespace TaskManager.Services
                 Fullname = s.Fullname,
                 Email = s.Email,
                 UserId = s.UserId,
+                RoleId = s.RoleId,
                 Role = s.Role,
                 GroupId = s.GroupId,
                 Phone = s.Phone,
                 Username = s.Username
-            });
+            }).Where(x => x.Role.Name != RoleName.ADMIN);
             if (request.GroupId != null)
             {
                 query = query.Where(s => s.GroupId == request.GroupId);
             }
-            return query.ToList();
+            return query.OrderBy(s => s.RoleId).ToList();
         }
 
         public User GetUserByUsername(string username)
         {
-            return GetAllUser(new GetUserRequest()).Where(s => s.Username == username).FirstOrDefault();
+            return _userRepository.GetAll().Where(s => s.Username == username).FirstOrDefault();
         }
 
     }

@@ -154,10 +154,11 @@ namespace TaskManager.Controllers
                     });
                 }
                 var user = service.CreateUser(model);
+                var result = MapTo<UserViewModel>(user);
                 _unitOfWork.SaveChanges();
                 return Created($"/api/Users?id={user.UserId}", new ApiResult
                 {
-                    Data = user,
+                    Data = result,
                     Message = ResultMessage.Success
                 });
             }

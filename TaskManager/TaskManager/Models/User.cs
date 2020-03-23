@@ -7,7 +7,6 @@ namespace TaskManager.Models
     {
         public User()
         {
-            Group = new HashSet<Group>();
             Task = new HashSet<Task>();
         }
 
@@ -21,9 +20,8 @@ namespace TaskManager.Models
         public string Phone { get; set; }
         public DateTime? ModifyTime { get; set; }
 
-        public virtual Group GroupNavigation { get; set; }
+        public virtual Group Group { get; set; }
         public virtual Role Role { get; set; }
-        public virtual ICollection<Group> Group { get; set; }
         public virtual ICollection<Task> Task { get; set; }
     }
 }

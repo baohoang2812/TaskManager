@@ -10,9 +10,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.TypeAdapter;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import baohg.taskmanager.baohg.constants.ResponseCodeConstant;
 import baohg.taskmanager.baohg.daos.UserDAO;
 import baohg.taskmanager.baohg.request.CreateUserRequest;
 import baohg.taskmanager.baohg.responses.UserResponse;
@@ -83,7 +87,20 @@ public class UserCreateFragment extends Fragment {
                                 getActivity().getSupportFragmentManager()
                                         .beginTransaction().replace(R.id.fragmentContainer, new UserFragment()).commit();
                             } else {
-                                Toast.makeText(getActivity(), response.message(), Toast.LENGTH_LONG).show();
+                                TypeAdapter<UserResponse> adapter = new Gson().getAdapter(UserResponse.class);
+                                try {
+                                    if (response.errorBody() != null) {
+                                        UserResponse userResponse = adapter.fromJson(response.errorBody().string());
+                                        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getActivity());
+                                        alertBuilder.setTitle("Invalid");
+                                        alertBuilder.setMessage(userResponse.getMessage());
+                                        alertBuilder.setIcon(R.drawable.ic_warning);
+                                        alertBuilder.setPositiveButton("Got It", null);
+                                        alertBuilder.show();
+                                    }
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
                             }
                         }
 

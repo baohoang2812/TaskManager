@@ -12,7 +12,7 @@ public class TaskDTO implements Serializable {
     public String creator;
     public Date startTime;
     public Date endTime;
-    public int handlerId;
+    public Integer handlerId;
     public String handlerName;
     public Date createdTime;
     public int statusId;
@@ -22,6 +22,14 @@ public class TaskDTO implements Serializable {
     public Date reviewedTime;
 
     public TaskDTO() {
+    }
+
+    public Integer getHandlerId() {
+        return handlerId;
+    }
+
+    public void setHandlerId(Integer handlerId) {
+        this.handlerId = handlerId;
     }
 
     public void setHandlerName(String handlerName) {
@@ -108,9 +116,6 @@ public class TaskDTO implements Serializable {
         return startTime;
     }
 
-    public int getHandlerId() {
-        return handlerId;
-    }
 
 
 
@@ -118,9 +123,6 @@ public class TaskDTO implements Serializable {
         this.startTime = startTime;
     }
 
-    public void setHandlerId(int handlerId) {
-        this.handlerId = handlerId;
-    }
 
     public int getTaskId() {
         return taskId;

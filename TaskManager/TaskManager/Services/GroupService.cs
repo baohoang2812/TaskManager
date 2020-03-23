@@ -23,13 +23,11 @@ namespace TaskManager.Services
         
         public List<Group> GetAllGroup()
         {
-            return _groupRepository.GetAll().Include(x => x.Manager).Include(x => x.User).Select(x => new Group
+            return _groupRepository.GetAll().Include(x => x.User).Select(x => new Group
             {
                 Name = x.Name,
                 Description = x.Description,
                 CreatedTime = x.CreatedTime,
-                Manager = x.Manager,
-                ManagerId = x.ManagerId,
                 GroupId = x.GroupId,
                 User = x.User
             }).ToList();

@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.Editable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,8 +17,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
-
-import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -150,7 +147,6 @@ public class TaskFragment extends Fragment {
                 public void onResponse(Call<GetTaskResponse> call, Response<GetTaskResponse> response) {
                     switch (response.code()) {
                         case ResponseCodeConstant.OK:
-                            Toast.makeText(getActivity(), "Success", Toast.LENGTH_SHORT).show();
                             taskList = response.body().getData();
                             taskAdapter = new TaskAdapter(taskList);
                             recyclerView.setAdapter(taskAdapter);
@@ -161,7 +157,6 @@ public class TaskFragment extends Fragment {
                             Toast.makeText(getActivity(), "Error:", Toast.LENGTH_LONG).show();
                             break;
                         default:
-                            Toast.makeText(getActivity(), "Default", Toast.LENGTH_SHORT).show();
                             break;
                     }
                     progressDialog.dismiss();
@@ -205,7 +200,7 @@ public class TaskFragment extends Fragment {
                     public void onResponse(Call<StatusResponse> call, Response<StatusResponse> response) {
                         if (response.isSuccessful()) {
                             statusSource = response.body().getStatusList();
-                            statusSource.add(0, new StatusDTO(0, "Selected Status..."));
+                            statusSource.add(0, new StatusDTO(0, "All"));
                             ArrayAdapter<StatusDTO> statusAdapter = new ArrayAdapter<>(
                                     getActivity(), android.R.layout.simple_spinner_item, statusSource);
                             statusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

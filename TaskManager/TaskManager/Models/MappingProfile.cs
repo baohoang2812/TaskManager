@@ -23,7 +23,6 @@ namespace TaskManager.Models
             CreateMap<UserCreateViewModel, Group>();
             CreateMap<UserCreateViewModel, Role>();
             CreateMap<UserEditViewModel, User>();
-            CreateMap<Role, UserViewModel>();
         }
 
         public void MapTask()

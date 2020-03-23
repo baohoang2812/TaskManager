@@ -15,16 +15,17 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+
             <Button
-                android:id="@+id/btnDeleteTask"
+                android:id="@+id/btnSave"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:drawableLeft="@drawable/ic_delete_remove"
+                android:drawableLeft="@drawable/ic_done_save"
                 android:textColor="@color/colorWhite"
                 android:layout_gravity="right"
-                android:background="@color/colorBrightOrange"
-                android:text="@string/btn_delete" />
+                android:background="@color/colorBlue"
+                android:text="@string/btn_save"
+                android:padding="5dp"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -135,45 +136,51 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="@android:color/darker_gray" />
-
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="REPORT"
-                android:textColor="@color/colorBlue"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                android:orientation="vertical"
+                android:id="@+id/reportSection">
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@android:color/darker_gray" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="REPORT"
+                    android:textColor="@color/colorBlue"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
 
-            <EditText
-                android:id="@+id/edtReport"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Report" />
+                <EditText
+                    android:id="@+id/edtReport"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Report" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Task Confirmation"
-                android:textSize="15sp"
-                android:textStyle="bold" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Task Confirmation"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
 
-            <Button
-                android:id="@+id/btnUpload"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_file_upload_white"
-                android:background="@color/colorBlue"
-                android:textColor="@color/colorWhite"
-                android:text="Upload Image" />
+                <Button
+                    android:id="@+id/btnUpload"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_file_upload_white"
+                    android:background="@color/colorBlue"
+                    android:textColor="@color/colorWhite"
+                    android:text="Upload Image" />
 
-            <ImageView
-                android:id="@+id/imgView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                <ImageView
+                    android:id="@+id/imgView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/sectionReview"
@@ -251,74 +258,71 @@
                     android:digits="0123456789."
                     android:hint="10"
                     android:inputType="number" />
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <Button
-                        android:id="@+id/btnAccept"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Accept"
-                        android:background="@color/colorPrimary"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="10dp"
-                        android:drawableLeft="@drawable/ic_verified_accept"
-                        android:textColor="@color/colorWhite"/>
-
-                    <Button
-                        android:id="@+id/btnDecline"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:drawableLeft="@drawable/ic_cancel_reject"
-                        android:background="@color/colorOrange"
-                        android:text="Decline" />
-                </RelativeLayout>
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal">
-                    <Button
-                        android:id="@+id/btnFinish"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="10dp"
-                        android:drawableLeft="@drawable/ic_flag_finish"
-                        android:background="@color/colorAccent"
-                        android:textColor="@color/colorWhite"
-                        android:layout_alignParentRight="true"
-                        android:text="Finish" />
-
-                    <Button
-                        android:id="@+id/btnFailed"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:drawableLeft="@drawable/ic_mood_bad_failed"
-                        android:background="@color/colorYellow"
-                        android:textColor="@color/colorWhite"
-                        android:layout_centerInParent="true"
-                        android:text="Failed" />
-                </RelativeLayout>
             </LinearLayout>
-
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
                 <Button
-                    android:id="@+id/btnSave"
+                    android:id="@+id/btnAccept"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/ic_done_save"
-                    android:textColor="@color/colorWhite"
-                    android:background="@color/colorBlue"
-                    android:layout_centerInParent="true"
-                    android:text="@string/btn_save"
-                    android:padding="5dp"/>
+                    android:text="Accept"
+                    android:background="@color/colorPrimary"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="10dp"
+                    android:drawableLeft="@drawable/ic_verified_accept"
+                    android:textColor="@color/colorWhite"/>
 
+                <Button
+                    android:id="@+id/btnDecline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:drawableLeft="@drawable/ic_cancel_reject"
+                    android:background="@color/colorOrange"
+                    android:text="Decline" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+                <Button
+                    android:id="@+id/btnFinish"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:drawableLeft="@drawable/ic_flag_finish"
+                    android:background="@color/colorAccent"
+                    android:textColor="@color/colorWhite"
+                    android:layout_alignParentRight="true"
+                    android:text="Finish" />
+
+                <Button
+                    android:id="@+id/btnFailed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_mood_bad_failed"
+                    android:background="@color/colorYellow"
+                    android:textColor="@color/colorWhite"
+                    android:layout_centerInParent="true"
+                    android:text="Failed" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <Button
+                    android:id="@+id/btnDeleteTask"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:drawableLeft="@drawable/ic_delete_remove"
+                    android:textColor="@color/colorWhite"
+                    android:layout_centerInParent="true"
+                    android:background="@color/colorBrightOrange"
+                    android:text="@string/btn_delete" />
             </RelativeLayout>
         </LinearLayout>
 

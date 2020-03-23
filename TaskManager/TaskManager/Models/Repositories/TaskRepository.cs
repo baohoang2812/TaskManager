@@ -27,7 +27,7 @@ namespace TaskManager.Models.Repositories
                 StatusId = x.StatusId,
                 HandlerId = x.HandlerId,
                 Handler = x.Handler,
-                Status = x.Status
+                Status = x.Status,
             });
         }
         public Task GetTaskById(int id)

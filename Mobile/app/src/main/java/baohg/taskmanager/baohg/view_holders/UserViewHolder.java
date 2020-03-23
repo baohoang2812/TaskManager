@@ -8,12 +8,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import baohg.taskmanager.R;
 
 public class UserViewHolder extends RecyclerView.ViewHolder {
-    TextView txtFullName, txtRole;
+    TextView txtFullName, txtRole, txtUsername;
     View userView;
     public UserViewHolder(@NonNull View itemView) {
         super(itemView);
         txtFullName = itemView.findViewById(R.id.txtFullName);
         txtRole = itemView.findViewById(R.id.txtRole);
+        txtUsername = itemView.findViewById(R.id.txtUsername);
         userView = itemView;
     }
 
@@ -23,5 +24,9 @@ public class UserViewHolder extends RecyclerView.ViewHolder {
 
     public TextView getTxtRole() {
         return txtRole;
+    }
+
+    public TextView getTxtUsername() {
+        return txtUsername;
     }
 }

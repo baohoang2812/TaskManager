@@ -1,7 +1,9 @@
 package baohg.taskmanager;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.LayoutInflater;
@@ -32,6 +34,7 @@ public class UserDetailFragment extends Fragment {
     Button btnChangeRole, btnSave, btnDelete;
     TextView txtUserId;
     int userId;
+    String userRole;
 
     @Nullable
     @Override
@@ -50,6 +53,11 @@ public class UserDetailFragment extends Fragment {
         if (bundle != null) {
             userId = bundle.getInt("userId", 0);
             loadUserProfile(userId);
+        }
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("baohg.taskmanager_preferences", Context.MODE_PRIVATE);
+        userRole = sharedPreferences.getString("userRole", "");
+        if(!RoleConstant.ADMIN.equalsIgnoreCase(userRole)){
+            setViewOnlyMode();
         }
         btnChangeRole.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -196,5 +204,16 @@ public class UserDetailFragment extends Fragment {
 
     private boolean isPhoneValid(String phone) {
         return Patterns.PHONE.matcher(phone).matches();
+    }
+
+    private void setViewOnlyMode(){
+        edtMail.setEnabled(false);
+        edtGroup.setEnabled(false);
+        edtName.setEnabled(false);
+        edtPhone.setEnabled(false);
+        btnChangeRole.setVisibility(View.GONE);
+        btnSave.setVisibility(View.GONE);
+        btnDelete.setVisibility(View.GONE);
+
     }
 }

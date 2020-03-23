@@ -25,10 +25,20 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:hint="Eden"
+                android:textStyle="italic"
                 android:textSize="20sp"
+                android:textColor="@color/colorBlue"
+                android:drawableLeft="@drawable/ic_profile"
+                android:id="@+id/txtUsername"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:gravity="right"
                 android:hint="Role"
                 android:textStyle="bold"
-                android:drawableLeft="@drawable/ic_user_role"
+                android:drawableRight="@drawable/ic_user_role"
                 android:id="@+id/txtRole"/>
         </LinearLayout>
     </androidx.cardview.widget.CardView>

@@ -19,7 +19,7 @@ public interface UserAPI {
     Call<UserResponse> login(@Body LoginRequest request);
 
     @POST("api/Users")
-    Call<UserResponse> createuser(@Body CreateUserRequest request);
+    Call<UserResponse> createUser(@Body CreateUserRequest request);
 
     @PUT("api/Users/{id}")
     Call<UserResponse> updateUser(@Path ("id") int id, @Body UpdateUserRequest request);

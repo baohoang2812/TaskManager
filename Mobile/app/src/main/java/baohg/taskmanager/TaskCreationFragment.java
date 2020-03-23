@@ -31,8 +31,7 @@ import retrofit2.Response;
  */
 public class TaskCreationFragment extends Fragment {
     DateRangePickerFragment dateRangePickerFragment;
-    TextView txtHandler;
-    EditText edtName, edtDescription, edtSourceId, edtStartTime, edtEndTime;
+    EditText edtName,edtHandler, edtDescription, edtSourceId, edtStartTime, edtEndTime;
     CreateTaskRequest createTaskRequest;
 
     public TaskCreationFragment() {
@@ -54,9 +53,10 @@ public class TaskCreationFragment extends Fragment {
         edtSourceId = view.findViewById(R.id.edtSource);
         edtStartTime = view.findViewById(R.id.edtStartTime);
         edtEndTime = view.findViewById(R.id.edtEndTime);
-        txtHandler = view.findViewById(R.id.txtHandlerId);
-        txtHandler.setText(userId + "");
+        edtHandler = view.findViewById(R.id.txtHandlerId);
+        edtHandler.setText(userId + "");
         edtSourceId.setVisibility(View.GONE);
+        edtHandler.setEnabled(false);
         createTaskRequest = new CreateTaskRequest();
         // create task from failed task
         Bundle bundle = getArguments();
@@ -67,11 +67,11 @@ public class TaskCreationFragment extends Fragment {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             edtStartTime.setText(sdf.format(source.getStartTime()));
             edtEndTime.setText(sdf.format(source.getEndTime()));
-            String txtSourceId = source.getSourceId() == null ? "" : source.getSourceId() + "";
-            edtSourceId.setText(txtSourceId);
+            edtSourceId.setText(source.getTaskId()+"");
             edtSourceId.setVisibility(View.GONE);
             edtSourceId.setVisibility(View.VISIBLE);
-            txtHandler.setVisibility(View.VISIBLE);
+            edtHandler.setEnabled(true);
+            edtHandler.setVisibility(View.VISIBLE);
         }
 
         dateRangePickerFragment = (DateRangePickerFragment) getChildFragmentManager().findFragmentById(R.id.dateRangePickerFragment);
@@ -112,7 +112,7 @@ public class TaskCreationFragment extends Fragment {
                     createTaskRequest.setDescription(description);
                     String txtSourceId = edtSourceId.getText().toString();
                     Integer sourceId = txtSourceId.isEmpty() ? null : Integer.parseInt(txtSourceId);
-                    String txtHandlerId = txtHandler.getText().toString();
+                    String txtHandlerId = edtHandler.getText().toString();
                     Integer handlerId = txtHandlerId.isEmpty() || txtHandlerId == null ? null : Integer.parseInt(txtHandlerId);
                     createTaskRequest.setSourceId(sourceId);
                     createTaskRequest.setHandlerId(handlerId);

@@ -1,7 +1,5 @@
-﻿using AutoMapper;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
-using TaskManager.Constants;
 
 namespace TaskManager.ViewModels
 {
@@ -21,6 +19,8 @@ namespace TaskManager.ViewModels
         public int? GroupId { get; set; }
         [JsonProperty("phone")]
         public string Phone { get; set; }
+        [JsonProperty("username")]
+        public string Username { get; set; }
     }
 
     public class UserCreateViewModel

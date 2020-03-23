@@ -24,7 +24,7 @@
         android:id="@+id/edtSource"
         android:drawableLeft="@drawable/ic_attach_file_source"
         android:hint="@string/task_source"/>
-    <TextView
+    <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/txtHandlerId"

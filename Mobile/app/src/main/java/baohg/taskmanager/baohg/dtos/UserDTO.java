@@ -19,6 +19,8 @@ public class UserDTO implements Serializable {
     String roleName;
     @SerializedName("phone")
     String phoneNumber;
+    @SerializedName("username")
+    String userName;
 
     public Integer getGroupId() {
         return groupId;
@@ -26,6 +28,14 @@ public class UserDTO implements Serializable {
 
     public void setGroupId(Integer groupId) {
         this.groupId = groupId;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getPhoneNumber() {

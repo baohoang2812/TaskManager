@@ -33,7 +33,7 @@ public class UserDAO {
         userAPI.updateUser(userId, request).enqueue(callBack);
     }
     public void createUser(CreateUserRequest request, Callback<UserResponse> callback){
-        userAPI.createuser(request).enqueue(callback);
+        userAPI.createUser(request).enqueue(callback);
     }
     public void removeUser(int userId, Callback<UserResponse> callback){
         userAPI.removeUser(userId).enqueue(callback);
