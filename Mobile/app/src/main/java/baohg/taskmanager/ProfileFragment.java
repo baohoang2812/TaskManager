@@ -1,5 +1,6 @@
 package baohg.taskmanager;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -55,7 +56,7 @@ public class ProfileFragment extends Fragment {
 
     private void loadUserProfile(int userId) {
         UserDAO userDAO = new UserDAO();
-
+        final ProgressDialog progressDialog = new ProgressDialog(getActivity());
         userDAO.getUserProfile(userId, new Callback<UserResponse>() {
             @Override
             public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
@@ -70,12 +71,14 @@ public class ProfileFragment extends Fragment {
                         Toast.makeText(getContext(), response.message(), Toast.LENGTH_SHORT).show();
                     }
                 }
+                progressDialog.dismiss();
             }
 
             @Override
             public void onFailure(Call<UserResponse> call, Throwable t) {
                 t.printStackTrace();
                 Toast.makeText(getContext(), "FAILURE", Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
             }
         });
 

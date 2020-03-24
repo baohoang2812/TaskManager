@@ -44,7 +44,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserViewHolder> {
                 userDetailFragment.setArguments(bundle);
                 MainActivity mainActivity = (MainActivity) v.getContext();
                 mainActivity.getSupportFragmentManager()
-                        .beginTransaction().replace(R.id.fragmentContainer, userDetailFragment).commit();
+                        .beginTransaction().replace(R.id.fragmentContainer, userDetailFragment).addToBackStack("userFragment").commit();
             }
         });
     }

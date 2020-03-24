@@ -2,6 +2,7 @@ package baohg.taskmanager;
 
 import android.app.ActionBar;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -14,6 +15,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.gson.Gson;
+import com.google.gson.TypeAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -101,14 +105,26 @@ public class UserDetailFragment extends Fragment {
                     String txtGroupId = edtGroup.getText().toString();
                     Integer groupId = txtGroupId.isEmpty() ? null : Integer.parseInt(txtGroupId);
                     request.setGroupId(groupId);
-                    //TODO[BHG] - Change Passsword and User Code
                     userDAO.updateUser(userId, request, new Callback<UserResponse>() {
                         @Override
                         public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
                             if (response.isSuccessful()) {
                                 Toast.makeText(getActivity(), "Update Success", Toast.LENGTH_SHORT).show();
                             } else {
-                                Toast.makeText(getActivity(), response.message(), Toast.LENGTH_SHORT).show();
+                                TypeAdapter<UserResponse> adapter = new Gson().getAdapter(UserResponse.class);
+                                try {
+                                    if (response.errorBody() != null) {
+                                        UserResponse userResponse = adapter.fromJson(response.errorBody().string());
+                                        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getActivity());
+                                        alertBuilder.setTitle("Invalid");
+                                        alertBuilder.setMessage(userResponse.getMessage());
+                                        alertBuilder.setIcon(R.drawable.ic_warning);
+                                        alertBuilder.setPositiveButton("Got It", null);
+                                        alertBuilder.show();
+                                    }
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
                             }
                         }
 
@@ -167,7 +183,8 @@ public class UserDetailFragment extends Fragment {
 
     private void loadUserProfile(int userId) {
         UserDAO userDAO = new UserDAO();
-
+        final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+        progressDialog.show();
         userDAO.getUserProfile(userId, new Callback<UserResponse>() {
             @Override
             public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
@@ -185,12 +202,14 @@ public class UserDetailFragment extends Fragment {
                         Toast.makeText(getContext(), response.message(), Toast.LENGTH_SHORT).show();
                     }
                 }
+                progressDialog.dismiss();
             }
 
             @Override
             public void onFailure(Call<UserResponse> call, Throwable t) {
                 t.printStackTrace();
                 Toast.makeText(getContext(), "FAILURE" + t.getMessage(), Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
             }
         });
 

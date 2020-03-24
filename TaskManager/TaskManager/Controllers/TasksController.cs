@@ -194,13 +194,14 @@ namespace TaskManager.Controllers
                     {
                         Directory.CreateDirectory(_hostingEnvironment.WebRootPath + "\\Upload\\");
                     }
-                    using (FileStream fileStream = System.IO.File.Create(_hostingEnvironment.WebRootPath + "\\Upload\\" + file.FileName))
+                    string fileName = file.FileName + ".jpg";
+                    using (FileStream fileStream = System.IO.File.Create(_hostingEnvironment.WebRootPath + "\\Upload\\" + fileName))
                     {
                         file.CopyTo(fileStream);
                         fileStream.Flush();
                         return CreatedAtAction("UploadConfirmationImage", new ApiResult
                         {
-                            Message = "\\Upload\\"+file.FileName
+                            Message = fileName
                         });
                     }
                 }

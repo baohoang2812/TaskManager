@@ -35,5 +35,5 @@ public interface TaskAPI {
 
     @Multipart
     @POST("api/Tasks/upload")
-    Call<BaseResponse> uploadConfirmation(@Part MultipartBody.Part image);
+    Call<TaskResponse> uploadConfirmation(@Part MultipartBody.Part image);
 }

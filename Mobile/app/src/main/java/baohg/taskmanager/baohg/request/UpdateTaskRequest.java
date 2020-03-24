@@ -31,8 +31,18 @@ public class UpdateTaskRequest implements Serializable {
     Integer mark;
     @SerializedName("handlerId")
     Integer handlerId;
+    @SerializedName("confirmationImage")
+    String confirmationImage;
 
     public UpdateTaskRequest() {
+    }
+
+    public String getConfirmationImage() {
+        return confirmationImage;
+    }
+
+    public void setConfirmationImage(String confirmationImage) {
+        this.confirmationImage = confirmationImage;
     }
 
     public void setHandlerId(Integer handlerId) {

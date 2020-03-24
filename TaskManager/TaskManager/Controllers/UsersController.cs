@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using NLog;
 using System;
-using System.Linq;
 using TaskManager.Constants;
 using TaskManager.Models;
 using TaskManager.Models.Request;
@@ -100,6 +99,18 @@ namespace TaskManager.Controllers
                     {
                         Message = ResultMessage.NotFound
                     });
+                }
+                if(model.GroupId != null)
+                {
+                    var groupService = GetService<GroupService>();
+                    var group = groupService.GetGroupById(model.GroupId ?? 0);
+                    if(group == null)
+                    {
+                        return BadRequest(new ApiResult
+                        {
+                            Message = ResultMessage.NotFound + " Group"
+                        });
+                    }
                 }
                     
                 var result = service.EditUser(id, model);

@@ -1,5 +1,6 @@
 package baohg.taskmanager;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -54,6 +55,8 @@ public class GroupDetailFragment extends Fragment {
     }
 
     private void loadGroupDetail(int groupId) {
+        final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+        progressDialog.show();
         GroupDAO groupDAO = new GroupDAO();
         groupDAO.getGroupDetail(groupId, new Callback<GroupResponse>() {
             @Override
@@ -67,11 +70,13 @@ public class GroupDetailFragment extends Fragment {
                 } else {
                     Toast.makeText(getActivity(), response.message(), Toast.LENGTH_SHORT).show();
                 }
+                progressDialog.dismiss();
             }
 
             @Override
             public void onFailure(Call<GroupResponse> call, Throwable t) {
                 t.printStackTrace();
+                progressDialog.dismiss();
             }
         });
     }

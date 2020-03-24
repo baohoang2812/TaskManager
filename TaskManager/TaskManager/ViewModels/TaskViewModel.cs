@@ -33,9 +33,9 @@ namespace TaskManager.ViewModels
         [JsonProperty("description")]
         public string Description { get; set; }
         [JsonProperty("startTime")]
-        public DateTime? StartTime { get; set; }
+        public DateTime? StartTime { get; set; } = DateTime.Now;
         [JsonProperty("endTime")]
-        public DateTime? EndTime { get; set; }
+        public DateTime? EndTime { get; set; } = DateTime.Now.AddDays(1);
         [JsonProperty("statusId")]
         public int? StatusId { get; set; } = 8;
         public DateTime CreatedTime { get; set; } = DateTime.Now;

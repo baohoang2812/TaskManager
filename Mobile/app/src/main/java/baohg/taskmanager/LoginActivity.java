@@ -41,6 +41,7 @@ public class LoginActivity extends AppCompatActivity {
                     editor.putInt("userId", userDTO.getUserId());
                     editor.putString("userFullName", userDTO.getFullName());
                     editor.putString("userRole", userDTO.getRoleName());
+                    editor.putString("userName", userDTO.getUserName());
                     editor.putInt("groupId", userDTO.getGroupId() != null ? userDTO.getGroupId().intValue() : 0);
                     editor.commit();
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);

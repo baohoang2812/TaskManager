@@ -46,7 +46,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupViewHolder> {
                 bundle.putInt("groupId", groupDTO.getGroupId());
                 groupDetailFragment.setArguments(bundle);
                 MainActivity mainActivity = (MainActivity)v.getContext();
-                mainActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, groupDetailFragment).commit();
+                mainActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, groupDetailFragment).addToBackStack("groupFragment").commit();
             }
         });
     }

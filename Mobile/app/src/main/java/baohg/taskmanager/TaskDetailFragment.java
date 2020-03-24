@@ -2,10 +2,13 @@ package baohg.taskmanager;
 
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
@@ -23,6 +26,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -63,6 +70,8 @@ public class TaskDetailFragment extends Fragment {
     ImageView imageView;
     boolean isUser;
     LinearLayout reviewSection, reportSection;
+    String userName, imageName, txtEndTime, userRole;
+    private static final String BASE_URL = "https://taskmanager.conveyor.cloud/upload/";
 
     public TaskDetailFragment() {
         // Required empty public constructor
@@ -98,7 +107,8 @@ public class TaskDetailFragment extends Fragment {
         reportSection = view.findViewById(R.id.reportSection);
         try {
             SharedPreferences sharedPreferences = getActivity().getSharedPreferences("baohg.taskmanager_preferences", Context.MODE_PRIVATE);
-            String userRole = sharedPreferences.getString("userRole", "");
+            userRole = sharedPreferences.getString("userRole", "");
+            userName = sharedPreferences.getString("userName", "");
             btnAccept.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -132,14 +142,7 @@ public class TaskDetailFragment extends Fragment {
                     changeStatus(StatusConstant.FAILED);
                 }
             });
-            isUser = RoleConstant.USER.equalsIgnoreCase(userRole) ? true : false;
-            if (isUser) {
-                switchReviewSectionState();
-                btnAccept.setVisibility(View.GONE);
-                btnReject.setVisibility(View.GONE);
-                btnFailed.setVisibility(View.GONE);
-                btnFinish.setVisibility(View.GONE);
-            }
+
             switchReviewSectionState();
             edtReport.addTextChangedListener(new TextWatcher() {
                 @Override
@@ -163,15 +166,19 @@ public class TaskDetailFragment extends Fragment {
             uploadConfirmationImage();
         } catch (Exception e) {
             Log.d("Task Detail Exception", e.getMessage());
+            e.printStackTrace();
         }
         return view;
     }
 
 
     public void deleteTask() {
+
         btnDeleteTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+                progressDialog.show();
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle("Warning");
                 builder.setIcon(android.R.drawable.ic_dialog_alert);
@@ -199,12 +206,18 @@ public class TaskDetailFragment extends Fragment {
                                         default:
                                             break;
                                     }
+                                    Toast.makeText(getActivity(), "Success", Toast.LENGTH_SHORT).show();
+                                }else{
+                                    Toast.makeText(getActivity(), "Unexpected error occurred. Please try again later", Toast.LENGTH_SHORT).show();
                                 }
+                                progressDialog.dismiss();
                             }
 
                             @Override
                             public void onFailure(Call<TaskResponse> call, Throwable t) {
                                 t.printStackTrace();
+                                progressDialog.dismiss();
+                                Toast.makeText(getActivity(), "Unexpected error occurred. Please try again later", Toast.LENGTH_SHORT).show();
                             }
                         });
                     }
@@ -217,7 +230,8 @@ public class TaskDetailFragment extends Fragment {
     }
 
     public void showTaskDetail() {
-
+        final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+        progressDialog.show();
         taskDAO.getTaskDetail(taskId, new Callback<TaskResponse>() {
             @Override
             public void onResponse(Call<TaskResponse> call, Response<TaskResponse> response) {
@@ -255,7 +269,13 @@ public class TaskDetailFragment extends Fragment {
                             }
                             Calendar endTime = Calendar.getInstance();
                             if (taskDTO.getEndTime() != null) {
+                                txtEndTime = taskDTO.getEndTime() != null ? sdf.format(taskDTO.getEndTime()) : "";
                                 endTime.setTime(taskDTO.getEndTime());
+                            }
+                            if (taskDTO.getConfirmationImage() != null) {
+                                imageName = taskDTO.getConfirmationImage();
+                                String url = BASE_URL + taskDTO.getConfirmationImage();
+                                Picasso.with(getActivity()).load(url).into(imageView);
                             }
                             bundle.putSerializable("startTime", startTime);
                             bundle.putSerializable("endTime", endTime);
@@ -274,12 +294,14 @@ public class TaskDetailFragment extends Fragment {
                         }
                     }
                 }
+                progressDialog.dismiss();
             }
 
             @Override
             public void onFailure(Call<TaskResponse> call, Throwable t) {
                 Toast.makeText(getActivity(), "FAILURE", Toast.LENGTH_SHORT).show();
                 t.printStackTrace();
+                progressDialog.dismiss();
             }
         });
 
@@ -289,6 +311,8 @@ public class TaskDetailFragment extends Fragment {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+                progressDialog.show();
                 boolean isValid = true;
                 String errorMsg = "";
                 String name = edtTaskName.getText().toString();
@@ -320,7 +344,7 @@ public class TaskDetailFragment extends Fragment {
                 String report = edtReport.getText().toString();
                 request.setName(name);
                 request.setDescription(description);
-
+                request.setConfirmationImage(imageName);
                 request.setReport(report);
                 request.setStartTime(txtStartDate);
                 request.setCreatedTime(txtCreatedTime.getText().toString());
@@ -328,6 +352,7 @@ public class TaskDetailFragment extends Fragment {
                 request.setStatusId(statusId);
                 request.setEndTime(txtEndDate);
                 request.setHandlerId(handlerId);
+                request.setConfirmationImage(imageName);
                 if (!isUser) {
                     // get current time
                     Date date = new Date();
@@ -361,15 +386,18 @@ public class TaskDetailFragment extends Fragment {
                             } else {
                                 Toast.makeText(getActivity(), "Update Failed", Toast.LENGTH_SHORT).show();
                             }
+                            progressDialog.dismiss();
                         }
 
                         @Override
                         public void onFailure(Call<TaskResponse> call, Throwable t) {
                             Toast.makeText(getActivity(), "Update On Failure", Toast.LENGTH_SHORT).show();
                             t.printStackTrace();
+                            progressDialog.dismiss();
                         }
                     });
                 } else {
+                    progressDialog.dismiss();
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                     builder.setTitle("Invalid");
                     builder.setIcon(android.R.drawable.ic_dialog_alert);
@@ -385,8 +413,13 @@ public class TaskDetailFragment extends Fragment {
         btnUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(intent, RESULT_UPLOAD_IMAGE);
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("image/jpeg");
+                try {
+                    startActivityForResult(intent, RESULT_UPLOAD_IMAGE);
+                } catch (ActivityNotFoundException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -416,6 +449,13 @@ public class TaskDetailFragment extends Fragment {
                 btnAccept.setVisibility(View.VISIBLE);
                 break;
             }
+            case StatusConstant.FAILED:{
+                btnAccept.setVisibility(View.GONE);
+                btnReject.setVisibility(View.GONE);
+                btnFailed.setVisibility(View.GONE);
+                btnFinish.setVisibility(View.GONE);
+                btnDeleteTask.setVisibility(View.GONE);
+            }
             default: {
                 // failed/ finished
                 btnAccept.setVisibility(View.GONE);
@@ -423,6 +463,14 @@ public class TaskDetailFragment extends Fragment {
                 btnFailed.setVisibility(View.GONE);
                 btnFinish.setVisibility(View.GONE);
             }
+        }
+        isUser = RoleConstant.USER.equalsIgnoreCase(userRole) ? true : false;
+        if (isUser) {
+            switchReviewSectionState();
+            btnAccept.setVisibility(View.GONE);
+            btnReject.setVisibility(View.GONE);
+            btnFailed.setVisibility(View.GONE);
+            btnFinish.setVisibility(View.GONE);
         }
     }
 
@@ -468,12 +516,34 @@ public class TaskDetailFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RESULT_UPLOAD_IMAGE && resultCode == RESULT_OK && data != null) {
             try {
                 Uri imageUri = data.getData();
                 InputStream imageStream = getActivity().getContentResolver().openInputStream(imageUri);
-                imageView.setImageBitmap(BitmapFactory.decodeStream(imageStream));
+                TaskDAO taskDAO = new TaskDAO();
+                String fileName = userName + "-" + taskId + txtEndTime;
+                byte[] result = getBytes(imageStream);
+                InputStream inputStream = getActivity().getContentResolver().openInputStream(imageUri);
+                imageView.setImageBitmap(BitmapFactory.decodeStream(inputStream));
+                taskDAO.uploadConfirmationImage(result, fileName, new Callback<TaskResponse>() {
+                    @Override
+                    public void onResponse(Call<TaskResponse> call, Response<TaskResponse> response) {
+                        if (response.isSuccessful()) {
+                            if (response.body() != null) {
+                                imageName = response.body().getMessage();
+                            }
+                            Toast.makeText(getActivity(), "Success", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<TaskResponse> call, Throwable t) {
+                        t.printStackTrace();
+                        Toast.makeText(getActivity(), "Failure", Toast.LENGTH_SHORT).show();
+                    }
+                });
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -504,7 +574,32 @@ public class TaskDetailFragment extends Fragment {
         });
     }
 
+    private String getRealPathFromURI(Uri contentURI) {
+
+        String thePath = "no-path-found";
+        String[] filePathColumn = {MediaStore.Images.Media.DISPLAY_NAME};
+        Cursor cursor = getActivity().getContentResolver().query(contentURI, filePathColumn, null, null, null);
+        if (cursor.moveToFirst()) {
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            thePath = cursor.getString(columnIndex);
+        }
+        cursor.close();
+        return thePath;
+    }
+
     private boolean isEmpty(String text) {
         return text.isEmpty();
     }
+
+    private byte[] getBytes(InputStream is) throws IOException {
+        ByteArrayOutputStream byteBuff = new ByteArrayOutputStream();
+        int buffSize = 1024;
+        byte[] buff = new byte[buffSize];
+        int len = 0;
+        while ((len = is.read(buff)) != -1) {
+            byteBuff.write(buff, 0, len);
+        }
+        return byteBuff.toByteArray();
+    }
+
 }

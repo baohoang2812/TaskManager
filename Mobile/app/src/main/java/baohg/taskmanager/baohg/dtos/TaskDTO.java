@@ -20,8 +20,17 @@ public class TaskDTO implements Serializable {
     public Integer mark;
     public String comment;
     public Date reviewedTime;
+    public String confirmationImage;
 
     public TaskDTO() {
+    }
+
+    public String getConfirmationImage() {
+        return confirmationImage;
+    }
+
+    public void setConfirmationImage(String confirmationImage) {
+        this.confirmationImage = confirmationImage;
     }
 
     public Integer getHandlerId() {
