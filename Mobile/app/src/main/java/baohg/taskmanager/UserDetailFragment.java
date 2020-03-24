@@ -1,5 +1,6 @@
 package baohg.taskmanager;
 
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -49,6 +50,7 @@ public class UserDetailFragment extends Fragment {
         edtGroup = view.findViewById(R.id.edtGroup);
         txtUserId = view.findViewById(R.id.txtUserId);
         btnDelete = view.findViewById(R.id.btnRemoveUser);
+        ((MainActivity)getActivity()).setActionBarTitle("User Profile");
         Bundle bundle = getArguments();
         if (bundle != null) {
             userId = bundle.getInt("userId", 0);

@@ -8,18 +8,26 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import androidx.fragment.app.Fragment;
+import baohg.taskmanager.baohg.constants.RoleConstant;
 import baohg.taskmanager.baohg.daos.TaskDAO;
+import baohg.taskmanager.baohg.daos.UserDAO;
 import baohg.taskmanager.baohg.dtos.TaskDTO;
+import baohg.taskmanager.baohg.dtos.UserDTO;
 import baohg.taskmanager.baohg.request.CreateTaskRequest;
+import baohg.taskmanager.baohg.request.GetUserRequest;
+import baohg.taskmanager.baohg.responses.GetUserResponse;
 import baohg.taskmanager.baohg.responses.TaskResponse;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -31,8 +39,11 @@ import retrofit2.Response;
  */
 public class TaskCreationFragment extends Fragment {
     DateRangePickerFragment dateRangePickerFragment;
-    EditText edtName,edtHandler, edtDescription, edtSourceId, edtStartTime, edtEndTime;
+    EditText edtName, edtDescription, edtSourceId, edtStartTime, edtEndTime;
     CreateTaskRequest createTaskRequest;
+    Spinner spHandler;
+    Integer handlerId;
+    int userId;
 
     public TaskCreationFragment() {
         // Required empty public constructor
@@ -46,18 +57,34 @@ public class TaskCreationFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_task_creation, container, false);
         // get User info
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("baohg.taskmanager_preferences", Context.MODE_PRIVATE);
-        int userId = sharedPreferences.getInt("userId", 0);
+        userId = sharedPreferences.getInt("userId", 0);
         final String userFullName = sharedPreferences.getString("userFullName", "");
+        String roleName = sharedPreferences.getString("userRole", "");
+        int groupId = sharedPreferences.getInt("groupId", 0);
         edtName = view.findViewById(R.id.edtName);
         edtDescription = view.findViewById(R.id.edtDescription);
         edtSourceId = view.findViewById(R.id.edtSource);
         edtStartTime = view.findViewById(R.id.edtStartTime);
         edtEndTime = view.findViewById(R.id.edtEndTime);
-        edtHandler = view.findViewById(R.id.txtHandlerId);
-        edtHandler.setText(userId + "");
         edtSourceId.setVisibility(View.GONE);
-        edtHandler.setEnabled(false);
         createTaskRequest = new CreateTaskRequest();
+        spHandler = view.findViewById(R.id.spHandler);
+
+
+        switch (roleName) {
+            case RoleConstant.ADMIN: {
+                loadHandler(null);
+                break;
+            }
+            case RoleConstant.MANAGER: {
+                loadHandler(groupId);
+                break;
+            }
+            default: {
+                spHandler.setVisibility(View.GONE);
+                handlerId = userId;
+            }
+        }
         // create task from failed task
         Bundle bundle = getArguments();
         if (bundle != null) {
@@ -67,13 +94,10 @@ public class TaskCreationFragment extends Fragment {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             edtStartTime.setText(sdf.format(source.getStartTime()));
             edtEndTime.setText(sdf.format(source.getEndTime()));
-            edtSourceId.setText(source.getTaskId()+"");
+            edtSourceId.setText(source.getTaskId() + "");
             edtSourceId.setVisibility(View.GONE);
             edtSourceId.setVisibility(View.VISIBLE);
-            edtHandler.setEnabled(true);
-            edtHandler.setVisibility(View.VISIBLE);
         }
-
         dateRangePickerFragment = (DateRangePickerFragment) getChildFragmentManager().findFragmentById(R.id.dateRangePickerFragment);
         Button btnCreate = view.findViewById(R.id.btnCreate);
         btnCreate.setOnClickListener(new View.OnClickListener() {
@@ -93,16 +117,16 @@ public class TaskCreationFragment extends Fragment {
                 }
                 String txtStartDate = dateRangePickerFragment.getEdtStartTime().getText().toString();
                 String txtEndDate = dateRangePickerFragment.getEdtEndTime().getText().toString();
-                if(!txtStartDate.isEmpty() && !txtEndDate.isEmpty()){
-                    try{
+                if (!txtStartDate.isEmpty() && !txtEndDate.isEmpty()) {
+                    try {
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                         Date startDate = sdf.parse(txtStartDate);
                         Date endDate = sdf.parse(txtEndDate);
-                        if(startDate.after(endDate)){
+                        if (startDate.after(endDate)) {
                             isValid = false;
                             errorMsg += "Start Date must before End Date \n";
                         }
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
@@ -112,8 +136,6 @@ public class TaskCreationFragment extends Fragment {
                     createTaskRequest.setDescription(description);
                     String txtSourceId = edtSourceId.getText().toString();
                     Integer sourceId = txtSourceId.isEmpty() ? null : Integer.parseInt(txtSourceId);
-                    String txtHandlerId = edtHandler.getText().toString();
-                    Integer handlerId = txtHandlerId.isEmpty() || txtHandlerId == null ? null : Integer.parseInt(txtHandlerId);
                     createTaskRequest.setSourceId(sourceId);
                     createTaskRequest.setHandlerId(handlerId);
                     createTaskRequest.setStartTime(dateRangePickerFragment.getEdtStartTime().getText().toString());
@@ -156,4 +178,47 @@ public class TaskCreationFragment extends Fragment {
         return text.isEmpty();
     }
 
+    private void loadHandler(Integer groupId) {
+        UserDAO userDAO = new UserDAO();
+        GetUserRequest request = new GetUserRequest();
+        request.setGroupId(groupId);
+        userDAO.getAllUser(request, new Callback<GetUserResponse>() {
+            @Override
+            public void onResponse(Call<GetUserResponse> call, Response<GetUserResponse> response) {
+                if (response.isSuccessful()) {
+                    if (response.body() != null) {
+                        List<UserDTO> userList = response.body().getData();
+                        ArrayAdapter<UserDTO> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, userList);
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        spHandler.setAdapter(adapter);
+
+                        spHandler.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                UserDTO userDTO = (UserDTO) parent.getItemAtPosition(position);
+                                handlerId = userDTO.getUserId() != 0 ? userDTO.getUserId() : null;
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> parent) {
+
+                            }
+                        });
+                        if (userList != null) {
+                            for (int i = 0; i < adapter.getCount(); i++) {
+                                if (adapter.getItem(i).getUserId() == userId) {
+                                    spHandler.setSelection(i);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetUserResponse> call, Throwable t) {
+
+            }
+        });
+    }
 }

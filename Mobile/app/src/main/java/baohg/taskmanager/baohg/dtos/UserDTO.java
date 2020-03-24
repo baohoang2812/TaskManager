@@ -4,6 +4,8 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
+import androidx.annotation.NonNull;
+
 public class UserDTO implements Serializable {
     @SerializedName("userId")
     int userId;
@@ -87,4 +89,9 @@ public class UserDTO implements Serializable {
         this.email = email;
     }
 
+    @NonNull
+    @Override
+    public String toString() {
+        return fullName;
+    }
 }
